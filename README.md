@@ -64,7 +64,7 @@ The AI persona **Aria** conducts the interview, scores every answer (0–10), gi
 </table>
 
 <div align="center">
-<img src="./frontend/public/screenshots/study2.png" width="75%" />
+<img src="./frontend/public/screenshots/study2.png" width="100%" />
 <br/><sub><b>Study Mode</b> — one-click MCQ quiz generated from uploaded documents</sub>
 </div>
 
@@ -100,7 +100,7 @@ The AI persona **Aria** conducts the interview, scores every answer (0–10), gi
 
 The core of Prepwise is a real retrieval-augmented generation pipeline — not a system prompt with topic keywords.
 
-<img src="./frontend/public/screenshots/rag-pipeline.png" alt="RAG Pipeline" width="100%" />
+<img src="./frontend/public/screenshots/rag-pipeline.png" alt="RAG Pipeline" width="60%" />
 
 **Why JSONB + in-memory FAISS instead of pgvector?**
 No pgvector extension required on free-tier Supabase. Vectors are stored once on upload and deserialized per session — no re-embedding, no cold start cost, no external vector DB dependency. FAISS index rebuilds in ~50ms from stored floats.
