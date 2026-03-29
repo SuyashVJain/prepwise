@@ -2,8 +2,8 @@
 
 # PREPWISE
 
-### AI mock interviews grounded in your actual university syllabus.
-### Not a question bank. Not a wrapper. A real RAG pipeline.
+## AI mock interviews grounded in your actual university syllabus.
+## Not a question bank. Not a wrapper. A real RAG pipeline.
 
 <br />
 
