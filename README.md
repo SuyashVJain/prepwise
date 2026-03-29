@@ -100,7 +100,7 @@ The AI persona **Aria** conducts the interview, scores every answer (0–10), gi
 
 The core of Prepwise is a real retrieval-augmented generation pipeline — not a system prompt with topic keywords.
 
-![RAG Pipeline](./frontend/public/screenshots/rag-pipeline.png)
+<img src="./frontend/public/screenshots/rag-pipeline.png" alt="RAG Pipeline" width="80%" />
 
 **Why JSONB + in-memory FAISS instead of pgvector?**
 No pgvector extension required on free-tier Supabase. Vectors are stored once on upload and deserialized per session — no re-embedding, no cold start cost, no external vector DB dependency. FAISS index rebuilds in ~50ms from stored floats.
