@@ -70,7 +70,7 @@ export default function InterviewPage() {
   const [debrief, setDebrief] = useState<any>(null)
   const [loadingDebrief, setLoadingDebrief] = useState(false)
 
-  const timerRef = useRef<ReturnType<typeof setInterval>>()
+const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const recognitionRef = useRef<any>(null)
   const router = useRouter()
   const supabase = createClient()
@@ -99,11 +99,11 @@ export default function InterviewPage() {
     if (phase !== 'interview') return
     timerRef.current = setInterval(() => {
       setTimeLeft(t => {
-        if (t <= 1) { clearInterval(timerRef.current); return 0 }
+        if (t <= 1) { if (timerRef.current) clearInterval(timerRef.current); return 0 }
         return t - 1
       })
     }, 1000)
-    return () => clearInterval(timerRef.current)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [phase])
 
   function formatTime(s: number) {
@@ -193,7 +193,7 @@ export default function InterviewPage() {
   async function fetchDebrief() {
     setLoadingDebrief(true)
     setPhase('debrief')
-    clearInterval(timerRef.current)
+    if (timerRef.current) clearInterval(timerRef.current)
 
     const scores = sessionQuestions.map(q => q.result?.score || 0)
     const avgScore = scores.length > 0 ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10 : 0
