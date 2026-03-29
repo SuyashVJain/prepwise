@@ -30,7 +30,7 @@ Campus placements aren't generic. Your preparation shouldn't be either.
 
 ## What Prepwise does differently
 
-Upload your syllabus PDF. Prepwise parses it, chunks it, embeds it into a FAISS vector store, and uses semantic retrieval to generate interview questions **grounded in what you actually studied** — not pulled from a curated bank.
+Upload your syllabus PDF. Prepwise parses it, chunks it, embeds it into a FAISS vector store, and uses semantic retrieval to generate interview questions **grounded in what you actually studied** - not pulled from a curated bank.
 
 The AI persona **Aria** conducts the interview, scores every answer (0–10), gives contextual hints, reveals ideal answers, and surfaces weak topics across sessions.
 
@@ -44,28 +44,28 @@ The AI persona **Aria** conducts the interview, scores every answer (0–10), gi
 <tr>
 <td width="50%" align="center">
 <img src="./frontend/public/screenshots/onboarding.png" width="100%"/>
-<sub><b>Onboarding</b> — PDF parsed, topics extracted, vector store built</sub>
+<sub><b>Onboarding</b> - PDF parsed, topics extracted, vector store built</sub>
 </td>
 <td width="50%" align="center">
 <img src="./frontend/public/screenshots/dashboard.png" width="100%"/>
-<sub><b>Dashboard</b> — session history, performance chart, weak topic analysis</sub>
+<sub><b>Dashboard</b> - session history, performance chart, weak topic analysis</sub>
 </td>
 </tr>
 <tr>
 <td width="50%" align="center">
 <img src="./frontend/public/screenshots/interview.png" width="100%"/>
-<sub><b>Interview Room</b> — Aria asking, voice waveform active, answer typed</sub>
+<sub><b>Interview Room</b> - Aria asking, voice waveform active, answer typed</sub>
 </td>
 <td width="50%" align="center">
 <img src="./frontend/public/screenshots/study1.png" width="100%"/>
-<sub><b>Study Mode</b> — multi-doc chat with per-paragraph source citations</sub>
+<sub><b>Study Mode</b> - multi-doc chat with per-paragraph source citations</sub>
 </td>
 </tr>
 </table>
 
 <div align="center">
 <img src="./frontend/public/screenshots/study2.png" width="100%" />
-<br/><sub><b>Study Mode</b> — one-click MCQ quiz generated from uploaded documents</sub>
+<br/><sub><b>Study Mode</b> - one-click MCQ quiz generated from uploaded documents</sub>
 </div>
 
 ---
@@ -73,10 +73,10 @@ The AI persona **Aria** conducts the interview, scores every answer (0–10), gi
 ## Features
 
 **Interview Mode**
-- Syllabus-aware questions via RAG — no hardcoded question banks
+- Syllabus-aware questions via RAG - no hardcoded question banks
 - 4 interview types: Technical · HR/Behavioural · System Design · Subject-specific
 - 4 company targets: FAANG · Product Startups · Service Companies · Core Campus
-- Voice input (Web Speech API) + text — Aria adapts to both
+- Voice input (Web Speech API) + text - Aria adapts to both
 - Per-answer scoring (0–10) with hints and ideal answer reveal
 - Post-session debrief: weak topics, score breakdown, full answer review
 
@@ -84,13 +84,13 @@ The AI persona **Aria** conducts the interview, scores every answer (0–10), gi
 - Upload multiple PDFs simultaneously and chat across all of them
 - Every Aria response cites the specific source document and paragraph
 - One-click MCQ quiz generation from any uploaded document set
-- Grounded entirely in what you uploaded — not GPT's general knowledge
+- Grounded entirely in what you uploaded - not GPT's general knowledge
 
 **Dashboard**
 - Performance trend chart across all sessions (real Supabase data, not mocked)
 - Weak topic tracker auto-surfaced from low-score answers over time
 - Full session history with scores, types, and company targets
-- Syllabus library — manage multiple uploaded syllabi per user
+- Syllabus library - manage multiple uploaded syllabi per user
 
 ---
 
@@ -98,12 +98,12 @@ The AI persona **Aria** conducts the interview, scores every answer (0–10), gi
 
 ### RAG Pipeline
 
-The core of Prepwise is a real retrieval-augmented generation pipeline — not a system prompt with topic keywords.
+The core of Prepwise is a real retrieval-augmented generation pipeline - not a system prompt with topic keywords.
 
 <img src="./frontend/public/screenshots/rag-pipeline.png" alt="RAG Pipeline" width="80%" />
 
 **Why JSONB + in-memory FAISS instead of pgvector?**
-No pgvector extension required on free-tier Supabase. Vectors are stored once on upload and deserialized per session — no re-embedding, no cold start cost, no external vector DB dependency. FAISS index rebuilds in ~50ms from stored floats.
+No pgvector extension required on free-tier Supabase. Vectors are stored once on upload and deserialized per session - no re-embedding, no cold start cost, no external vector DB dependency. FAISS index rebuilds in ~50ms from stored floats.
 
 ### System Overview
 
@@ -117,7 +117,7 @@ No pgvector extension required on free-tier Supabase. Vectors are stored once on
 |---|---|
 | Frontend | Next.js 16, TypeScript, Tailwind CSS v4 |
 | Backend | FastAPI, Python 3.11 |
-| LLM | Groq — Llama 3.3 70B |
+| LLM | Groq - Llama 3.3 70B |
 | Embeddings | sentence-transformers `all-MiniLM-L6-v2` |
 | Vector search | FAISS IndexFlatL2 (in-memory, per session) |
 | PDF parsing | PyMuPDF |
@@ -134,7 +134,7 @@ No pgvector extension required on free-tier Supabase. Vectors are stored once on
 - A free [Supabase](https://supabase.com) project
 - A free [Groq API key](https://console.groq.com)
 
-### Step 1 — Supabase
+### Step 1 - Supabase
 
 <details>
 <summary>Expand SQL</summary>
@@ -204,7 +204,7 @@ create trigger on_auth_user_created
 
 </details>
 
-### Step 2 — Backend
+### Step 2 - Backend
 
 ```bash
 cd backend
@@ -227,7 +227,7 @@ FRONTEND_URL=http://localhost:3000
 uvicorn app.main:app --reload --port 8000
 ```
 
-### Step 3 — Frontend
+### Step 3 - Frontend
 
 ```bash
 cd frontend
@@ -246,7 +246,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 npm run dev
 ```
 
-Visit [localhost:3000](http://localhost:3000). Sign up — onboarding triggers automatically.
+Visit [localhost:3000](http://localhost:3000). Sign up - onboarding triggers automatically.
 
 ---
 
@@ -291,7 +291,7 @@ prepwise/
 
 ## License
 
-MIT — fork it, extend it, deploy your own.
+MIT - fork it, extend it, deploy your own.
 
 ---
 
