@@ -1,209 +1,148 @@
 <div align="center">
 
+# PREPWISE
+
+### AI mock interviews grounded in your actual university syllabus.
+### Not a question bank. Not a wrapper. A real RAG pipeline.
+
+<br />
+
+[![Live](https://img.shields.io/badge/LIVE-prepwise--mocha.vercel.app-d4fe42?style=flat-square&labelColor=0e0e0e)](https://prepwise-mocha.vercel.app)
+[![API](https://img.shields.io/badge/API-railway.app-555555?style=flat-square&labelColor=0e0e0e)](https://prepwise-production-eb53.up.railway.app/docs)
+[![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat-square&logo=nextdotjs)](https://nextjs.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![License](https://img.shields.io/badge/license-MIT-d4fe42?style=flat-square&labelColor=0e0e0e)](./LICENSE)
+
 <br />
 
 <img src="./frontend/public/screenshots/landing.png" alt="Prepwise" width="100%" />
-
-<br />
-<br />
-
-<a href="https://prepwise-mocha.vercel.app"><img src="https://img.shields.io/badge/FRONTEND-prepwise--mocha.vercel.app-d4fe42?style=for-the-badge&labelColor=0e0e0e&color=d4fe42" /></a>
-&nbsp;
-<a href="https://prepwise-production-eb53.up.railway.app"><img src="https://img.shields.io/badge/API-railway.app-d4fe42?style=for-the-badge&labelColor=0e0e0e&color=d4fe42" /></a>
-&nbsp;
-<img src="https://img.shields.io/badge/NEXT.JS_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />
-&nbsp;
-<img src="https://img.shields.io/badge/FASTAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
-&nbsp;
-<img src="https://img.shields.io/badge/SUPABASE-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" />
-&nbsp;
-<img src="https://img.shields.io/badge/LICENSE-MIT-d4fe42?style=for-the-badge&labelColor=0e0e0e" />
-
-<br />
-<br />
 
 </div>
 
 ---
 
-# Every other prep tool is lying to you.
+## The problem
 
-They give you the same 500 questions every CS student in India has already memorized. They don't know you studied **Data Warehousing** in Semester 4, not just DSA. They don't know your university. They don't care.
+Every interview prep tool in India serves you the same recycled question bank. They don't know you covered **Data Warehousing** in Semester 4. They don't know your university ran a trimmed OS syllabus. They treat every CS student the same.
 
-**Prepwise does.**
+Campus placements aren't generic. Your preparation shouldn't be either.
 
-Upload your syllabus PDF. Aria — the AI interview coach — reads it, indexes it, and grills you on what *you actually studied*. Not a question bank. Not a template. Your curriculum, turned into a live interview.
+## What Prepwise does differently
 
-> Built by a CS student who got tired of prepping with tools that weren't built for him.
+Upload your syllabus PDF. Prepwise parses it, chunks it, embeds it into a FAISS vector store, and uses semantic retrieval to generate interview questions **grounded in what you actually studied** — not pulled from a curated bank.
+
+The AI persona **Aria** conducts the interview, scores every answer (0–10), gives contextual hints, reveals ideal answers, and surfaces weak topics across sessions.
+
+**Study Mode** lets you upload any document set, chat with Aria across all of them with per-paragraph source citations, or generate an MCQ quiz in one click.
 
 ---
 
-## What it looks like
+## Screenshots
 
 <table>
 <tr>
-<td width="50%">
-
-**Onboarding — Upload your syllabus**
-![Onboarding](./frontend/public/screenshots/onboarding.png)
-PDF parsed. Topics extracted. Vector store built.
-
+<td width="50%" align="center">
+<img src="./frontend/public/screenshots/onboarding.png" width="100%"/>
+<sub><b>Onboarding</b> — PDF parsed, topics extracted, vector store built</sub>
 </td>
-<td width="50%">
-
-**Dashboard — Your performance over time**
-![Dashboard](./frontend/public/screenshots/dashboard.png)
-Real session data. Weak topics surfaced automatically.
-
+<td width="50%" align="center">
+<img src="./frontend/public/screenshots/dashboard.png" width="100%"/>
+<sub><b>Dashboard</b> — session history, performance chart, weak topic analysis</sub>
 </td>
 </tr>
 <tr>
-<td width="50%">
-
-**Interview Room — Aria asks, you answer**
-![Interview](./frontend/public/screenshots/interview.png)
-Voice or text. RAG-grounded questions. Scored live.
-
+<td width="50%" align="center">
+<img src="./frontend/public/screenshots/interview.png" width="100%"/>
+<sub><b>Interview Room</b> — Aria asking, voice waveform active, answer typed</sub>
 </td>
-<td width="50%">
-
-**Study Mode — Chat with your documents**
-![Study](./frontend/public/screenshots/study1.png)
-Upload any PDF. Ask anything. Every answer cites its source.
-
+<td width="50%" align="center">
+<img src="./frontend/public/screenshots/study1.png" width="100%"/>
+<sub><b>Study Mode</b> — multi-doc chat with per-paragraph source citations</sub>
 </td>
 </tr>
 </table>
 
 <div align="center">
-
-**Study Mode — One-click MCQ quiz from your notes**
-
-<img src="./frontend/public/screenshots/study2.png" width="80%" />
-
+<img src="./frontend/public/screenshots/study2.png" width="75%" />
+<br/><sub><b>Study Mode</b> — one-click MCQ quiz generated from uploaded documents</sub>
 </div>
 
 ---
 
-## The RAG pipeline (the part that actually matters)
+## Features
 
-Most "AI interview tools" wrap GPT-4 with a system prompt. This is not that.
+**Interview Mode**
+- Syllabus-aware questions via RAG — no hardcoded question banks
+- 4 interview types: Technical · HR/Behavioural · System Design · Subject-specific
+- 4 company targets: FAANG · Product Startups · Service Companies · Core Campus
+- Voice input (Web Speech API) + text — Aria adapts to both
+- Per-answer scoring (0–10) with hints and ideal answer reveal
+- Post-session debrief: weak topics, score breakdown, full answer review
 
-```
-PDF upload
-   │
-   ├─ PyMuPDF extracts raw text page by page
-   │
-   ├─ Split into 400-word overlapping chunks
-   │
-   ├─ all-MiniLM-L6-v2 embeds each chunk → 384-dim vector
-   │
-   └─ Chunks + vectors stored in Supabase as JSONB
-            │
-            └─ On session start: FAISS IndexFlatL2 rebuilt in memory
-                     │
-                     └─ Per question: semantic query → top-k chunks retrieved
-                              │
-                              └─ Chunks injected into Groq prompt
-                                       │
-                                       └─ Llama 3.3 70B generates a question
-                                          grounded in YOUR syllabus content
-```
+**Study Mode**
+- Upload multiple PDFs simultaneously and chat across all of them
+- Every Aria response cites the specific source document and paragraph
+- One-click MCQ quiz generation from any uploaded document set
+- Grounded entirely in what you uploaded — not GPT's general knowledge
+
+**Dashboard**
+- Performance trend chart across all sessions (real Supabase data, not mocked)
+- Weak topic tracker auto-surfaced from low-score answers over time
+- Full session history with scores, types, and company targets
+- Syllabus library — manage multiple uploaded syllabi per user
+
+---
+
+## Architecture
+
+### RAG Pipeline
+
+The core of Prepwise is a real retrieval-augmented generation pipeline — not a system prompt with topic keywords.
+
+<img src="./frontend/public/screenshots/rag-pipeline.png" alt="RAG Pipeline" width="100%" />
 
 **Why JSONB + in-memory FAISS instead of pgvector?**
-No extra Postgres extension needed. No re-embedding on every session load. Vectors are stored once, FAISS index is rebuilt in ~50ms per session from stored floats. Works on free-tier Supabase, deploys to Railway without configuration.
+No pgvector extension required on free-tier Supabase. Vectors are stored once on upload and deserialized per session — no re-embedding, no cold start cost, no external vector DB dependency. FAISS index rebuilds in ~50ms from stored floats.
+
+### System Overview
+
+<img src="./frontend/public/screenshots/architecture.png" alt="System Architecture" width="100%" />
 
 ---
 
-## Two products in one
+## Tech stack
 
-### 🎙 Interview Mode
-
-Aria runs a structured mock interview calibrated to your syllabus and target company.
-
-| | |
+| Layer | Technology |
 |---|---|
-| Interview types | Technical · HR/Behavioural · System Design · Subject-specific |
-| Company targets | FAANG · Product Startups · Service Companies · Core Campus |
-| Answer input | Voice (Web Speech API) + Text |
-| Per answer | Score 0–10 · Contextual hint · Ideal answer reveal |
-| End of session | Full debrief · Weak topic breakdown · Everything saved to Supabase |
-
-### 📚 Study Mode
-
-Not just interview prep. Upload your lecture notes, units, or any PDF — and study with Aria the way you'd study with a friend who actually read everything.
-
-| | |
-|---|---|
-| Multi-file upload | Load multiple PDFs simultaneously — chat across all of them |
-| Document chat | Multi-turn conversation · every answer cites its source document |
-| MCQ generator | One click → quiz generated from your uploaded content |
-| Grounded answers | Responses tied to your documents, not GPT's general knowledge |
+| Frontend | Next.js 16, TypeScript, Tailwind CSS v4 |
+| Backend | FastAPI, Python 3.11 |
+| LLM | Groq — Llama 3.3 70B |
+| Embeddings | sentence-transformers `all-MiniLM-L6-v2` |
+| Vector search | FAISS IndexFlatL2 (in-memory, per session) |
+| PDF parsing | PyMuPDF |
+| Database + Auth | Supabase (PostgreSQL + RLS) |
+| Frontend deploy | Vercel |
+| Backend deploy | Railway |
 
 ---
 
-## Stack
-
-| Layer | Tech | Notes |
-|---|---|---|
-| Frontend | Next.js 16, TypeScript, Tailwind v4 | App Router, `proxy.ts` for auth + onboarding gate |
-| Backend | FastAPI, Python 3.11 | Deployed on Railway |
-| LLM | Groq — Llama 3.3 70B | Fastest open-source inference, free tier |
-| Embeddings | sentence-transformers `all-MiniLM-L6-v2` | Local, no API cost |
-| Vector search | FAISS IndexFlatL2 | In-memory, rebuilt per session from Supabase |
-| PDF parsing | PyMuPDF | Reliable across messy university syllabus formats |
-| Database + Auth | Supabase | PostgreSQL + RLS + Auth in one |
-| Frontend deploy | Vercel | [prepwise-mocha.vercel.app](https://prepwise-mocha.vercel.app) |
-| Backend deploy | Railway | [prepwise-production-eb53.up.railway.app](https://prepwise-production-eb53.up.railway.app) |
-
----
-
-## Project structure
-
-```
-prepwise/
-├── frontend/
-│   ├── app/
-│   │   ├── (auth)/login · signup
-│   │   ├── (dashboard)/dashboard    ← stats, history, weak topics, syllabi
-│   │   ├── onboarding/              ← 3-step wizard
-│   │   ├── interview/[sessionId]/   ← live interview room
-│   │   └── study/                  ← document chat + MCQ
-│   ├── proxy.ts                     ← auth guard + onboarding redirect
-│   └── lib/supabase/
-│
-└── backend/
-    └── app/
-        ├── routers/
-        │   ├── interview.py   ← Q&A, scoring, debrief
-        │   ├── session.py     ← session lifecycle
-        │   ├── syllabus.py    ← upload, chunk, embed, store
-        │   └── study.py       ← multi-file chat, MCQ generation
-        └── services/
-            ├── rag.py         ← FAISS + retrieval
-            ├── gemini.py      ← Groq LLM calls
-            └── scorer.py      ← answer evaluation
-```
-
----
-
-## Run it locally
+## Getting started
 
 ### Prerequisites
-- Node.js 18+ · Python 3.11 · A free [Supabase](https://supabase.com) project · A free [Groq](https://console.groq.com) key
+- Node.js 18+ and Python 3.11
+- A free [Supabase](https://supabase.com) project
+- A free [Groq API key](https://console.groq.com)
 
-### 1 — Supabase SQL setup
+### Step 1 — Supabase
 
 <details>
-<summary>Click to expand</summary>
+<summary>Expand SQL</summary>
 
 ```sql
 create table profiles (
   id uuid references auth.users on delete cascade primary key,
-  full_name text,
-  university text,
-  semester int,
-  target_role text,
+  full_name text, university text, semester int, target_role text,
   onboarding_complete boolean default false,
   created_at timestamp with time zone default timezone('utc', now())
 );
@@ -211,9 +150,7 @@ create table profiles (
 create table syllabi (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references profiles(id) on delete cascade,
-  name text not null,
-  university text,
-  semester int,
+  name text not null, university text, semester int,
   topics jsonb default '[]',
   raw_chunks jsonb default '[]',
   vectors jsonb default '[]',
@@ -225,11 +162,8 @@ create table sessions (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references profiles(id) on delete cascade,
   syllabus_id uuid references syllabi(id),
-  interview_type text,
-  target_company text,
-  total_questions int,
-  score_avg numeric(4,2),
-  weak_topics jsonb default '[]',
+  interview_type text, target_company text, total_questions int,
+  score_avg numeric(4,2), weak_topics jsonb default '[]',
   completed boolean default false,
   created_at timestamp with time zone default timezone('utc', now())
 );
@@ -237,11 +171,8 @@ create table sessions (
 create table questions (
   id uuid default gen_random_uuid() primary key,
   session_id uuid references sessions(id) on delete cascade,
-  question_text text not null,
-  user_answer text,
-  score numeric(4,2),
-  hint text,
-  ideal_answer text,
+  question_text text not null, user_answer text,
+  score numeric(4,2), hint text, ideal_answer text,
   created_at timestamp with time zone default timezone('utc', now())
 );
 
@@ -273,20 +204,22 @@ create trigger on_auth_user_created
 
 </details>
 
-### 2 — Backend
+### Step 2 — Backend
 
 ```bash
 cd backend
-python -m venv venv && venv\Scripts\activate  # Windows
-# source venv/bin/activate                    # Mac/Linux
+python -m venv venv
+venv\Scripts\activate        # Windows
+source venv/bin/activate     # macOS/Linux
 pip install -r requirements.txt
 ```
 
-`backend/.env`:
+Create `backend/.env`:
+
 ```env
-GROQ_API_KEY=...
+GROQ_API_KEY=your_key
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_KEY=...
+SUPABASE_SERVICE_KEY=your_service_role_key
 FRONTEND_URL=http://localhost:3000
 ```
 
@@ -294,53 +227,79 @@ FRONTEND_URL=http://localhost:3000
 uvicorn app.main:app --reload --port 8000
 ```
 
-### 3 — Frontend
+### Step 3 — Frontend
 
 ```bash
-cd frontend && npm install
+cd frontend
+npm install
 ```
 
-`frontend/.env.local`:
+Create `frontend/.env.local`:
+
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 ```bash
 npm run dev
-# → localhost:3000
 ```
 
-Sign up → onboarding auto-triggers → upload your syllabus → start an interview.
+Visit [localhost:3000](http://localhost:3000). Sign up — onboarding triggers automatically.
+
+---
+
+## Project structure
+
+```
+prepwise/
+├── frontend/
+│   ├── app/
+│   │   ├── (auth)/                  # login, signup
+│   │   ├── (dashboard)/dashboard/   # stats, history, weak topics
+│   │   ├── onboarding/              # 3-step wizard
+│   │   ├── interview/[sessionId]/   # live interview room
+│   │   └── study/                  # document chat + MCQ
+│   ├── proxy.ts                     # auth guard + onboarding gate
+│   └── lib/supabase/
+│
+└── backend/
+    └── app/
+        ├── routers/
+        │   ├── interview.py         # Q&A loop, scoring, debrief
+        │   ├── session.py           # session lifecycle
+        │   ├── syllabus.py          # PDF ingest, chunking, embedding
+        │   └── study.py             # multi-file chat, MCQ generation
+        └── services/
+            ├── rag.py               # FAISS index + semantic retrieval
+            ├── gemini.py            # Groq LLM wrapper
+            └── scorer.py           # per-answer evaluation
+```
 
 ---
 
 ## Roadmap
 
 - [ ] Google OAuth
-- [ ] Resume upload + resume-aware questions
+- [ ] Resume upload + resume-grounded questions
 - [ ] Session debrief export as PDF
 - [ ] College-specific syllabus presets
-- [ ] Peer challenge mode
+- [ ] Peer challenge / shared sessions
 
 ---
 
 ## License
 
-MIT. Fork it, build on it, deploy your own.
+MIT — fork it, extend it, deploy your own.
 
 ---
 
 <div align="center">
-<br />
+<br/>
 
-Built by **[Suyash Vasal Jain](https://github.com/SuyashVJain)**
+**[Suyash Vasal Jain](https://github.com/SuyashVJain)** · CS student, SUAS Indore
 
-CS student · SUAS Indore
-
-<br />
-
-*If this helped you — drop a ⭐*
+[![Try Prepwise](https://img.shields.io/badge/Try_Prepwise-d4fe42?style=for-the-badge&labelColor=0e0e0e)](https://prepwise-mocha.vercel.app)
 
 </div>
