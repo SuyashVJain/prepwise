@@ -30,7 +30,7 @@ export default function LandingPage() {
       {/* NAVBAR */}
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px', height: '56px', borderBottom: '1px solid var(--border)', background: 'rgba(14,14,14,0.92)', backdropFilter: 'blur(12px)' }}>
         {/* <span style={{ ...mono, fontSize: '13px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)' }}>PREPWISE</span> */}
-<Logo size="sm" animated />
+        <Logo size="sm" animated />
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <Link href="/login" style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)' }}>Sign in</Link>
           <Link href="/signup" style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '8px 20px', display: 'inline-block' }}>Start free →</Link>
@@ -123,9 +123,41 @@ export default function LandingPage() {
         <span style={{ ...mono, fontSize: '12px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)' }}>PREPWISE</span>
         <span style={{ ...mono, fontSize: '10px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase' }}>© 2026 PREPWISE. TECHNICAL AUTOPSY SERIES.</span>
         <div style={{ display: 'flex', gap: '24px' }}>
-          {['Privacy', 'Terms', 'Contact'].map(l => (
-            <span key={l} style={{ ...mono, fontSize: '10px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>{l}</span>
+          {/* Disabled links */}
+          {['Privacy', 'Terms'].map(l => (
+            <span
+              key={l}
+              style={{
+                ...mono,
+                fontSize: '10px',
+                color: 'var(--text-3)',
+                letterSpacing: '.08em',
+                textTransform: 'uppercase',
+                opacity: 0.5,
+                cursor: 'not-allowed',
+              }}
+            >
+              {l}
+            </span>
           ))}
+
+          {/* Real external link */}
+          <a
+            href="https://suyashvjain.web.app/" // <-- replace this
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              ...mono,
+              fontSize: '10px',
+              color: 'var(--text-3)',
+              letterSpacing: '.08em',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              cursor: 'pointer',
+            }}
+          >
+            Contact
+          </a>
         </div>
       </footer>
 
