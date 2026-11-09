@@ -74,13 +74,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* TRY IT: one real question, no account */}
-        <section id="try" className="reveal frame frame-center" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `${sectionY} ${gutter}` }}>
-          <div style={eyebrow}>[Try it without signing up]</div>
-          <h2 style={{ ...bigTitle, fontSize: 'clamp(28px, min(4.5vw, 7svh), 64px)', marginBottom: 'clamp(12px, 2.4svh, 24px)' }}>Try one question.</h2>
-          <TryDemo />
-        </section>
-
         {/* HOW IT WORKS: three steps, then four one-line points */}
         <section id="how" className="reveal frame frame-center" style={{ borderTop: '1px solid var(--border)', padding: `${sectionY} 0 0` }}>
           <div style={{ ...eyebrow, padding: `0 ${gutter}`, marginBottom: 'var(--space-3)' }}>[How it works]</div>
@@ -100,6 +93,13 @@ export default function LandingPage() {
               </li>
             ))}
           </ul>
+        </section>
+
+        {/* TRY IT: one real question, no account */}
+        <section id="try" className="reveal frame frame-center" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `${sectionY} ${gutter}` }}>
+          <div style={eyebrow}>[Try it without signing up]</div>
+          <h2 style={{ ...bigTitle, fontSize: 'clamp(28px, min(4.5vw, 7svh), 64px)', marginBottom: 'clamp(12px, 2.4svh, 24px)' }}>Try one question.</h2>
+          <TryDemo />
         </section>
 
         {/* PRODUCT: one real screen, framed, shown with made-up demo data */}

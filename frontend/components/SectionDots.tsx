@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 
 const SECTIONS = [
   { id: 'hero', label: 'Start' },
-  { id: 'try', label: 'Try one question' },
   { id: 'how', label: 'How it works' },
+  { id: 'try', label: 'Try one question' },
   { id: 'product', label: 'The product' },
   { id: 'start', label: 'Get started' },
 ]
