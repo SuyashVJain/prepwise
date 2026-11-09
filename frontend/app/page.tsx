@@ -23,7 +23,7 @@ const STEPS = [
   { n: '03', title: 'Review', text: 'Each claim in your answer is checked and marked, then scored. You see what was right, wrong or unclear.' },
 ]
 
-const sectionY = 'clamp(40px, 5vw, 72px)'
+const sectionY = 'clamp(20px, 4svh, 56px)'
 
 export default function LandingPage() {
   return (
@@ -82,16 +82,16 @@ export default function LandingPage() {
         {/* HOW IT WORKS: three steps, then four one-line points */}
         <section id="how" className="reveal frame frame-center" style={{ borderTop: '1px solid var(--border)', padding: `${sectionY} 0 0` }}>
           <div style={{ ...eyebrow, padding: `0 ${gutter}`, marginBottom: 'var(--space-3)' }}>[How it works]</div>
-          <ol style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 'var(--space-4) 0', paddingBottom: sectionY }}>
+          <ol className="steps" style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 'var(--space-4) 0', paddingBottom: sectionY }}>
             {STEPS.map(s => (
-              <li key={s.n} style={{ padding: `0 ${gutter}` }}>
-                <div aria-hidden="true" style={{ fontSize: 'clamp(48px, min(8vw, 12svh), 120px)', fontWeight: 700, color: 'var(--lime)', lineHeight: 0.9, letterSpacing: '-.05em', marginBottom: 'var(--space-2)' }}>{s.n}</div>
+              <li key={s.n} className="step" style={{ padding: `0 ${gutter}` }}>
+                <div aria-hidden="true" className="step-n" style={{ fontSize: 'clamp(48px, min(8vw, 12svh), 120px)', fontWeight: 700, color: 'var(--lime)', lineHeight: 0.9, letterSpacing: '-.05em', marginBottom: 'var(--space-2)' }}>{s.n}</div>
                 <h3 style={{ fontSize: 'clamp(18px, 1.6vw, 24px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.03em', marginBottom: 'var(--space-1)' }}>{s.title}</h3>
                 <p style={{ fontSize: '15px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '38ch' }}>{s.text}</p>
               </li>
             ))}
           </ol>
-          <ul aria-label="What you get" style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', borderTop: '1px solid var(--border)' }}>
+          <ul aria-label="What you get" className="points" style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', borderTop: '1px solid var(--border)' }}>
             {POINTS.map(t => (
               <li key={t} style={{ padding: `var(--space-3) ${gutter}`, fontSize: '15px', fontWeight: 600, borderRight: '1px solid var(--border)', display: 'flex', gap: 'var(--space-2)', alignItems: 'baseline' }}>
                 <span aria-hidden="true" style={{ color: 'var(--lime)' }}>+</span>{t}

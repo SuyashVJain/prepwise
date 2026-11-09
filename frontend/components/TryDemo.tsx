@@ -117,9 +117,9 @@ export default function TryDemo() {
         </div>
 
         <div key={qid} className="fade-swap">
-          <p id="demo-question" style={{ fontSize: 'clamp(20px, 2.2vw, 30px)', fontWeight: 700, lineHeight: 1.25, letterSpacing: '-.01em', marginBottom: 'var(--space-3)' }}>{question.text}</p>
+          <p id="demo-question" style={{ fontSize: 'clamp(18px, min(2.2vw, 3.4svh), 30px)', fontWeight: 700, lineHeight: 1.25, letterSpacing: '-.01em', marginBottom: 'var(--space-3)' }}>{question.text}</p>
           <label htmlFor="demo-answer" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', display: 'block', marginBottom: 'var(--space-1)' }}>YOUR ANSWER</label>
-          <textarea id="demo-answer" ref={box} value={answer} maxLength={MAX} rows={6} aria-describedby="demo-help" onChange={e => setDrafts(d => ({ ...d, [qid]: e.target.value }))}
+          <textarea id="demo-answer" ref={box} value={answer} maxLength={MAX} rows={4} aria-describedby="demo-help" onChange={e => setDrafts(d => ({ ...d, [qid]: e.target.value }))}
             placeholder="Answer in a few sentences."
             style={{ width: '100%', background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border-2)', padding: '14px', fontSize: '15px', lineHeight: 1.6, resize: 'vertical', fontFamily: 'inherit' }} />
         </div>
@@ -133,11 +133,12 @@ export default function TryDemo() {
             {phase === 'loading' ? 'Checking...' : 'Check my answer →'}
           </button>
         </div>
-        <p style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginTop: 'var(--space-2)', lineHeight: 1.7 }}>Nothing is saved. A few tries per visitor per day.</p>
+        <p className="demo-note" style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginTop: 'var(--space-2)', lineHeight: 1.7 }}>Nothing is saved. A few tries per visitor per day.</p>
       </div>
 
-      <div ref={resultPanel} aria-live={phase === 'idle' ? 'off' : 'polite'} style={{ background: 'var(--bg)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 28px)', minHeight: '570px' }}>
-        {phase === 'idle' && qid === 'dijkstra' && <ClaimDemo bare />}
+      <div ref={resultPanel} className="result-panel" aria-live={phase === 'idle' ? 'off' : 'polite'} style={{ background: 'var(--bg)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 28px)', minHeight: 'min(440px, calc(100svh - 300px))' }}>
+        {phase === 'idle' && qid === 'dijkstra' && <div className="sample"><ClaimDemo bare /></div>}
+        {phase === 'idle' && qid === 'dijkstra' && <p className="sample-alt" style={{ fontSize: '15px', lineHeight: 1.6, color: 'var(--text-2)' }}>Your checked answer appears here: each claim marked correct, incorrect or unverifiable, then scored.</p>}
         {phase === 'idle' && qid !== 'dijkstra' && (
           <div>
             <h3 ref={resultHead} tabIndex={-1} style={headStyle}>YOUR CHECKED ANSWER APPEARS HERE</h3>

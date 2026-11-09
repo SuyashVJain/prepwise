@@ -58,14 +58,14 @@ export default function ClaimDemo({ bare = false }: { bare?: boolean }) {
   return (
     <div ref={root} role="group" aria-label="Sample of a checked answer" style={bare ? undefined : { background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 32px)' }}>
       <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-2)' }}>SAMPLE, NOT A REAL SESSION</div>
-      <p style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: 'var(--space-3)' }}>Explain how Dijkstra&apos;s algorithm works and what it needs from the graph.</p>
+      {!bare && <p style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: 'var(--space-3)' }}>Explain how Dijkstra&apos;s algorithm works and what it needs from the graph.</p>}
 
       <ol style={{ listStyle: 'none', marginBottom: 'var(--space-3)' }}>
         {CLAIMS.map((c, i) => {
           const look = LOOK[c.verdict]
           const on = i < shown
           return (
-            <li key={c.text} style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '4px', padding: '10px 0 10px 12px', borderLeft: `2px solid ${on ? look.color : 'var(--border-2)'}`, marginBottom: 'var(--space-1)', transition: 'border-color .3s' }}>
+            <li key={c.text} className="sc-li" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '4px', padding: '10px 0 10px 12px', borderLeft: `2px solid ${on ? look.color : 'var(--border-2)'}`, marginBottom: 'var(--space-1)', transition: 'border-color .3s' }}>
               <span style={{ fontSize: '15px', lineHeight: 1.5 }}>{c.text}</span>
               <span style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: look.color, minHeight: '16px', opacity: on ? 1 : 0, transition: 'opacity .3s' }}>
                 {look.label}{c.critical ? ' · CRITICAL' : ''}
@@ -77,7 +77,7 @@ export default function ClaimDemo({ bare = false }: { bare?: boolean }) {
 
       <div aria-live="off" style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)', flexWrap: 'wrap', borderTop: '1px solid var(--border-2)', paddingTop: 'var(--space-3)' }}>
         {done ? (
-          <span style={{ ...mono, fontSize: '56px', fontWeight: 700, lineHeight: 1, color: '#ef4444', fontVariantNumeric: 'tabular-nums' }}>
+          <span className="sc-score" style={{ ...mono, fontSize: '56px', fontWeight: 700, lineHeight: 1, color: '#ef4444', fontVariantNumeric: 'tabular-nums' }}>
             {score.toFixed(1)}<span style={{ fontSize: '16px', color: 'var(--text-2)' }}>/10</span>
           </span>
         ) : (
