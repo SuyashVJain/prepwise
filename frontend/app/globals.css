@@ -179,7 +179,7 @@ a.btn-primary:active, a.btn-secondary:active, button.btn-primary:active { transf
 .product { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); align-items: start; }
 .product .shot { margin: 0; }
 @media (min-width: 900px) { .product { grid-template-columns: minmax(220px, 3fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 64px); } }
-main section { scroll-margin-top: 72px; }
+main section { scroll-margin-top: 0; }
 .shot-frame:hover { border-color: var(--lime) !important; }
 
 /* Try one question: two columns sized to their content, tabs with clear states, a short fade when the question changes. */
@@ -191,3 +191,12 @@ main section { scroll-margin-top: 72px; }
 .fade-swap { animation: fade-swap .2s ease both; }
 @keyframes fade-swap { from { opacity: .3; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .fade-swap { animation: none; } }
+
+/* Landing frames: every section is at least one screen tall (small viewport units, top bar subtracted), content centred; taller content just grows the frame. */
+:root { --hdr: 60px; }
+.frame { min-height: calc(100svh - var(--hdr)); box-sizing: border-box; }
+.frame-center { display: flex; flex-direction: column; justify-content: center; }
+.product.frame { align-content: center; }
+.frame-close { display: flex; flex-direction: column; }
+.close-main { margin: auto 0; }
+.frame-close footer { margin-top: auto; }
