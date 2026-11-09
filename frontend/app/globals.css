@@ -154,9 +154,9 @@ summary { min-height: 40px; }
 .h-line:nth-child(2) > span { animation-delay: .08s; }
 .h-line:nth-child(3) > span { animation-delay: .16s; }
 @keyframes line-up { from { transform: translateY(105%); } to { transform: none; } }
-.js-reveal .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-.js-reveal .reveal.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .h-line > span { animation: none; } .js-reveal .reveal { opacity: 1; transform: none; transition: none; } }
+.js-reveal .reveal { opacity: .85; transition: opacity .2s ease; }
+.js-reveal .reveal.in { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .h-line > span { animation: none; } .js-reveal .reveal { opacity: 1; transition: none; } }
 
 /* Landing hero: stacked by default; from 1100px the card sits beside the end of the headline lines. */
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "actions" "who" "demo"; row-gap: var(--space-4); align-content: center; }
@@ -168,7 +168,7 @@ summary { min-height: 40px; }
 .hero-actions { grid-area: actions; display: flex; align-items: center; flex-wrap: wrap; column-gap: clamp(24px, 3vw, 48px); row-gap: var(--space-3); }
 .hero-buttons { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .hero-who { grid-area: who; margin-top: var(--space-2); }
-.claim-demo-compact p, .claim-demo-compact li span:first-child { font-size: 14px !important; }
+.claim-demo-compact p, .claim-demo-compact li span:first-child { font-size: 15px !important; }
 .claim-demo-compact ol li { padding: 3px 0 3px 12px !important; }
 @media (min-width: 1100px) {
   .hero-grid { grid-template-columns: minmax(0, 1fr) clamp(380px, 26vw, 520px); grid-template-areas: "head demo" "actions demo" "who demo"; grid-template-rows: auto auto auto; column-gap: clamp(16px, 2vw, 32px); row-gap: clamp(14px, 2.4svh, 28px); }
