@@ -154,9 +154,9 @@ summary { min-height: 40px; }
 .h-line:nth-child(2) > span { animation-delay: .08s; }
 .h-line:nth-child(3) > span { animation-delay: .16s; }
 @keyframes line-up { from { transform: translateY(105%); } to { transform: none; } }
-.js-reveal .reveal { opacity: .85; transition: opacity .2s ease; }
-.js-reveal .reveal.in { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .h-line > span { animation: none; } .js-reveal .reveal { opacity: 1; transition: none; } }
+.js-reveal .reveal { opacity: 0; transform: translateY(16px); transition: opacity .5s var(--ease, ease), transform .5s var(--ease, ease); }
+.js-reveal .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .h-line > span { animation: none; } .js-reveal .reveal { opacity: 1; transform: none; transition: none; } }
 
 /* Landing hero: label, headline, one paragraph row and the buttons; centred between the bar and the ticker. */
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "actions"; row-gap: clamp(20px, 3.5svh, 40px); align-content: center; }
@@ -227,3 +227,15 @@ html.snap { scroll-snap-type: y proximity; scroll-padding-top: var(--hdr); }
 @media (max-width: 599px) { .demo-tab { padding: 10px 9px; letter-spacing: .02em; } }
 /* The sample card tightens on short screens so the try block still fits one frame. */
 @media (max-height: 800px) { .sc-li { padding-top: 2px !important; padding-bottom: 2px !important; } .sc-score { font-size: 36px !important; } .sample ol { margin-bottom: 8px !important; } }
+
+/* Section indicator: five dots on the right edge from 1024px up. */
+:root { --ease: cubic-bezier(0.22, 1, 0.36, 1); }
+.dots { display: none; }
+@media (min-width: 1024px) {
+  .dots { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; flex-direction: column; gap: 4px; }
+  .dots a { position: relative; width: 24px; height: 24px; display: block; }
+  .dots a::after { content: ''; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: var(--border-2); transition: background-color .2s, transform .2s; }
+  .dots a:hover::after { background: var(--text-2); }
+  .dots a[data-on="true"]::after { background: var(--lime); transform: scale(1.25); }
+}
+@media (prefers-reduced-motion: reduce) { .dots a::after { transition: none; } }

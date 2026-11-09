@@ -3,6 +3,7 @@ import Logo from '@/components/Logo'
 import Reveal from '@/components/Reveal'
 import TryDemo from '@/components/TryDemo'
 import TryLink from '@/components/TryLink'
+import SectionDots from '@/components/SectionDots'
 import ShotFigure from '@/components/ShotFigure'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
@@ -29,6 +30,7 @@ export default function LandingPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)' }}>
       <Reveal />
+      <SectionDots />
       <header style={{ position: 'sticky', top: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)', padding: `0 ${gutter}`, height: '60px', borderBottom: '1px solid var(--border)', background: 'var(--bg)' }}>
         <Link href="/" aria-label="Prepwise home" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}><Logo size="sm" /></Link>
         <nav aria-label="Main" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 2vw, 24px)', whiteSpace: 'nowrap' }}>

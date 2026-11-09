@@ -1,7 +1,7 @@
 'use client'
 import { useEffect } from 'react'
 
-// Fades each .reveal element in (opacity only, from 0.85) once as it scrolls into view. Without motion
+// Fades each .reveal element in (opacity and a 16px rise) once as it scrolls into view. Without motion
 // preference or script support the content simply stays visible.
 export default function Reveal() {
   // Soft section snapping for this page only; the stylesheet switches it off for reduced motion and short screens.
@@ -22,15 +22,17 @@ export default function Reveal() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return
     const root = document.documentElement
     root.classList.add('js-reveal')
+    let reported = false
     const io = new IntersectionObserver(entries => {
+      reported = true
       entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) }
       })
-    }, { threshold: 0.05 })
+    }, { threshold: 0.2 })
     const all = document.querySelectorAll('.reveal')
     all.forEach(el => io.observe(el))
-    // Anything the observer has not reached after a second becomes fully visible anyway.
-    const fallback = window.setTimeout(() => all.forEach(el => el.classList.add('in')), 1000)
+    // If the observer has reported nothing after a second, everything is shown anyway.
+    const fallback = window.setTimeout(() => { if (!reported) all.forEach(el => el.classList.add('in')) }, 1000)
     return () => { window.clearTimeout(fallback); io.disconnect(); root.classList.remove('js-reveal') }
   }, [])
   return null
