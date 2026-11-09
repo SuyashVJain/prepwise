@@ -20,7 +20,8 @@ const CLAIMS: { text: string; verdict: Verdict; critical?: boolean }[] = [
 const FINAL_SCORE = 3.5
 const STEP_MS = 900
 
-export default function ClaimDemo({ compact = false }: { compact?: boolean }) {
+// bare: no border or padding of its own, for use inside a panel that already has them.
+export default function ClaimDemo({ bare = false }: { bare?: boolean }) {
   // The server renders the finished state, so the page reads correctly without script.
   const [shown, setShown] = useState(CLAIMS.length)
   const [score, setScore] = useState(FINAL_SCORE)
@@ -55,7 +56,7 @@ export default function ClaimDemo({ compact = false }: { compact?: boolean }) {
   const tally = (v: Verdict) => CLAIMS.slice(0, shown).filter(c => c.verdict === v).length
 
   return (
-    <div ref={root} role="group" aria-label="Sample of a checked answer" className={compact ? 'claim-demo-compact' : undefined} style={{ background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: compact ? '16px 20px' : 'clamp(16px, 2vw, 32px)' }}>
+    <div ref={root} role="group" aria-label="Sample of a checked answer" style={bare ? undefined : { background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 32px)' }}>
       <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-2)' }}>SAMPLE, NOT A REAL SESSION</div>
       <p style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: 'var(--space-3)' }}>Explain how Dijkstra&apos;s algorithm works and what it needs from the graph.</p>
 
@@ -76,11 +77,11 @@ export default function ClaimDemo({ compact = false }: { compact?: boolean }) {
 
       <div aria-live="off" style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)', flexWrap: 'wrap', borderTop: '1px solid var(--border-2)', paddingTop: 'var(--space-3)' }}>
         {done ? (
-          <span style={{ ...mono, fontSize: compact ? '44px' : '64px', fontWeight: 700, lineHeight: 1, color: '#ef4444', fontVariantNumeric: 'tabular-nums' }}>
+          <span style={{ ...mono, fontSize: '56px', fontWeight: 700, lineHeight: 1, color: '#ef4444', fontVariantNumeric: 'tabular-nums' }}>
             {score.toFixed(1)}<span style={{ fontSize: '16px', color: 'var(--text-2)' }}>/10</span>
           </span>
         ) : (
-          <span style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--text-2)', minHeight: compact ? '44px' : '64px', display: 'inline-flex', alignItems: 'center' }}>CHECKING CLAIMS...</span>
+          <span style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--text-2)', minHeight: '56px', display: 'inline-flex', alignItems: 'center' }}>CHECKING CLAIMS...</span>
         )}
         <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', lineHeight: 1.7 }}>
           {tally('correct')} correct / {tally('incorrect')} incorrect / {tally('unverifiable')} unverifiable

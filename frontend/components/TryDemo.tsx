@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import ClaimDemo from '@/components/ClaimDemo'
 import type { Claim } from '@/components/ClaimsList'
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
@@ -128,12 +129,13 @@ export default function TryDemo() {
         <p style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginTop: 'var(--space-2)', lineHeight: 1.7 }}>Nothing is saved. A few tries per visitor per day.</p>
       </div>
 
-      <div ref={resultPanel} aria-live="polite" style={{ background: 'var(--bg)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 28px)' }}>
-        {phase === 'idle' && (
+      <div ref={resultPanel} aria-live={phase === 'idle' ? 'off' : 'polite'} style={{ background: 'var(--bg)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 28px)', minHeight: '460px' }}>
+        {phase === 'idle' && qid === 'dijkstra' && <ClaimDemo bare />}
+        {phase === 'idle' && qid !== 'dijkstra' && (
           <div>
             <h3 ref={resultHead} tabIndex={-1} style={headStyle}>YOUR CHECKED ANSWER APPEARS HERE</h3>
             <p style={{ fontSize: '15px', lineHeight: 1.6, color: 'var(--text-2)' }}>
-              Each claim is marked, for example: <span style={{ ...mono, fontSize: '12px', color: '#d4fe42' }}>CORRECT</span> Dijkstra picks the closest unvisited vertex.
+              Write an answer and press check. Each claim is marked correct, incorrect or unverifiable, then scored.
             </p>
           </div>
         )}
