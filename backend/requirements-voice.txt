@@ -1,0 +1,8 @@
+# Local speech models for the voice tutor. Optional: without these the app
+# starts normally and the tutor uses the cloud providers.
+# Install on top of requirements.txt:  pip install -r requirements-voice.txt
+faster-whisper==1.2.1
+# faster-whisper 1.2.1 decodes audio with an option that av 19 removed.
+av==18.1.0
+kokoro-onnx==0.6.1
+soundfile==0.14.0

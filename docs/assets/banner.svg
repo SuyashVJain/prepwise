@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="t d">
+  <title id="t">Prepwise</title>
+  <desc id="d">Prepwise: prep smarter, not generic. Mock interviews that fact-check every answer.</desc>
+  <defs>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#1d1d1d" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0e0e0e" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0e0e0e" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="640" fill="#0e0e0e"/>
+  <rect width="1280" height="640" fill="url(#grid)"/>
+  <rect width="1280" height="640" fill="url(#fade)"/>
+
+  <!-- mark: five bars -->
+  <g fill="#d4fe42">
+    <rect x="96" y="120" width="18" height="44"/>
+    <rect x="124" y="92" width="18" height="100"/>
+    <rect x="152" y="68" width="18" height="124"/>
+    <rect x="180" y="104" width="18" height="76"/>
+    <rect x="208" y="82" width="18" height="102"/>
+  </g>
+
+  <text x="96" y="300" fill="#f2f2f0" font-family="Arial Black, Impact, Helvetica, Arial, sans-serif" font-weight="900" font-size="104" letter-spacing="-3">PREPWISE</text>
+  <text x="96" y="372" fill="#d4fe42" font-family="Arial Black, Impact, Helvetica, Arial, sans-serif" font-weight="900" font-size="34" letter-spacing="1">PREP SMARTER. NOT GENERIC.</text>
+  <text x="96" y="462" fill="#adaaaa" font-family="Consolas, Menlo, 'Courier New', monospace" font-size="26">Mock interviews that fact-check every answer,</text>
+  <text x="96" y="500" fill="#adaaaa" font-family="Consolas, Menlo, 'Courier New', monospace" font-size="26">claim by claim, grounded in your own syllabus.</text>
+
+  <!-- claims sample, right side -->
+  <g font-family="Consolas, Menlo, 'Courier New', monospace" font-size="20">
+    <rect x="860" y="150" width="340" height="250" fill="#131313" stroke="#3a4a14"/>
+    <text x="884" y="188" fill="#adaaaa" letter-spacing="2">CLAIMS CHECKED</text>
+    <rect x="884" y="212" width="12" height="12" fill="#d4fe42"/><text x="910" y="224" fill="#f2f2f0">Four conditions needed</text>
+    <rect x="884" y="252" width="12" height="12" fill="#d4fe42"/><text x="910" y="264" fill="#f2f2f0">Prevent by ordering</text>
+    <rect x="884" y="292" width="12" height="12" fill="#ef4444"/><text x="910" y="304" fill="#f2f2f0">Scheduling stops it</text>
+    <rect x="884" y="332" width="12" height="12" fill="#f59e0b"/><text x="910" y="344" fill="#f2f2f0">Usually fast</text>
+    <text x="884" y="384" fill="#d4fe42" font-size="26" font-weight="700">6.5 / 10</text>
+  </g>
+</svg>

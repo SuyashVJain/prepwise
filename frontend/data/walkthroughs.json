@@ -1,0 +1,75 @@
+[
+  {
+    "id": "list-slicing",
+    "subject": "python",
+    "title": "List slicing",
+    "topics": ["Lists and slicing"],
+    "layout": "array",
+    "steps": [
+      { "cells": [{ "v": "10" }, { "v": "20" }, { "v": "30" }, { "v": "40" }, { "v": "50" }, { "v": "60" }], "pointers": [], "code": "a = [10, 20, 30, 40, 50, 60]", "note": "A list of six items. Indexes start at 0, so the last index is 5." },
+      { "cells": [{ "v": "10" }, { "v": "20", "s": "active" }, { "v": "30", "s": "active" }, { "v": "40", "s": "active" }, { "v": "50" }, { "v": "60" }], "pointers": [{ "i": 1, "label": "start" }, { "i": 4, "label": "stop" }], "code": "a[1:4]  ->  [20, 30, 40]", "note": "A slice starts at index 1 and stops BEFORE index 4. The stop index is never included." },
+      { "cells": [{ "v": "10", "s": "active" }, { "v": "20", "s": "active" }, { "v": "30", "s": "active" }, { "v": "40" }, { "v": "50" }, { "v": "60" }], "pointers": [{ "i": 3, "label": "stop" }], "code": "a[:3]  ->  [10, 20, 30]", "note": "Leave out the start and the slice begins at the first item." },
+      { "cells": [{ "v": "10" }, { "v": "20" }, { "v": "30" }, { "v": "40" }, { "v": "50", "s": "active" }, { "v": "60", "s": "active" }], "pointers": [{ "i": 4, "label": "-2" }], "code": "a[-2:]  ->  [50, 60]", "note": "Negative indexes count from the end. -2 is the second last item, and leaving out the stop runs to the end." },
+      { "cells": [{ "v": "10", "s": "active" }, { "v": "20" }, { "v": "30", "s": "active" }, { "v": "40" }, { "v": "50", "s": "active" }, { "v": "60" }], "pointers": [], "code": "a[::2]  ->  [10, 30, 50]", "note": "The third number is the step. A step of 2 takes every second item." },
+      { "cells": [{ "v": "60", "s": "done" }, { "v": "50", "s": "done" }, { "v": "40", "s": "done" }, { "v": "30", "s": "done" }, { "v": "20", "s": "done" }, { "v": "10", "s": "done" }], "pointers": [], "code": "a[::-1]  ->  [60, 50, 40, 30, 20, 10]", "note": "A step of -1 walks backwards, which gives a reversed copy. The original list is unchanged." }
+    ]
+  },
+  {
+    "id": "binary-search",
+    "subject": "dsa",
+    "title": "Binary search",
+    "topics": ["Binary search"],
+    "layout": "array",
+    "steps": [
+      { "cells": [{ "v": "3" }, { "v": "8" }, { "v": "12" }, { "v": "19" }, { "v": "25" }, { "v": "31" }, { "v": "37" }, { "v": "44" }, { "v": "52" }], "pointers": [{ "i": 0, "label": "lo" }, { "i": 8, "label": "hi" }], "code": "target = 37", "note": "The array is sorted. lo and hi mark the range that could still hold 37." },
+      { "cells": [{ "v": "3" }, { "v": "8" }, { "v": "12" }, { "v": "19" }, { "v": "25", "s": "active" }, { "v": "31" }, { "v": "37" }, { "v": "44" }, { "v": "52" }], "pointers": [{ "i": 0, "label": "lo" }, { "i": 4, "label": "mid" }, { "i": 8, "label": "hi" }], "code": "mid = (0 + 8) // 2 = 4   ->   a[4] = 25", "note": "Look at the middle. 25 is smaller than 37, so 37 can only be to the right." },
+      { "cells": [{ "v": "3", "s": "dim" }, { "v": "8", "s": "dim" }, { "v": "12", "s": "dim" }, { "v": "19", "s": "dim" }, { "v": "25", "s": "dim" }, { "v": "31" }, { "v": "37" }, { "v": "44" }, { "v": "52" }], "pointers": [{ "i": 5, "label": "lo" }, { "i": 8, "label": "hi" }], "code": "lo = mid + 1 = 5", "note": "Half the array is thrown away in one step. That halving is why binary search is O(log n)." },
+      { "cells": [{ "v": "3", "s": "dim" }, { "v": "8", "s": "dim" }, { "v": "12", "s": "dim" }, { "v": "19", "s": "dim" }, { "v": "25", "s": "dim" }, { "v": "31" }, { "v": "37", "s": "active" }, { "v": "44" }, { "v": "52" }], "pointers": [{ "i": 5, "label": "lo" }, { "i": 6, "label": "mid" }, { "i": 8, "label": "hi" }], "code": "mid = (5 + 8) // 2 = 6   ->   a[6] = 37", "note": "The new middle is index 6." },
+      { "cells": [{ "v": "3", "s": "dim" }, { "v": "8", "s": "dim" }, { "v": "12", "s": "dim" }, { "v": "19", "s": "dim" }, { "v": "25", "s": "dim" }, { "v": "31", "s": "dim" }, { "v": "37", "s": "done" }, { "v": "44", "s": "dim" }, { "v": "52", "s": "dim" }], "pointers": [{ "i": 6, "label": "found" }], "code": "a[6] == target   ->   return 6", "note": "Found in two comparisons instead of seven. If lo ever passes hi, the target is not in the array." }
+    ]
+  },
+  {
+    "id": "stack",
+    "subject": "dsa",
+    "title": "Stack: push and pop",
+    "topics": ["Stacks and queues"],
+    "layout": "array",
+    "steps": [
+      { "cells": [{ "v": "" }, { "v": "" }, { "v": "" }, { "v": "" }], "pointers": [], "code": "stack = []", "note": "An empty stack. Items are added and removed at one end only, called the top." },
+      { "cells": [{ "v": "A", "s": "active" }, { "v": "" }, { "v": "" }, { "v": "" }], "pointers": [{ "i": 0, "label": "top" }], "code": "push(A)", "note": "Push puts A on the stack. A is now the top." },
+      { "cells": [{ "v": "A" }, { "v": "B", "s": "active" }, { "v": "" }, { "v": "" }], "pointers": [{ "i": 1, "label": "top" }], "code": "push(B)", "note": "B goes on top of A. The top moves up by one." },
+      { "cells": [{ "v": "A" }, { "v": "B" }, { "v": "C", "s": "active" }, { "v": "" }], "pointers": [{ "i": 2, "label": "top" }], "code": "push(C)", "note": "C is now the top. A is at the bottom and cannot be reached directly." },
+      { "cells": [{ "v": "A" }, { "v": "B" }, { "v": "", "s": "dim" }, { "v": "" }], "pointers": [{ "i": 1, "label": "top" }], "code": "pop()  ->  C", "note": "Pop removes the top item. C came in last and leaves first: last in, first out." },
+      { "cells": [{ "v": "A" }, { "v": "", "s": "dim" }, { "v": "" }, { "v": "" }], "pointers": [{ "i": 0, "label": "top" }], "code": "pop()  ->  B", "note": "Pop again returns B. Push and pop are both O(1) because only the top is touched." }
+    ]
+  },
+  {
+    "id": "linked-list-insert",
+    "subject": "dsa",
+    "title": "Linked list: insert a node",
+    "topics": ["Linked lists"],
+    "layout": "linked",
+    "steps": [
+      { "cells": [{ "v": "10" }, { "v": "20" }, { "v": "30" }], "pointers": [{ "i": 0, "label": "head" }], "code": "10 -> 20 -> 30 -> None", "note": "Each node holds a value and a pointer to the next node. The list is reached through head." },
+      { "cells": [{ "v": "10" }, { "v": "20", "s": "active" }, { "v": "30" }], "pointers": [{ "i": 0, "label": "head" }, { "i": 1, "label": "prev" }], "code": "prev = node with value 20", "note": "To insert 25 after 20, first walk from head until you reach the node before the gap." },
+      { "cells": [{ "v": "10" }, { "v": "20" }, { "v": "25", "s": "new", "loose": true }, { "v": "30" }], "pointers": [{ "i": 1, "label": "prev" }, { "i": 2, "label": "new" }], "code": "new = Node(25)", "note": "Create the new node. It is not part of the list yet: nothing points to it." },
+      { "cells": [{ "v": "10" }, { "v": "20" }, { "v": "25", "s": "new", "loose": "in" }, { "v": "30" }], "pointers": [{ "i": 1, "label": "prev" }, { "i": 2, "label": "new" }], "code": "new.next = prev.next", "note": "Point the new node at 30 FIRST. If you changed prev.next first, the rest of the list would be lost." },
+      { "cells": [{ "v": "10" }, { "v": "20" }, { "v": "25", "s": "done" }, { "v": "30" }], "pointers": [{ "i": 0, "label": "head" }], "code": "prev.next = new", "note": "Now point 20 at the new node. The insert changed two pointers and moved no data: O(1) once prev is known." }
+    ]
+  },
+  {
+    "id": "bubble-sort",
+    "subject": "dsa",
+    "title": "Bubble sort: one pass",
+    "topics": ["Sorting"],
+    "layout": "array",
+    "steps": [
+      { "cells": [{ "v": "5" }, { "v": "2" }, { "v": "8" }, { "v": "1" }, { "v": "4" }], "pointers": [], "code": "a = [5, 2, 8, 1, 4]", "note": "Bubble sort compares neighbours and swaps them when they are in the wrong order." },
+      { "cells": [{ "v": "2", "s": "active" }, { "v": "5", "s": "active" }, { "v": "8" }, { "v": "1" }, { "v": "4" }], "pointers": [{ "i": 0, "label": "j" }], "code": "5 > 2   ->   swap", "note": "5 and 2 are out of order, so they swap." },
+      { "cells": [{ "v": "2" }, { "v": "5", "s": "active" }, { "v": "8", "s": "active" }, { "v": "1" }, { "v": "4" }], "pointers": [{ "i": 1, "label": "j" }], "code": "5 > 8 ?  no   ->   leave", "note": "5 and 8 are already in order. Nothing moves." },
+      { "cells": [{ "v": "2" }, { "v": "5" }, { "v": "1", "s": "active" }, { "v": "8", "s": "active" }, { "v": "4" }], "pointers": [{ "i": 2, "label": "j" }], "code": "8 > 1   ->   swap", "note": "8 and 1 swap. Notice 8 keeps moving right." },
+      { "cells": [{ "v": "2" }, { "v": "5" }, { "v": "1" }, { "v": "4", "s": "active" }, { "v": "8", "s": "active" }], "pointers": [{ "i": 3, "label": "j" }], "code": "8 > 4   ->   swap", "note": "8 and 4 swap." },
+      { "cells": [{ "v": "2" }, { "v": "5" }, { "v": "1" }, { "v": "4" }, { "v": "8", "s": "done" }], "pointers": [], "code": "after pass 1: [2, 5, 1, 4, 8]", "note": "After one pass the largest value has bubbled to the end and is in its final place. Each pass fixes one more item, so n items need up to n - 1 passes: O(n^2)." }
+    ]
+  }
+]

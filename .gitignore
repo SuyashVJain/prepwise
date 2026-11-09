@@ -1,0 +1,54 @@
+# Environment files (placeholders live in .env.example)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencies and build output
+node_modules/
+.venv/
+venv/
+.next/
+out/
+build/
+dist/
+*.egg-info/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Speech models, caches and logs
+*.onnx
+*.bin
+*.log
+npm-debug.log*
+.cache/
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local-only notes and working files
+docs/*.private.md
+docs/*LOG*.md
+/PRODUCT.md
+/DESIGN.md
+docs/DESIGN.md
+docs/AUDIT.md
+/tools/
+
+# Project submission documents (contain student details)
+*Synopsis*.pptx
+*Synopsis*.docx
+*Synopsis*.pdf

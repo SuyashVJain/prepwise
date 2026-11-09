@@ -1,0 +1,67 @@
+{
+  "default": {
+    "title": "Warm-up",
+    "prompt": "Write a function is_even(n) that returns True when n is even and False otherwise.",
+    "starter": "def is_even(n):\n    # your code here\n    pass\n"
+  },
+  "Variables and types": {
+    "title": "Swap two values",
+    "prompt": "Given a = 5 and b = 9, swap their values without using a third variable, then print a and b.",
+    "starter": "a = 5\nb = 9\n# swap a and b here\n\nprint(a, b)\n"
+  },
+  "Conditions and loops": {
+    "title": "Count the vowels",
+    "prompt": "Write a function count_vowels(text) that returns how many vowels (a, e, i, o, u) are in text, ignoring case.",
+    "starter": "def count_vowels(text):\n    count = 0\n    # loop over text here\n    return count\n"
+  },
+  "Lists and slicing": {
+    "title": "Middle of a list",
+    "prompt": "Write a function middle(items) that returns a new list without the first and last elements. For [1, 2, 3, 4] it returns [2, 3].",
+    "starter": "def middle(items):\n    # use a slice\n    pass\n"
+  },
+  "Strings": {
+    "title": "Palindrome check",
+    "prompt": "Write a function is_palindrome(word) that returns True if word reads the same forwards and backwards, ignoring case.",
+    "starter": "def is_palindrome(word):\n    # your code here\n    pass\n"
+  },
+  "Functions": {
+    "title": "Largest of three",
+    "prompt": "Write a function largest(a, b, c) that returns the largest of three numbers without using max().",
+    "starter": "def largest(a, b, c):\n    # your code here\n    pass\n"
+  },
+  "Dictionaries and sets": {
+    "title": "Word count",
+    "prompt": "Write a function word_count(sentence) that returns a dictionary mapping each word to how many times it appears.",
+    "starter": "def word_count(sentence):\n    counts = {}\n    # your code here\n    return counts\n"
+  },
+  "Tuples and unpacking": {
+    "title": "Min and max together",
+    "prompt": "Write a function min_max(numbers) that returns a tuple (smallest, largest) without using min() or max().",
+    "starter": "def min_max(numbers):\n    # your code here\n    pass\n"
+  },
+  "List comprehensions": {
+    "title": "Squares of evens",
+    "prompt": "Using one list comprehension, write a function even_squares(numbers) that returns the squares of the even numbers only.",
+    "starter": "def even_squares(numbers):\n    return [  ]\n"
+  },
+  "Recursion": {
+    "title": "Factorial",
+    "prompt": "Write a recursive function factorial(n) that returns n! for n >= 0. Do not use a loop.",
+    "starter": "def factorial(n):\n    # base case first\n    pass\n"
+  },
+  "Classes and objects": {
+    "title": "A counter class",
+    "prompt": "Write a class Counter with a value that starts at 0, a method increment() that adds 1, and a method reset() that sets it back to 0.",
+    "starter": "class Counter:\n    def __init__(self):\n        pass\n"
+  },
+  "Errors and exceptions": {
+    "title": "Safe division",
+    "prompt": "Write a function safe_divide(a, b) that returns a / b, or None when b is zero, using try and except.",
+    "starter": "def safe_divide(a, b):\n    # your code here\n    pass\n"
+  },
+  "Files and modules": {
+    "title": "Count lines",
+    "prompt": "Write a function count_lines(path) that opens the file at path with a with statement and returns the number of lines in it.",
+    "starter": "def count_lines(path):\n    # your code here\n    pass\n"
+  }
+}

@@ -1,0 +1,19 @@
+# Normalise line endings to LF in the repository.
+* text=auto eol=lf
+
+# Binary files: never diff or convert.
+docs/assets/*.png binary
+docs/assets/*.jpg binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+
+# The banner is hand-written text.
+docs/assets/*.svg text
+
+# Keep generated and vendored files out of language statistics.
+frontend/package-lock.json linguist-generated

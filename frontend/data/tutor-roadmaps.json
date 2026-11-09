@@ -1,0 +1,66 @@
+{
+  "python": [
+    { "id": "py-01", "title": "Variables and types", "summary": "Names, numbers, strings, booleans and how Python decides a value's type." },
+    { "id": "py-02", "title": "Conditions and loops", "summary": "if, elif, else, for, while, break and continue." },
+    { "id": "py-03", "title": "Lists and slicing", "summary": "Indexing, negative indexes, slices, and the common list methods." },
+    { "id": "py-04", "title": "Strings", "summary": "Immutability, formatting with f-strings, split, join and searching." },
+    { "id": "py-05", "title": "Functions", "summary": "Parameters, return values, default arguments and scope." },
+    { "id": "py-06", "title": "Dictionaries and sets", "summary": "Key-value lookups, iteration, set operations and when to use each." },
+    { "id": "py-07", "title": "Tuples and unpacking", "summary": "Immutable sequences, multiple return values and swapping." },
+    { "id": "py-08", "title": "List comprehensions", "summary": "Building lists, dicts and sets in one readable line." },
+    { "id": "py-09", "title": "Recursion", "summary": "Base case, recursive case, and reading the call stack." },
+    { "id": "py-10", "title": "Classes and objects", "summary": "Attributes, methods, __init__, inheritance and self." },
+    { "id": "py-11", "title": "Errors and exceptions", "summary": "try, except, finally, raising errors and reading a traceback." },
+    { "id": "py-12", "title": "Files and modules", "summary": "Reading and writing files with with, and splitting code into modules." }
+  ],
+  "dsa": [
+    { "id": "dsa-01", "title": "Big-O notation", "summary": "Measuring how time and space grow with input size." },
+    { "id": "dsa-02", "title": "Arrays", "summary": "Contiguous storage, indexing cost, insertion and deletion cost." },
+    { "id": "dsa-03", "title": "Two pointers and sliding window", "summary": "Scanning an array with two indexes to avoid nested loops." },
+    { "id": "dsa-04", "title": "Linked lists", "summary": "Nodes and pointers, insertion, deletion, reversing a list." },
+    { "id": "dsa-05", "title": "Stacks and queues", "summary": "LIFO and FIFO, their operations, and where each is used." },
+    { "id": "dsa-06", "title": "Hashing", "summary": "Hash functions, collisions, and constant-time lookups on average." },
+    { "id": "dsa-07", "title": "Binary search", "summary": "Halving a sorted range, and searching on the answer." },
+    { "id": "dsa-08", "title": "Sorting", "summary": "Bubble, insertion, merge and quick sort, with their trade-offs." },
+    { "id": "dsa-09", "title": "Trees", "summary": "Binary trees, traversals, binary search trees and height." },
+    { "id": "dsa-10", "title": "Heaps and priority queues", "summary": "The heap property, insert, extract, and top-k problems." },
+    { "id": "dsa-11", "title": "Graphs", "summary": "Representations, BFS, DFS and shortest paths." },
+    { "id": "dsa-12", "title": "Dynamic programming", "summary": "Overlapping subproblems, memoisation and tabulation." }
+  ],
+  "dbms": [
+    { "id": "db-01", "title": "Relational model", "summary": "Tables, rows, columns, schemas and why relations are used." },
+    { "id": "db-02", "title": "Keys", "summary": "Super, candidate, primary and foreign keys, and referential integrity." },
+    { "id": "db-03", "title": "ER modelling", "summary": "Entities, relationships, cardinality and converting a diagram to tables." },
+    { "id": "db-04", "title": "SQL basics", "summary": "SELECT, WHERE, ORDER BY, INSERT, UPDATE and DELETE." },
+    { "id": "db-05", "title": "SQL joins", "summary": "Inner, left, right and full joins, and when rows disappear." },
+    { "id": "db-06", "title": "Aggregation and grouping", "summary": "COUNT, SUM, AVG, GROUP BY and HAVING." },
+    { "id": "db-07", "title": "Normalization", "summary": "Functional dependencies and 1NF, 2NF, 3NF and BCNF." },
+    { "id": "db-08", "title": "Transactions and ACID", "summary": "Atomicity, consistency, isolation and durability." },
+    { "id": "db-09", "title": "Concurrency control", "summary": "Locks, two-phase locking, isolation levels and deadlocks." },
+    { "id": "db-10", "title": "Indexing", "summary": "B+ trees, hash indexes, and when an index helps or hurts." }
+  ],
+  "os": [
+    { "id": "os-01", "title": "What an operating system does", "summary": "Kernel, user mode, system calls and the main services." },
+    { "id": "os-02", "title": "Processes and threads", "summary": "Address space, process states, context switches and threads." },
+    { "id": "os-03", "title": "CPU scheduling", "summary": "FCFS, SJF, round robin, priority, and the metrics they trade off." },
+    { "id": "os-04", "title": "Synchronization", "summary": "Race conditions, critical sections, mutexes and semaphores." },
+    { "id": "os-05", "title": "Deadlocks", "summary": "The four conditions, prevention, avoidance and detection." },
+    { "id": "os-06", "title": "Memory management", "summary": "Logical and physical addresses, fragmentation and allocation." },
+    { "id": "os-07", "title": "Paging", "summary": "Pages, frames, page tables and the translation lookaside buffer." },
+    { "id": "os-08", "title": "Virtual memory", "summary": "Demand paging, page faults and page replacement algorithms." },
+    { "id": "os-09", "title": "File systems", "summary": "Files, directories, inodes and allocation methods." },
+    { "id": "os-10", "title": "Disk scheduling", "summary": "FCFS, SSTF, SCAN and C-SCAN for moving the disk head." }
+  ],
+  "cn": [
+    { "id": "cn-01", "title": "OSI and TCP/IP layers", "summary": "What each layer is responsible for, and how they stack." },
+    { "id": "cn-02", "title": "Physical and data link layer", "summary": "Framing, MAC addresses, switches and error detection." },
+    { "id": "cn-03", "title": "IP addressing", "summary": "IPv4, subnet masks, CIDR and private address ranges." },
+    { "id": "cn-04", "title": "Routing", "summary": "Routing tables, distance vector and link state ideas." },
+    { "id": "cn-05", "title": "TCP vs UDP", "summary": "Reliable ordered streams against fast connectionless datagrams." },
+    { "id": "cn-06", "title": "TCP in detail", "summary": "Three-way handshake, flow control, congestion control and closing." },
+    { "id": "cn-07", "title": "DNS", "summary": "Resolving a name to an address, records and caching." },
+    { "id": "cn-08", "title": "HTTP and HTTPS", "summary": "Requests, responses, status codes, and what TLS adds." },
+    { "id": "cn-09", "title": "What happens when you open a URL", "summary": "DNS, TCP, TLS, HTTP and rendering, end to end." },
+    { "id": "cn-10", "title": "Network security basics", "summary": "Encryption, certificates, firewalls and common attacks." }
+  ]
+}

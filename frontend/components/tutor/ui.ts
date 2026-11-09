@@ -1,0 +1,38 @@
+import type { CSSProperties } from 'react'
+
+// Shared inline-style pieces for the tutor screens, matching the rest of the app.
+export const mono: CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
+
+export const eyebrow: CSSProperties = {
+  ...mono, fontSize: '10px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)',
+}
+
+export const label: CSSProperties = {
+  ...mono, fontSize: '10px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)',
+}
+
+export const primaryButton: CSSProperties = {
+  background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px',
+  fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer',
+}
+
+export const ghostButton: CSSProperties = {
+  ...mono, background: 'transparent', color: 'var(--text-2)', border: '1px solid var(--border)', padding: '10px 18px',
+  fontSize: '10px', letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer',
+}
+
+export const panel: CSSProperties = { background: 'var(--bg2)', border: '1px solid var(--border)' }
+
+export function tile(active: boolean): CSSProperties {
+  return {
+    padding: '14px 16px', cursor: 'pointer', textAlign: 'left',
+    border: `1px solid ${active ? 'var(--lime)' : 'var(--border-2)'}`,
+    background: active ? 'var(--lime-dim)' : 'var(--bg3)',
+    color: active ? 'var(--lime)' : 'var(--text-2)',
+    fontSize: '13px', fontWeight: 600,
+  }
+}
+
+export function disabled(style: CSSProperties, isDisabled: boolean): CSSProperties {
+  return isDisabled ? { ...style, opacity: 0.45, cursor: 'not-allowed' } : style
+}

@@ -1,0 +1,168 @@
+{
+  "_readme": "Hand-picked videos. Replace each TODO entry: 'id' is the YouTube video id (the part after watch?v=), plus the real title and channel. Entries whose id starts with TODO are hidden from students. 'default' is shown for any topic of the subject; 'topics' overrides it for one topic (use the exact topic name).",
+  "python": {
+    "default": [
+      {
+        "id": "TODO_1",
+        "title": "TODO: best beginner overview of Python",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_2",
+        "title": "TODO: Python for placements, one-shot revision",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_3",
+        "title": "TODO: common Python interview questions",
+        "channel": "TODO"
+      }
+    ],
+    "topics": {
+      "Variables and types": [
+        {
+          "id": "TODO_1",
+          "title": "TODO: clear explanation of Variables and types",
+          "channel": "TODO"
+        },
+        {
+          "id": "TODO_2",
+          "title": "TODO: worked examples for Variables and types",
+          "channel": "TODO"
+        }
+      ]
+    }
+  },
+  "dsa": {
+    "default": [
+      {
+        "id": "TODO_1",
+        "title": "TODO: best beginner overview of DSA",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_2",
+        "title": "TODO: DSA for placements, one-shot revision",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_3",
+        "title": "TODO: common DSA interview questions",
+        "channel": "TODO"
+      }
+    ],
+    "topics": {
+      "Big-O notation": [
+        {
+          "id": "TODO_1",
+          "title": "TODO: clear explanation of Big-O notation",
+          "channel": "TODO"
+        },
+        {
+          "id": "TODO_2",
+          "title": "TODO: worked examples for Big-O notation",
+          "channel": "TODO"
+        }
+      ]
+    }
+  },
+  "dbms": {
+    "default": [
+      {
+        "id": "TODO_1",
+        "title": "TODO: best beginner overview of DBMS",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_2",
+        "title": "TODO: DBMS for placements, one-shot revision",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_3",
+        "title": "TODO: common DBMS interview questions",
+        "channel": "TODO"
+      }
+    ],
+    "topics": {
+      "Relational model": [
+        {
+          "id": "TODO_1",
+          "title": "TODO: clear explanation of Relational model",
+          "channel": "TODO"
+        },
+        {
+          "id": "TODO_2",
+          "title": "TODO: worked examples for Relational model",
+          "channel": "TODO"
+        }
+      ]
+    }
+  },
+  "os": {
+    "default": [
+      {
+        "id": "TODO_1",
+        "title": "TODO: best beginner overview of OS",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_2",
+        "title": "TODO: OS for placements, one-shot revision",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_3",
+        "title": "TODO: common OS interview questions",
+        "channel": "TODO"
+      }
+    ],
+    "topics": {
+      "Processes and threads": [
+        {
+          "id": "TODO_1",
+          "title": "TODO: clear explanation of Processes and threads",
+          "channel": "TODO"
+        },
+        {
+          "id": "TODO_2",
+          "title": "TODO: worked examples for Processes and threads",
+          "channel": "TODO"
+        }
+      ]
+    }
+  },
+  "cn": {
+    "default": [
+      {
+        "id": "TODO_1",
+        "title": "TODO: best beginner overview of Computer Networks",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_2",
+        "title": "TODO: Computer Networks for placements, one-shot revision",
+        "channel": "TODO"
+      },
+      {
+        "id": "TODO_3",
+        "title": "TODO: common Computer Networks interview questions",
+        "channel": "TODO"
+      }
+    ],
+    "topics": {
+      "OSI and TCP/IP layers": [
+        {
+          "id": "TODO_1",
+          "title": "TODO: clear explanation of OSI and TCP/IP layers",
+          "channel": "TODO"
+        },
+        {
+          "id": "TODO_2",
+          "title": "TODO: worked examples for OSI and TCP/IP layers",
+          "channel": "TODO"
+        }
+      ]
+    }
+  }
+}

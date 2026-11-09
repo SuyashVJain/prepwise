@@ -1,0 +1,51 @@
+name: Bug report
+description: Something is broken or behaves differently from what you expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Please do not paste passwords, API keys, tokens or personal data.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the problem and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. See the error
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part is it?
+      options:
+        - Interview
+        - Debrief or history
+        - Study mode
+        - Voice tutor
+        - Sign in or account
+        - Backend API
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and operating system
+      placeholder: Chrome 130 on Windows 11
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console or server output
+      description: Remove anything private first.
+      render: shell
