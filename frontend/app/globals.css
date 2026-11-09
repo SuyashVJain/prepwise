@@ -246,3 +246,6 @@ html.snap { scroll-padding-top: var(--hdr); }
 
 /* One corner radius for the answer box and both demo cards. */
 :root { --radius-card: 8px; }
+
+/* Ticker edges fade out so words do not look cut off. */
+.ticker { -webkit-mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); }
