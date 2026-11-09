@@ -34,9 +34,13 @@ Railway also works as an alternative: the same root directory, start command and
 
 The landing page calls `POST /demo/check` without sign-in. It is limited to 3 requests per minute and 10 per day per visitor address, and 150 per day (6 per minute) in total, so it cannot use up the shared language model quota. The counters live in memory and reset when the service restarts. Behind Render's proxy the visitor address comes from the `X-Forwarded-For` header. See [API.md](API.md).
 
-### Keep the free instance awake
+### Keeping the free backend awake
 
-A free Render service sleeps after about 15 minutes without traffic, and the next request waits for it to wake. To avoid that, create a free [UptimeRobot](https://uptimerobot.com) monitor of type HTTP(s) that requests `https://<your-service>.onrender.com/health` every 5 minutes.
+A free Render service sleeps after about 15 minutes without traffic, and the next request waits up to a minute for it to wake.
+
+The workflow `.github/workflows/keepalive.yml` requests `/health` every 10 minutes (and on demand from the Actions tab) to keep the service awake. It uses no secrets. It calls `https://prepwise-api.onrender.com/health`, so change the address in the file if your service has a different name.
+
+GitHub can delay scheduled runs, sometimes by many minutes when it is busy, so the service may still sleep now and then. As an optional backup, add a free [UptimeRobot](https://uptimerobot.com) monitor of type HTTP(s) on `https://<your-service>.onrender.com/health` every 5 minutes.
 
 Environment variables (names only, set the values in the Render dashboard):
 
