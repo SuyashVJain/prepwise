@@ -129,7 +129,7 @@ export default function TryDemo() {
         <p style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginTop: 'var(--space-2)', lineHeight: 1.7 }}>Nothing is saved. A few tries per visitor per day.</p>
       </div>
 
-      <div ref={resultPanel} aria-live={phase === 'idle' ? 'off' : 'polite'} style={{ background: 'var(--bg)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 28px)', minHeight: '460px' }}>
+      <div ref={resultPanel} aria-live={phase === 'idle' ? 'off' : 'polite'} style={{ background: 'var(--bg)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 28px)', minHeight: '570px' }}>
         {phase === 'idle' && qid === 'dijkstra' && <ClaimDemo bare />}
         {phase === 'idle' && qid !== 'dijkstra' && (
           <div>
