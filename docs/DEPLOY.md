@@ -30,6 +30,10 @@ The settings the Blueprint applies, if you would rather create the service by ha
 
 Railway also works as an alternative: the same root directory, start command and health check apply, and they are already set in `Procfile` and `railway.json`.
 
+### Public demo limits
+
+The landing page calls `POST /demo/check` without sign-in. It is limited to 3 requests per minute and 10 per day per visitor address, and 150 per day (6 per minute) in total, so it cannot use up the shared language model quota. The counters live in memory and reset when the service restarts. Behind Render's proxy the visitor address comes from the `X-Forwarded-For` header. See [API.md](API.md).
+
 ### Keep the free instance awake
 
 A free Render service sleeps after about 15 minutes without traffic, and the next request waits for it to wake. To avoid that, create a free [UptimeRobot](https://uptimerobot.com) monitor of type HTTP(s) that requests `https://<your-service>.onrender.com/health` every 5 minutes.

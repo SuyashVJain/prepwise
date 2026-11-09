@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi.errors import RateLimitExceeded
 from app.config import FRONTEND_URL, VOICE_WARMUP
 from app.limits import limiter, rate_limit_exceeded_handler
-from app.routers import interview, syllabus, session, study, tutor
+from app.routers import interview, syllabus, session, study, tutor, demo
 
 def _warm_up_voice() -> None:
     """Load the speech models now, so the first tutor question does not pay for it."""
@@ -47,6 +47,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(demo.router)
 app.include_router(interview.router)
 app.include_router(syllabus.router)
 app.include_router(session.router)

@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Logo from '@/components/Logo'
 import Reveal from '@/components/Reveal'
 import ClaimDemo from '@/components/ClaimDemo'
+import TryDemo from '@/components/TryDemo'
 import StickySignup from '@/components/StickySignup'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
@@ -87,6 +88,13 @@ export default function LandingPage() {
             </p>
           </div>
           <ClaimDemo />
+        </section>
+
+        {/* TRY IT: one real question, no account */}
+        <section id="try" className="reveal" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `clamp(48px, 7vw, 112px) ${gutter}` }}>
+          <div style={eyebrow}>[Try it without signing up]</div>
+          <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 5vw, 72px)', marginBottom: 'var(--space-5)' }}>Try one question.</h2>
+          <TryDemo />
         </section>
 
         {/* BUILT FOR: full-width strip, names as the app shows them */}

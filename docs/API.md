@@ -21,6 +21,19 @@ Base URL: the backend service, for example `http://localhost:8000`. Interactive 
 | GET | `/health` | none | `{"status": "ok"}` |
 | GET | `/session/health` | yes | `{"status": "ok", "service": "prepwise-api", "version": "1.0.0"}` |
 
+## Demo
+
+Public routes behind the landing page's "Try one question" box. No sign-in, nothing is stored, and only counts are kept in memory.
+
+| Method | Path | Auth | Response |
+|---|---|---|---|
+| GET | `/demo/questions` | none | `[{"id", "question"}]` for the three fixed sample questions |
+| POST | `/demo/check` | none | The same scoring result as `/interview/submit-answer` (`score`, `hint`, `claims`, `ideal_answer`) plus `question` |
+
+`POST /demo/check` takes `{"question_id": "dijkstra" | "tcp_udp" | "normalisation", "answer": "<20 to 600 characters>"}`. The question and its hint are fixed on the server. A bad id or length returns `422 {"message"}`. When a limit is reached it returns `429 {"limited": true, "message": "The demo is busy, sign up to continue."}`. If the model call fails it returns `503 {"message"}`.
+
+Limits: 3 per minute and 10 per day per client address, plus a shared cap of 150 per day and 6 per minute across all visitors, so the model quota is never used up. The caps reset when the process restarts.
+
 ## Interview
 
 All four routes use the `llm` limit.

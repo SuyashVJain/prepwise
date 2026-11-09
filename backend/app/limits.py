@@ -44,6 +44,13 @@ def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded) -> JSO
     except Exception:
         pass
 
+    if request.url.path.startswith("/demo/"):
+        return JSONResponse(
+            status_code=429,
+            content={"limited": True, "message": "The demo is busy, sign up to continue."},
+            headers={"Retry-After": str(retry_after)},
+        )
+
     return JSONResponse(
         status_code=429,
         content={"detail": "Too many requests. Please wait a moment."},
