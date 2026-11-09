@@ -5,26 +5,18 @@ import ClaimDemo from '@/components/ClaimDemo'
 import TryDemo from '@/components/TryDemo'
 import TryLink from '@/components/TryLink'
 import ShotFigure from '@/components/ShotFigure'
-import StickySignup from '@/components/StickySignup'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 const gutter = 'clamp(16px, 3vw, 48px)'
 const eyebrow: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-3)' }
 const primary: React.CSSProperties = { fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '16px 32px', display: 'inline-flex', alignItems: 'center', minHeight: '52px' }
 const secondary: React.CSSProperties = { fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', border: '1px solid var(--border-2)', color: 'var(--text)', padding: '16px 32px', display: 'inline-flex', alignItems: 'center', minHeight: '52px' }
-const footLink: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }
+const footLink: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }
 const bigTitle: React.CSSProperties = { fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.03em', lineHeight: 0.95 }
 
 const SUBJECTS = ['Data Structures', 'Operating Systems', 'Databases', 'Computer Networks', 'OOP', 'System Design', 'Compilers', 'Theory of Computation', 'Machine Learning', 'Web Technologies']
 
-const FEATURES = [
-  { n: '01', title: 'Questions from your syllabus', text: 'Upload your syllabus PDF or pick topics. Every question is built from that material, not from a fixed question bank.' },
-  { n: '02', title: 'Four company styles', text: 'Big tech, product startups, service companies and campus recruiters each ask differently. Technical, HR, system design and subject rounds are covered.' },
-  { n: '03', title: 'A real follow-up', text: 'If an answer is weak or has a doubtful claim, the next question can probe that exact point once, then move on.' },
-  { n: '04', title: 'Type or speak', text: 'Answer by keyboard or microphone. A timer shows your pace against a soft target and never cuts you off.' },
-  { n: '05', title: 'A voice tutor', text: 'Learn a subject by talking to Aria. Interrupt, ask again, switch to Hinglish, and finish with notes and flashcards.' },
-  { n: '06', title: 'Replay and progress', text: 'Open any past session to see each question, answer, score and claim. Track scores and weak topics over time.' },
-]
+const POINTS = ['Questions from your syllabus', 'Every claim checked, one by one', 'Follow-ups on weak answers', 'Voice tutor, replay and progress']
 
 const STEPS = [
   { n: '01', title: 'Set up', text: 'Upload your syllabus or choose topics. Pick an interview type, a company style and how many questions you want.' },
@@ -32,8 +24,7 @@ const STEPS = [
   { n: '03', title: 'Review', text: 'Each claim in your answer is checked and marked, then scored. You see what was right, wrong or unclear.' },
 ]
 
-const INTERVIEW_TYPES = ['Technical', 'HR / Behavioural', 'System Design', 'Subject-Specific']
-const COMPANY_STYLES = ['FAANG / Big Tech', 'Product Startups', 'Service Companies', 'Core CS Campus']
+const sectionY = 'clamp(40px, 5vw, 72px)'
 
 export default function LandingPage() {
   return (
@@ -42,9 +33,9 @@ export default function LandingPage() {
       <header style={{ position: 'sticky', top: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)', padding: `0 ${gutter}`, height: '60px', borderBottom: '1px solid var(--border)', background: 'var(--bg)' }}>
         <Link href="/" aria-label="Prepwise home"><Logo size="sm" /></Link>
         <nav aria-label="Main" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 2vw, 24px)', whiteSpace: 'nowrap' }}>
-          <TryLink className="landing-link hide-mobile" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }}>Try it</TryLink>
-          <Link href="/login" className="landing-link" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
-          <StickySignup />
+          <TryLink className="landing-link hide-mobile" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>Try it</TryLink>
+          <Link href="/login" className="landing-link" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
+          <Link href="/signup" className="btn-primary" style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '10px 20px', display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}>Sign up</Link>
         </nav>
       </header>
 
@@ -86,86 +77,51 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* THE CHECK: the explanation only; the live card is in the hero */}
-        <section className="reveal" style={{ padding: `clamp(56px, 8vw, 120px) ${gutter} clamp(72px, 10vw, 160px)`, borderTop: '1px solid var(--border)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: 'clamp(24px, 5vw, 96px)', alignItems: 'end' }}>
-          <div>
-            <div style={eyebrow}>[02 - The check]</div>
-            <h2 style={{ ...bigTitle, fontSize: 'clamp(40px, 7.5vw, 128px)' }}>Every claim<br />gets a<br />verdict.</h2>
-          </div>
-          <p style={{ fontSize: 'clamp(16px, 1.5vw, 22px)', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '46ch' }}>
-            Your answer is split into claims. Each one is marked correct, incorrect or unverifiable before a score is given, and one confident, critical mistake caps the score however fluent the rest sounds.
-          </p>
-        </section>
-
         {/* TRY IT: one real question, no account */}
-        <section id="try" className="reveal" style={{ scrollMarginTop: '60px', borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `clamp(48px, 7vw, 112px) ${gutter}` }}>
+        <section id="try" className="reveal" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `${sectionY} ${gutter}` }}>
           <div style={eyebrow}>[Try it without signing up]</div>
-          <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 5vw, 72px)', marginBottom: 'var(--space-5)' }}>Try one question.</h2>
+          <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 4.5vw, 64px)', marginBottom: 'var(--space-4)' }}>Try one question.</h2>
           <TryDemo />
         </section>
 
-        {/* BUILT FOR: full-width strip, names as the app shows them */}
-        <section className="reveal" aria-label="Interview types and company styles" style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))' }}>
-          {[['Interview types', INTERVIEW_TYPES], ['Company styles', COMPANY_STYLES]].map(([label, items]) => (
-            <div key={label as string} style={{ padding: `var(--space-4) ${gutter}`, borderRight: '1px solid var(--border)' }}>
-              <div style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-3)' }}>[Built for - {label as string}]</div>
-              <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', columnGap: 'var(--space-4)', rowGap: 'var(--space-2)' }}>
-                {(items as string[]).map(t => <li key={t} style={{ fontSize: 'clamp(18px, 2vw, 28px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.01em' }}>{t}</li>)}
-              </ul>
-            </div>
-          ))}
-        </section>
-
-        {/* PRODUCT: two real screens from the app, shown with made-up demo data */}
-        <section className="reveal" style={{ padding: `clamp(56px, 8vw, 120px) ${gutter}` }}>
-          <div style={eyebrow}>[03 - The product]</div>
-          <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 5vw, 72px)', marginBottom: 'var(--space-5)' }}>See the feedback.</h2>
-          <div style={{ display: 'grid', gap: 'clamp(32px, 4vw, 64px)' }}>
-            <ShotFigure src="/landing/interview.webp" width={2400} height={1500} caption="Interview: every claim marked" alt="The interview screen after an answer: the score, the claims list with correct, incorrect and unverifiable claims, and a hint" />
-            <div style={{ maxWidth: 'min(100%, 1100px)' }}>
-              <ShotFigure src="/landing/debrief.webp" width={2400} height={1500} caption="Debrief: what to fix next" alt="The debrief screen with the score ring, strengths and fix-next cards and a chart of scores by topic" />
-            </div>
-          </div>
-        </section>
-
-        {/* TOOLKIT: edge to edge hairline grid */}
-        <section className="reveal" style={{ borderTop: '1px solid var(--border)' }}>
-          <div style={{ padding: `clamp(32px, 4vw, 56px) ${gutter}` }}>
-            <div style={eyebrow}>[04 - What it does]</div>
-            <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 5vw, 72px)' }}>The toolkit</h2>
-          </div>
-          <div className="tool-grid" style={{ display: 'grid', gap: '1px', background: 'var(--border)', borderTop: '1px solid var(--border)' }}>
-            {FEATURES.map(f => (
-              <div key={f.n} style={{ background: 'var(--bg)', padding: `clamp(24px, 3vw, 48px) ${gutter}`, minHeight: '220px' }}>
-                <div style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--lime)', marginBottom: 'var(--space-4)' }}>{f.n}</div>
-                <h3 style={{ fontSize: 'clamp(16px, 1.4vw, 22px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.02em', marginBottom: 'var(--space-2)' }}>{f.title}</h3>
-                <p style={{ ...mono, fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7 }}>{f.text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* STEPS: oversized numerals across the full width */}
-        <section id="how" className="reveal" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `clamp(40px, 5vw, 72px) 0 clamp(48px, 7vw, 112px)` }}>
-          <div style={{ ...eyebrow, padding: `0 ${gutter}`, marginBottom: 'var(--space-4)' }}>[05 - How it works]</div>
-          <ol style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))' }}>
+        {/* HOW IT WORKS: three steps, then four one-line points */}
+        <section id="how" className="reveal" style={{ borderTop: '1px solid var(--border)', padding: `${sectionY} 0 0` }}>
+          <div style={{ ...eyebrow, padding: `0 ${gutter}`, marginBottom: 'var(--space-3)' }}>[How it works]</div>
+          <ol style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 'var(--space-4) 0', paddingBottom: sectionY }}>
             {STEPS.map(s => (
               <li key={s.n} style={{ padding: `0 ${gutter}` }}>
-                <div aria-hidden="true" style={{ fontSize: 'clamp(96px, 16vw, 280px)', fontWeight: 700, color: 'var(--lime)', lineHeight: 0.9, letterSpacing: '-.05em', marginBottom: 'var(--space-3)' }}>{s.n}</div>
-                <h3 style={{ fontSize: 'clamp(18px, 1.8vw, 28px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.03em', marginBottom: 'var(--space-2)' }}>{s.title}</h3>
-                <p style={{ ...mono, fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.8, maxWidth: '38ch' }}>{s.text}</p>
+                <div aria-hidden="true" style={{ fontSize: 'clamp(64px, 8vw, 120px)', fontWeight: 700, color: 'var(--lime)', lineHeight: 0.9, letterSpacing: '-.05em', marginBottom: 'var(--space-2)' }}>{s.n}</div>
+                <h3 style={{ fontSize: 'clamp(18px, 1.6vw, 24px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.03em', marginBottom: 'var(--space-1)' }}>{s.title}</h3>
+                <p style={{ fontSize: '15px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '38ch' }}>{s.text}</p>
               </li>
             ))}
           </ol>
+          <ul aria-label="What you get" style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', borderTop: '1px solid var(--border)' }}>
+            {POINTS.map(t => (
+              <li key={t} style={{ padding: `var(--space-3) ${gutter}`, fontSize: '15px', fontWeight: 600, borderRight: '1px solid var(--border)', display: 'flex', gap: 'var(--space-2)', alignItems: 'baseline' }}>
+                <span aria-hidden="true" style={{ color: 'var(--lime)' }}>+</span>{t}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* PRODUCT: one real screen, framed, shown with made-up demo data */}
+        <section className="reveal product" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `${sectionY} ${gutter}` }}>
+          <div className="product-copy">
+            <div style={eyebrow}>[The product]</div>
+            <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 4vw, 56px)', marginBottom: 'var(--space-3)' }}>See the feedback.</h2>
+            <p style={{ fontSize: '15px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '34ch' }}>A scored answer with every claim marked. Demo data.</p>
+            <p style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', marginTop: 'var(--space-2)' }}>Click the image to enlarge</p>
+          </div>
+          <ShotFigure src="/landing/interview.webp" width={2400} height={2083} caption="A scored answer with every claim marked" alt="The interview screen after an answer: the score of 6.5 out of 10, a short comment, and the claims list grouped as correct, incorrect and unverifiable" />
         </section>
 
         {/* CLOSING */}
-        <section className="reveal" style={{ borderTop: '1px solid var(--border)', padding: `clamp(56px, 9vw, 140px) ${gutter} clamp(40px, 5vw, 72px)` }}>
-          <div style={{ ...eyebrow, color: 'var(--text-2)', marginBottom: 'var(--space-3)' }}>[06 - Start]</div>
-          <h2 style={{ ...bigTitle, fontSize: 'clamp(48px, 15vw, 300px)', marginBottom: 'clamp(24px, 4vw, 56px)' }}>Ready<br />to prep?</h2>
+        <section className="reveal" style={{ borderTop: '1px solid var(--border)', padding: `${sectionY} ${gutter}` }}>
+          <h2 style={{ ...bigTitle, fontSize: 'clamp(44px, 11vw, 200px)', marginBottom: 'var(--space-4)' }}>Ready<br />to prep?</h2>
           <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', columnGap: 'clamp(24px, 4vw, 64px)', rowGap: 'var(--space-3)' }}>
-            <Link href="/signup" className="btn-primary" style={{ ...primary, padding: '20px 48px' }}>Create free account →</Link>
-            <p style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '52ch' }}>
+            <Link href="/signup" className="btn-primary" style={{ ...primary, padding: '20px 40px' }}>Create free account →</Link>
+            <p style={{ ...mono, fontSize: '13px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '52ch' }}>
               Scores come from a language model, so treat them as a guide. Usage limits apply.
             </p>
           </div>

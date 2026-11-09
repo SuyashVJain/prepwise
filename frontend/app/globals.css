@@ -157,9 +157,6 @@ summary { min-height: 40px; }
 .js-reveal .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
 .js-reveal .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .h-line > span { animation: none; } .js-reveal .reveal { opacity: 1; transform: none; transition: none; } }
-.tool-grid { grid-template-columns: 1fr; }
-@media (min-width: 640px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .tool-grid { grid-template-columns: repeat(3, 1fr); } }
 
 /* Landing hero: stacked by default; from 1100px the card sits beside the end of the headline lines. */
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "actions" "who" "demo"; row-gap: var(--space-4); align-content: center; }
@@ -188,3 +185,10 @@ dialog { color: var(--text); }
 .btn-secondary { transition: border-color .1s, color .1s, background .1s; }
 .btn-secondary:hover { border-color: var(--lime) !important; color: var(--lime) !important; }
 a.btn-primary:active, a.btn-secondary:active, button.btn-primary:active { transform: translateY(1px); }
+
+/* Landing product section: caption beside a framed screenshot of about 60% width; stacked on phones. */
+.product { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); align-items: center; }
+.product .shot { margin: 0; }
+@media (min-width: 900px) { .product { grid-template-columns: minmax(220px, 2fr) minmax(0, 3fr); gap: clamp(24px, 4vw, 64px); } }
+main section { scroll-margin-top: 72px; }
+.shot-frame:hover { border-color: var(--lime) !important; }
