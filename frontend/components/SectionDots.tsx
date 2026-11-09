@@ -25,7 +25,7 @@ export default function SectionDots() {
   return (
     <nav className="dots" aria-label="Sections">
       {SECTIONS.map(s => (
-        <a key={s.id} href={`#${s.id}`} aria-label={s.label} aria-current={current === s.id ? 'true' : undefined} data-on={current === s.id} />
+        <a key={s.id} href={`#${s.id}`} aria-label={s.label} data-label={s.label} aria-current={current === s.id ? 'true' : undefined} data-on={current === s.id} />
       ))}
     </nav>
   )

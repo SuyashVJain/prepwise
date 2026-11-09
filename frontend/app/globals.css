@@ -253,3 +253,10 @@ html.snap { scroll-padding-top: var(--hdr); }
 /* Skip link: first focusable element, hidden until focused. */
 .skip { position: absolute; left: 8px; top: -64px; z-index: 100; padding: 12px 18px; background: var(--lime); color: #0e0e0e; font-weight: 700; font-size: 14px; }
 .skip:focus, .skip:focus-visible { top: 8px; outline: 2px solid #fff; outline-offset: 2px; }
+
+/* Section dot labels: a small tooltip to the left on hover and keyboard focus, fading in over 150 ms. */
+@media (min-width: 1024px) {
+  .dots a::before { content: attr(data-label); position: absolute; right: 100%; top: 50%; transform: translateY(-50%); margin-right: 6px; padding: 6px 10px; background: var(--bg2); border: 1px solid var(--border-2); border-radius: 6px; color: var(--text); font-size: 13px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .15s ease; }
+  .dots a:hover::before, .dots a:focus-visible::before { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .dots a::before { transition: none; } }
