@@ -121,9 +121,9 @@ export default function LandingPage() {
         <section id="start" className="reveal frame frame-close" style={{ borderTop: '1px solid var(--border)' }}>
           <div className="close-main" style={{ padding: `${sectionY} ${gutter}` }}>
           <h2 style={{ ...bigTitle, fontSize: 'clamp(40px, min(11vw, 20svh), 200px)', marginBottom: 'var(--space-4)' }}>Ready<br />to prep?</h2>
-          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', columnGap: 'clamp(24px, 4vw, 64px)', rowGap: 'var(--space-3)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', rowGap: 'var(--space-3)' }}>
             <Link href="/signup" className="btn-primary" style={{ ...primary, padding: '20px 40px' }}>Create free account →</Link>
-            <p style={{ ...mono, fontSize: '13px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '52ch' }}>
+            <p style={{ ...mono, fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '52ch', textAlign: 'left' }}>
               Scores come from a language model, so treat them as a guide. Usage limits apply.
             </p>
           </div>
