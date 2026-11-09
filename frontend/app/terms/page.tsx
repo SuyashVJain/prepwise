@@ -4,14 +4,14 @@ import LegalPage, { LegalSection } from '@/components/LegalPage'
 
 export const metadata: Metadata = {
   title: 'Terms',
-  description: 'The rules for using Prepwise, a student project for interview practice.',
+  description: 'The rules for using Prepwise, an interview practice tool.',
 }
 
 export default function TermsPage() {
   return (
     <LegalPage title="Terms of use" updated="9 November 2026">
       <LegalSection title="What this is">
-        <p>Prepwise is a student project for practising interviews. It is offered as it is, with no promise that it will always be available, free of mistakes, or kept running.</p>
+        <p>Prepwise is a tool for practising interviews. It is offered as it is, with no promise that it will always be available, free of mistakes, or kept running.</p>
       </LegalSection>
       <LegalSection title="Scores are estimates">
         <p>Questions and scores are produced by a language model, which can be wrong. A score is a practice signal, not a judgement of your ability and not a prediction of any real interview.</p>
