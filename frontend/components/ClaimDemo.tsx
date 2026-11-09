@@ -56,7 +56,7 @@ export default function ClaimDemo({ bare = false }: { bare?: boolean }) {
   const tally = (v: Verdict) => CLAIMS.slice(0, shown).filter(c => c.verdict === v).length
 
   return (
-    <div ref={root} role="group" aria-label="Sample of a checked answer" style={bare ? undefined : { background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 32px)' }}>
+    <div ref={root} role="group" aria-label="Sample of a checked answer" style={bare ? undefined : { background: 'var(--bg2)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-card)', padding: 'clamp(16px, 2vw, 32px)' }}>
       <div style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-2)' }}>SAMPLE, NOT A REAL SESSION</div>
       {!bare && <p style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: 'var(--space-3)' }}>Explain how Dijkstra&apos;s algorithm works and what it needs from the graph.</p>}
 

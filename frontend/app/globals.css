@@ -243,3 +243,6 @@ html.snap { scroll-padding-top: var(--hdr); }
 /* How it works: content sits centred with about 96px of space above and below at 1440x900, instead of filling a whole screen. */
 .how.frame { min-height: 0; padding: clamp(40px, 10.7svh, 96px) 0; }
 @media (max-width: 599px) { .how.frame { padding: 28px 0; } .product { padding-top: 12px !important; padding-bottom: 12px !important; } }
+
+/* One corner radius for the answer box and both demo cards. */
+:root { --radius-card: 8px; }

@@ -121,7 +121,7 @@ export default function TryDemo() {
           <label htmlFor="demo-answer" style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--text-2)', display: 'block', marginBottom: 'var(--space-1)' }}>YOUR ANSWER</label>
           <textarea id="demo-answer" ref={box} value={answer} maxLength={MAX} rows={4} aria-describedby="demo-help" onChange={e => setDrafts(d => ({ ...d, [qid]: e.target.value }))}
             placeholder="Answer in a few sentences."
-            style={{ width: '100%', background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border-2)', padding: '14px', fontSize: '15px', lineHeight: 1.6, resize: 'vertical', fontFamily: 'inherit' }} />
+            style={{ width: '100%', background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-card)', padding: '14px', fontSize: '15px', lineHeight: 1.6, resize: 'vertical', fontFamily: 'inherit' }} />
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--space-3)', marginTop: 'var(--space-2)' }}>
@@ -136,7 +136,7 @@ export default function TryDemo() {
         <p className="demo-note" style={{ ...mono, fontSize: '13px', color: 'var(--text-2)', marginTop: 'var(--space-2)', lineHeight: 1.7 }}>Nothing is saved. A few tries per visitor per day.</p>
       </div>
 
-      <div ref={resultPanel} className="result-panel" aria-live={phase === 'idle' ? 'off' : 'polite'} style={{ background: 'var(--bg)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 28px)', minHeight: 'min(440px, calc(100svh - 300px))' }}>
+      <div ref={resultPanel} className="result-panel" aria-live={phase === 'idle' ? 'off' : 'polite'} style={{ background: 'var(--bg)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-card)', padding: 'clamp(16px, 2vw, 28px)', minHeight: 'min(440px, calc(100svh - 300px))' }}>
         {phase === 'idle' && qid === 'dijkstra' && <div className="sample"><ClaimDemo bare /></div>}
         {phase === 'idle' && qid === 'dijkstra' && <p className="sample-alt" style={{ fontSize: '15px', lineHeight: 1.6, color: 'var(--text-2)' }}>Your checked answer appears here: each claim marked correct, incorrect or unverifiable, then scored.</p>}
         {phase === 'idle' && qid !== 'dijkstra' && (

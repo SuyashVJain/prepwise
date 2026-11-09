@@ -16,7 +16,7 @@ const GROUPS = [
 
 export default function FeedbackCard() {
   return (
-    <div role="group" aria-label="Example of a scored answer, demo data" className="fcard" style={{ background: 'var(--bg)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2.4svh, 28px) clamp(16px, 2vw, 28px)' }}>
+    <div role="group" aria-label="Example of a scored answer, demo data" className="fcard" style={{ background: 'var(--bg)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-card)', padding: 'clamp(16px, 2.4svh, 28px) clamp(16px, 2vw, 28px)' }}>
       <div style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'clamp(6px, 1svh, 10px)' }}>DEMO DATA</div>
       <p className="fcard-q" style={{ fontSize: '15px', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: 'clamp(8px, 1.4svh, 14px)' }}>Explain what a deadlock is, the conditions that must all hold…</p>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)', flexWrap: 'wrap', marginBottom: 'clamp(6px, 1.2svh, 12px)' }}>
