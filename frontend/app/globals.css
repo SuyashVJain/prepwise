@@ -200,3 +200,9 @@ main section { scroll-margin-top: 0; }
 .frame-close { display: flex; flex-direction: column; }
 .close-main { margin: auto 0; }
 .frame-close footer { margin-top: auto; }
+
+/* Soft snap: proximity only, never mandatory, no script hijacking. Off for reduced motion, short screens, tall frames and while a result is shown. */
+html.snap { scroll-snap-type: y proximity; scroll-padding-top: var(--hdr); }
+.frame { scroll-snap-align: start; scroll-snap-stop: normal; }
+.frame[data-tall="true"], #try[data-result="true"] { scroll-snap-align: none; }
+@media (prefers-reduced-motion: reduce), (max-height: 559px) { html.snap { scroll-snap-type: none; } }

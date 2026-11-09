@@ -43,6 +43,13 @@ export default function TryDemo() {
 
   useEffect(() => () => { if (wakeTimer.current) clearTimeout(wakeTimer.current) }, [])
 
+  // While a result is shown the section may grow, so it stops snapping.
+  useEffect(() => {
+    const el = document.getElementById('try')
+    el?.setAttribute('data-result', String(phase === 'done'))
+    return () => el?.removeAttribute('data-result')
+  }, [phase])
+
   // After an outcome arrives, bring it into view on small screens and move focus to its heading.
   useEffect(() => {
     if (phase === 'idle' || phase === 'loading') return
