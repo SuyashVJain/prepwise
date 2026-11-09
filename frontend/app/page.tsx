@@ -7,7 +7,6 @@ import TryDemo from '@/components/TryDemo'
 import StickySignup from '@/components/StickySignup'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
-const REPO = 'https://github.com/SuyashVJain/prepwise'
 const gutter = 'clamp(16px, 3vw, 48px)'
 const eyebrow: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-3)' }
 const primary: React.CSSProperties = { fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '16px 32px', display: 'inline-flex', alignItems: 'center', minHeight: '52px' }
@@ -43,7 +42,6 @@ export default function LandingPage() {
         <Link href="/" aria-label="Prepwise home"><Logo size="sm" /></Link>
         <nav aria-label="Main" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 2vw, 24px)', whiteSpace: 'nowrap' }}>
           <Link href="/login" className="landing-link" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
-          <a href={REPO} target="_blank" rel="noopener noreferrer" className="landing-link" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }}>GitHub</a>
           <StickySignup />
         </nav>
       </header>
@@ -66,7 +64,6 @@ export default function LandingPage() {
               <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
                 <Link href="/signup" className="btn-primary" style={primary}>Start preparing →</Link>
                 <Link href="#how" className="landing-link" style={secondary}>See how it works</Link>
-                <a href={REPO} target="_blank" rel="noopener noreferrer" className="landing-link" style={secondary}>View on GitHub ↗</a>
               </div>
             </div>
           </div>
@@ -180,7 +177,6 @@ export default function LandingPage() {
         <nav aria-label="Footer" style={{ display: 'flex', flexWrap: 'wrap', columnGap: 'var(--space-4)' }}>
           <Link href="/privacy" className="landing-link" style={footLink}>Privacy</Link>
           <Link href="/terms" className="landing-link" style={footLink}>Terms</Link>
-          <a href={REPO} target="_blank" rel="noopener noreferrer" className="landing-link" style={footLink}>GitHub</a>
           <a href="https://suyashvjain.web.app/" target="_blank" rel="noopener noreferrer" className="landing-link" style={footLink}>Contact</a>
         </nav>
       </footer>
