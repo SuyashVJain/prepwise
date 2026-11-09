@@ -1,12 +1,17 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import Logo from '@/components/Logo'
+import Reveal from '@/components/Reveal'
+import ClaimDemo from '@/components/ClaimDemo'
+import StickySignup from '@/components/StickySignup'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
+const gutter = 'clamp(16px, 3vw, 48px)'
 const eyebrow: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-3)' }
-const pad = 'clamp(16px, 4vw, 40px)'
 const primary: React.CSSProperties = { fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '16px 32px', display: 'inline-flex', alignItems: 'center', minHeight: '52px' }
 const secondary: React.CSSProperties = { fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', border: '1px solid var(--border-2)', color: 'var(--text)', padding: '16px 32px', display: 'inline-flex', alignItems: 'center', minHeight: '52px' }
 const footLink: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }
+const bigTitle: React.CSSProperties = { fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.03em', lineHeight: 0.95 }
 
 const SUBJECTS = ['Data Structures', 'Operating Systems', 'Databases', 'Computer Networks', 'OOP', 'System Design', 'Compilers', 'Theory of Computation', 'Machine Learning', 'Web Technologies']
 
@@ -25,36 +30,34 @@ const STEPS = [
   { n: '03', title: 'Review', text: 'Each claim in your answer is checked and marked, then scored. You see what was right, wrong or unclear.' },
 ]
 
-const CLAIMS = [
-  { verdict: 'CORRECT', color: '#d4fe42', items: ['Dijkstra repeatedly picks the unvisited vertex with the smallest distance.', 'With a binary heap it runs in O((V + E) log V).'] },
-  { verdict: 'INCORRECT', color: '#ef4444', items: ['[CRITICAL] It works on graphs with negative edge weights.'] },
-  { verdict: 'UNVERIFIABLE', color: '#f59e0b', items: ['It is usually fast in practice.'] },
-]
+const INTERVIEW_TYPES = ['Technical', 'HR / Behavioural', 'System Design', 'Subject-Specific']
+const COMPANY_STYLES = ['FAANG / Big Tech', 'Product Startups', 'Service Companies', 'Core CS Campus']
 
 export default function LandingPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)' }}>
-      <header style={{ position: 'sticky', top: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)', padding: `0 ${pad}`, minHeight: '60px', borderBottom: '1px solid var(--border)', background: 'var(--bg)' }}>
+      <Reveal />
+      <header style={{ position: 'sticky', top: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)', padding: `0 ${gutter}`, height: '60px', borderBottom: '1px solid var(--border)', background: 'var(--bg)' }}>
         <Link href="/" aria-label="Prepwise home"><Logo size="sm" /></Link>
         <nav aria-label="Main" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
           <Link href="/login" className="landing-link" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
-          <Link href="/signup" className="btn-primary" style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '10px 20px', display: 'inline-flex', alignItems: 'center', minHeight: '40px' }}>Sign up</Link>
+          <StickySignup />
         </nav>
       </header>
 
       <main>
-        {/* HERO */}
-        <section style={{ position: 'relative', overflow: 'hidden', padding: `clamp(64px, 12vh, 140px) ${pad} 0`, display: 'flex', flexDirection: 'column', minHeight: 'calc(100vh - 60px)' }}>
+        {/* HERO: full bleed, fills the first screen */}
+        <section id="hero" style={{ position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', minHeight: 'calc(100svh - 60px)' }}>
           <div aria-hidden="true" style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '80px 80px', opacity: 0.3, pointerEvents: 'none' }} />
-          <div style={{ position: 'relative', maxWidth: '1100px', width: '100%', margin: '0 auto', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 'var(--space-5)' }}>
-            <div style={{ ...eyebrow, marginBottom: 'var(--space-4)' }}>[Interview coach]</div>
-            <h1 style={{ fontSize: 'clamp(40px, 11vw, 140px)', fontWeight: 700, lineHeight: 0.92, letterSpacing: '-.03em', textTransform: 'uppercase', marginBottom: 'var(--space-4)' }}>
-              <span style={{ display: 'block' }}>Prep</span>
-              <span style={{ display: 'block' }}>smarter.</span>
-              <span style={{ display: 'block', color: 'var(--lime)' }}>Not generic.</span>
+          <div style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: `clamp(24px, 4svh, 56px) ${gutter}` }}>
+            <div style={{ ...eyebrow, marginBottom: 'var(--space-3)' }}>[Interview coach]</div>
+            <h1 className="hero-title" style={{ ...bigTitle, fontSize: 'clamp(40px, min(13vw, calc((100svh - 340px) / 2.76)), 260px)', marginBottom: 'clamp(20px, 4svh, 48px)' }}>
+              <span className="h-line"><span>Prep</span></span>
+              <span className="h-line"><span>smarter.</span></span>
+              <span className="h-line" style={{ color: 'var(--lime)' }}><span>Not generic.</span></span>
             </h1>
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
-              <p style={{ fontSize: '16px', color: 'var(--text-2)', maxWidth: '420px', lineHeight: 1.7 }}>
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', columnGap: 'clamp(24px, 4vw, 64px)', rowGap: 'var(--space-3)' }}>
+              <p style={{ fontSize: '16px', color: 'var(--text-2)', maxWidth: '460px', lineHeight: 1.7 }}>
                 Mock interviews built from your own syllabus, with every answer checked claim by claim. Made for computer science students preparing for campus placements.
               </p>
               <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
@@ -63,7 +66,7 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-          <div aria-hidden="true" className="ticker" style={{ position: 'relative', margin: `0 -${pad}`, borderTop: '1px solid var(--border)', height: '44px', display: 'flex', alignItems: 'center' }}>
+          <div aria-hidden="true" className="ticker" style={{ position: 'relative', borderTop: '1px solid var(--border)', height: '44px', display: 'flex', alignItems: 'center', background: 'var(--bg)' }}>
             <div className="ticker-track">
               {[...SUBJECTS, ...SUBJECTS, ...SUBJECTS].map((s, i) => (
                 <span key={i} style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-2)' }}>
@@ -74,88 +77,102 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* THE CHECK */}
-        <section style={{ padding: `clamp(64px, 10vw, 120px) ${pad}`, borderTop: '1px solid var(--border)' }}>
-          <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 'clamp(32px, 6vw, 80px)', alignItems: 'center' }}>
-            <div>
-              <div style={eyebrow}>[02 - The check]</div>
-              <h2 style={{ fontSize: 'clamp(32px, 5vw, 60px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 'var(--space-4)' }}>Every claim<br />gets a verdict.</h2>
-              <p style={{ fontSize: '16px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '44ch' }}>
-                Your answer is split into claims. Each one is marked correct, incorrect or unverifiable before a score is given, and one confident, critical mistake caps the score however fluent the rest sounds.
-              </p>
+        {/* THE CHECK: wide split, card runs to the gutter */}
+        <section className="reveal" style={{ padding: `clamp(48px, 6vw, 80px) ${gutter} clamp(80px, 12vw, 180px)`, borderTop: '1px solid var(--border)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: 'clamp(32px, 5vw, 96px)', alignItems: 'end' }}>
+          <div>
+            <div style={eyebrow}>[02 - The check, live]</div>
+            <h2 style={{ ...bigTitle, fontSize: 'clamp(40px, 7.5vw, 128px)', marginBottom: 'var(--space-4)' }}>Every claim<br />gets a<br />verdict.</h2>
+            <p style={{ fontSize: '16px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '46ch' }}>
+              Your answer is split into claims. Each one is marked correct, incorrect or unverifiable before a score is given, and one confident, critical mistake caps the score however fluent the rest sounds.
+            </p>
+          </div>
+          <ClaimDemo />
+        </section>
+
+        {/* BUILT FOR: full-width strip, names as the app shows them */}
+        <section className="reveal" aria-label="Interview types and company styles" style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))' }}>
+          {[['Interview types', INTERVIEW_TYPES], ['Company styles', COMPANY_STYLES]].map(([label, items]) => (
+            <div key={label as string} style={{ padding: `var(--space-4) ${gutter}`, borderRight: '1px solid var(--border)' }}>
+              <div style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-3)' }}>[Built for - {label as string}]</div>
+              <ul style={{ listStyle: 'none', display: 'flex', flexWrap: 'wrap', columnGap: 'var(--space-4)', rowGap: 'var(--space-2)' }}>
+                {(items as string[]).map(t => <li key={t} style={{ fontSize: 'clamp(18px, 2vw, 28px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.01em' }}>{t}</li>)}
+              </ul>
             </div>
-            <div role="group" aria-label="Sample of a checked answer" style={{ background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'var(--space-4)' }}>
-              <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-2)' }}>SAMPLE · NOT A REAL SESSION</div>
-              <p style={{ fontSize: '15px', lineHeight: 1.5, marginBottom: 'var(--space-3)' }}>Explain how Dijkstra&apos;s algorithm works and what it needs from the graph.</p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)', flexWrap: 'wrap', marginBottom: 'var(--space-3)' }}>
-                <span style={{ ...mono, fontSize: '48px', fontWeight: 700, color: '#ef4444', lineHeight: 1 }}>3.5<span style={{ fontSize: '14px', color: 'var(--text-2)' }}>/10</span></span>
-                <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>
-                  <span style={{ color: '#d4fe42' }}>2 correct</span> / <span style={{ color: '#ef4444' }}>1 incorrect</span> / <span style={{ color: '#f59e0b' }}>1 unverifiable</span>
-                </span>
+          ))}
+        </section>
+
+        {/* PRODUCT: two real screens from the app, shown with made-up demo data */}
+        <section className="reveal" style={{ padding: `clamp(56px, 8vw, 120px) ${gutter}` }}>
+          <div style={eyebrow}>[03 - The product]</div>
+          <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 5vw, 72px)', marginBottom: 'var(--space-5)' }}>See the feedback.</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 440px), 1fr))', gap: 'clamp(16px, 2vw, 32px)' }}>
+            {[
+              { src: '/landing/interview.webp', alt: 'The interview screen after an answer: the score, the claims list with correct, incorrect and unverifiable claims, and a hint', cap: 'Interview: every claim marked' },
+              { src: '/landing/debrief.webp', alt: 'The debrief screen with the score ring, strengths and fix-next cards and a chart of scores by topic', cap: 'Debrief: what to fix next' },
+            ].map((f, i) => (
+              <figure key={f.src}>
+                <div style={{ border: '1px solid var(--border-2)', background: 'var(--bg2)' }}>
+                  <Image src={f.src} alt={f.alt} width={1600} height={1000} sizes="(min-width: 900px) 50vw, 100vw" loading={i === 0 ? undefined : 'lazy'} style={{ width: '100%', height: 'auto', display: 'block' }} />
+                </div>
+                <figcaption style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', marginTop: 'var(--space-2)' }}>{f.cap} · demo data</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
+        {/* TOOLKIT: edge to edge hairline grid */}
+        <section className="reveal" style={{ borderTop: '1px solid var(--border)' }}>
+          <div style={{ padding: `clamp(32px, 4vw, 56px) ${gutter}` }}>
+            <div style={eyebrow}>[04 - What it does]</div>
+            <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 5vw, 72px)' }}>The toolkit</h2>
+          </div>
+          <div className="tool-grid" style={{ display: 'grid', gap: '1px', background: 'var(--border)', borderTop: '1px solid var(--border)' }}>
+            {FEATURES.map(f => (
+              <div key={f.n} style={{ background: 'var(--bg)', padding: `clamp(24px, 3vw, 48px) ${gutter}`, minHeight: '220px' }}>
+                <div style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--lime)', marginBottom: 'var(--space-4)' }}>{f.n}</div>
+                <h3 style={{ fontSize: 'clamp(16px, 1.4vw, 22px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.02em', marginBottom: 'var(--space-2)' }}>{f.title}</h3>
+                <p style={{ ...mono, fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7 }}>{f.text}</p>
               </div>
-              {CLAIMS.map(g => (
-                <div key={g.verdict} style={{ marginBottom: 'var(--space-2)' }}>
-                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: g.color, marginBottom: 'var(--space-1)' }}>{g.verdict} ({g.items.length})</div>
-                  {g.items.map(c => <div key={c} style={{ fontSize: '14px', lineHeight: 1.5, marginBottom: 'var(--space-1)' }}>{c}</div>)}
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </section>
 
-        {/* WHAT IT DOES */}
-        <section style={{ padding: `clamp(64px, 8vw, 96px) ${pad}`, borderTop: '1px solid var(--border)' }}>
-          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ marginBottom: 'var(--space-5)' }}>
-              <div style={eyebrow}>[03 - What it does]</div>
-              <h2 style={{ fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1 }}>The toolkit</h2>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1px', background: 'var(--border)', border: '1px solid var(--border)' }}>
-              {FEATURES.map(f => (
-                <div key={f.n} style={{ background: 'var(--bg)', padding: 'var(--space-4)' }}>
-                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--lime)', marginBottom: 'var(--space-3)' }}>{f.n}</div>
-                  <h3 style={{ fontSize: '14px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: 'var(--space-2)' }}>{f.title}</h3>
-                  <p style={{ ...mono, fontSize: '13px', color: 'var(--text-2)', lineHeight: 1.7 }}>{f.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* STEPS: oversized numerals across the full width */}
+        <section id="how" className="reveal" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `clamp(40px, 5vw, 72px) 0 clamp(48px, 7vw, 112px)` }}>
+          <div style={{ ...eyebrow, padding: `0 ${gutter}`, marginBottom: 'var(--space-4)' }}>[05 - How it works]</div>
+          <ol style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))' }}>
+            {STEPS.map(s => (
+              <li key={s.n} style={{ padding: `0 ${gutter}` }}>
+                <div aria-hidden="true" style={{ fontSize: 'clamp(96px, 16vw, 280px)', fontWeight: 700, color: 'var(--lime)', lineHeight: 0.9, letterSpacing: '-.05em', marginBottom: 'var(--space-3)' }}>{s.n}</div>
+                <h3 style={{ fontSize: 'clamp(18px, 1.8vw, 28px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.03em', marginBottom: 'var(--space-2)' }}>{s.title}</h3>
+                <p style={{ ...mono, fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.8, maxWidth: '38ch' }}>{s.text}</p>
+              </li>
+            ))}
+          </ol>
         </section>
 
-        {/* HOW IT WORKS */}
-        <section id="how" style={{ padding: `clamp(64px, 8vw, 96px) ${pad}`, borderTop: '1px solid var(--border)', background: 'var(--bg2)' }}>
-          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ ...eyebrow, marginBottom: 'var(--space-5)' }}>[04 - How it works]</div>
-            <ol style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-5)' }}>
-              {STEPS.map(s => (
-                <li key={s.n}>
-                  <div aria-hidden="true" style={{ fontSize: 'clamp(64px, 8vw, 96px)', fontWeight: 700, color: 'var(--lime)', lineHeight: 1, marginBottom: 'var(--space-3)', letterSpacing: '-.03em' }}>{s.n}</div>
-                  <h3 style={{ fontSize: '18px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: 'var(--space-2)' }}>{s.title}</h3>
-                  <p style={{ ...mono, fontSize: '13px', color: 'var(--text-2)', lineHeight: 1.8 }}>{s.text}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section style={{ padding: `clamp(80px, 12vw, 140px) ${pad}`, borderTop: '1px solid var(--border)', textAlign: 'center' }}>
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <div style={{ ...eyebrow, color: 'var(--text-2)', marginBottom: 'var(--space-4)' }}>[05 - Start]</div>
-            <h2 style={{ fontSize: 'clamp(44px, 9vw, 100px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.03em', lineHeight: 1, marginBottom: 'var(--space-5)' }}>Ready<br />to prep?</h2>
-            <Link href="/signup" className="btn-primary" style={{ ...primary, padding: '18px 48px' }}>Create free account →</Link>
-            <p style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '52ch', margin: 'var(--space-5) auto 0' }}>
+        {/* CLOSING */}
+        <section className="reveal" style={{ borderTop: '1px solid var(--border)', padding: `clamp(56px, 9vw, 140px) ${gutter} clamp(40px, 5vw, 72px)` }}>
+          <div style={{ ...eyebrow, color: 'var(--text-2)', marginBottom: 'var(--space-3)' }}>[06 - Start]</div>
+          <h2 style={{ ...bigTitle, fontSize: 'clamp(48px, 15vw, 300px)', marginBottom: 'clamp(24px, 4vw, 56px)' }}>Ready<br />to prep?</h2>
+          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', columnGap: 'clamp(24px, 4vw, 64px)', rowGap: 'var(--space-3)' }}>
+            <Link href="/signup" className="btn-primary" style={{ ...primary, padding: '20px 48px' }}>Create free account →</Link>
+            <p style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '52ch' }}>
               A student project. Scores come from a language model, so treat them as a guide. Usage limits apply.
             </p>
           </div>
         </section>
       </main>
 
-      <footer style={{ padding: `var(--space-3) ${pad}`, borderTop: '1px solid var(--border)', display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ ...mono, fontSize: '12px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)' }}>PREPWISE</span>
+      <footer style={{ padding: `var(--space-3) ${gutter}`, borderTop: '1px solid var(--border)', display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div>
+          <div style={{ ...mono, fontSize: '12px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)', marginBottom: 'var(--space-1)' }}>PREPWISE</div>
+          <p style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>A B.Tech semester project by Suyash Vasal Jain</p>
+        </div>
         <nav aria-label="Footer" style={{ display: 'flex', flexWrap: 'wrap', columnGap: 'var(--space-4)' }}>
           <Link href="/privacy" className="landing-link" style={footLink}>Privacy</Link>
           <Link href="/terms" className="landing-link" style={footLink}>Terms</Link>
+          <a href="https://github.com/SuyashVJain/prepwise" target="_blank" rel="noopener noreferrer" className="landing-link" style={footLink}>GitHub</a>
           <a href="https://suyashvjain.web.app/" target="_blank" rel="noopener noreferrer" className="landing-link" style={footLink}>Contact</a>
         </nav>
       </footer>

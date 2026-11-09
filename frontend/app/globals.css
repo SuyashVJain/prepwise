@@ -147,3 +147,17 @@ summary { min-height: 40px; }
 .ticker-track { display: flex; gap: 48px; align-items: center; white-space: nowrap; width: max-content; animation: ticker 40s linear infinite; }
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-33.333%); } }
 @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+
+/* Landing motion: headline lines slide up on load, sections fade up once on scroll. */
+.hero-title { display: block; }
+.h-line { display: block; overflow: hidden; padding-bottom: .04em; }
+.h-line > span { display: block; animation: line-up .7s cubic-bezier(.2,.7,.2,1) both; }
+.h-line:nth-child(2) > span { animation-delay: .08s; }
+.h-line:nth-child(3) > span { animation-delay: .16s; }
+@keyframes line-up { from { transform: translateY(105%); } to { transform: none; } }
+.js-reveal .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.js-reveal .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .h-line > span { animation: none; } .js-reveal .reveal { opacity: 1; transform: none; transition: none; } }
+.tool-grid { grid-template-columns: 1fr; }
+@media (min-width: 640px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .tool-grid { grid-template-columns: repeat(3, 1fr); } }
