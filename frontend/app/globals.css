@@ -192,3 +192,13 @@ a.btn-primary:active, a.btn-secondary:active, button.btn-primary:active { transf
 @media (min-width: 900px) { .product { grid-template-columns: minmax(220px, 2fr) minmax(0, 3fr); gap: clamp(24px, 4vw, 64px); } }
 main section { scroll-margin-top: 72px; }
 .shot-frame:hover { border-color: var(--lime) !important; }
+
+/* Try one question: two columns sized to their content, tabs with clear states, a short fade when the question changes. */
+.try-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(20px, 3vw, 48px); align-items: start; }
+@media (min-width: 900px) { .try-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
+.demo-tab { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 10px 16px; min-height: 44px; cursor: pointer; background: transparent; color: var(--text); border: 1px solid var(--border-2); transition: border-color .1s, background .1s; }
+.demo-tab:hover { border-color: var(--lime); }
+.demo-tab[data-on="true"] { background: var(--lime); color: #0e0e0e; border-color: var(--lime); font-weight: 700; }
+.fade-swap { animation: fade-swap .2s ease both; }
+@keyframes fade-swap { from { opacity: .3; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .fade-swap { animation: none; } }
