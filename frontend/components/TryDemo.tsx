@@ -102,7 +102,7 @@ export default function TryDemo() {
   }
 
   const claims = (result?.claims ?? []).filter(c => c && c.claim)
-  const headStyle: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-2)', outline: 'none', fontWeight: 400 }
+  const headStyle: React.CSSProperties = { ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-2)', outline: 'none', fontWeight: 400 }
 
   return (
     <div className="try-grid">
@@ -118,14 +118,14 @@ export default function TryDemo() {
 
         <div key={qid} className="fade-swap">
           <p id="demo-question" style={{ fontSize: 'clamp(18px, min(2.2vw, 3.4svh), 30px)', fontWeight: 700, lineHeight: 1.25, letterSpacing: '-.01em', marginBottom: 'var(--space-3)' }}>{question.text}</p>
-          <label htmlFor="demo-answer" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', display: 'block', marginBottom: 'var(--space-1)' }}>YOUR ANSWER</label>
+          <label htmlFor="demo-answer" style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--text-2)', display: 'block', marginBottom: 'var(--space-1)' }}>YOUR ANSWER</label>
           <textarea id="demo-answer" ref={box} value={answer} maxLength={MAX} rows={4} aria-describedby="demo-help" onChange={e => setDrafts(d => ({ ...d, [qid]: e.target.value }))}
             placeholder="Answer in a few sentences."
             style={{ width: '100%', background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border-2)', padding: '14px', fontSize: '15px', lineHeight: 1.6, resize: 'vertical', fontFamily: 'inherit' }} />
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--space-3)', marginTop: 'var(--space-2)' }}>
-          <span id="demo-help" style={{ ...mono, fontSize: '12px', color: tooShort ? 'var(--amber, #f59e0b)' : 'var(--text-2)', lineHeight: 1.5 }}>
+          <span id="demo-help" style={{ ...mono, fontSize: '13px', color: tooShort ? 'var(--amber, #f59e0b)' : 'var(--text-2)', lineHeight: 1.5 }}>
             {answer.length}/{MAX}{tooShort ? ` · write at least ${MIN} characters to check` : ''}
           </span>
           <button type="button" onClick={submit} disabled={tooShort || phase === 'loading'} className="btn-primary"
@@ -133,7 +133,7 @@ export default function TryDemo() {
             {phase === 'loading' ? 'Checking...' : 'Check my answer →'}
           </button>
         </div>
-        <p className="demo-note" style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginTop: 'var(--space-2)', lineHeight: 1.7 }}>Nothing is saved. A few tries per visitor per day.</p>
+        <p className="demo-note" style={{ ...mono, fontSize: '13px', color: 'var(--text-2)', marginTop: 'var(--space-2)', lineHeight: 1.7 }}>Nothing is saved. A few tries per visitor per day.</p>
       </div>
 
       <div ref={resultPanel} className="result-panel" aria-live={phase === 'idle' ? 'off' : 'polite'} style={{ background: 'var(--bg)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 28px)', minHeight: 'min(440px, calc(100svh - 300px))' }}>
@@ -158,7 +158,7 @@ export default function TryDemo() {
             <p style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: 'var(--space-3)' }}>{message}</p>
             {phase === 'limited'
               ? <Link href="/signup" className="btn-primary" style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '14px 28px', display: 'inline-flex', minHeight: '48px', alignItems: 'center' }}>Create free account →</Link>
-              : <button type="button" onClick={submit} className="btn-secondary" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text)', background: 'transparent', border: '1px solid var(--border-2)', padding: '12px 20px', minHeight: '48px', cursor: 'pointer' }}>Try again</button>}
+              : <button type="button" onClick={submit} className="btn-secondary" style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text)', background: 'transparent', border: '1px solid var(--border-2)', padding: '12px 20px', minHeight: '48px', cursor: 'pointer' }}>Try again</button>}
           </div>
         )}
         {phase === 'done' && result && (
@@ -173,16 +173,16 @@ export default function TryDemo() {
               if (!items.length) return null
               return (
                 <div key={g.verdict} style={{ marginBottom: 'var(--space-3)' }}>
-                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: g.color, marginBottom: 'var(--space-1)' }}>{g.label} ({items.length})</div>
+                  <div style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: g.color, marginBottom: 'var(--space-1)' }}>{g.label} ({items.length})</div>
                   {items.map((c, i) => (
                     <div key={i} style={{ fontSize: '15px', lineHeight: 1.5, marginBottom: 'var(--space-1)' }}>
-                      {c.critical && <span style={{ ...mono, fontSize: '12px', color: '#ef4444', fontWeight: 700 }}>[CRITICAL] </span>}{c.claim}
+                      {c.critical && <span style={{ ...mono, fontSize: '13px', color: '#ef4444', fontWeight: 700 }}>[CRITICAL] </span>}{c.claim}
                     </div>
                   ))}
                 </div>
               )
             })}
-            <Link href="/signup" className="landing-link" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--lime)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>Sign up to practise your own syllabus →</Link>
+            <Link href="/signup" className="landing-link" style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--lime)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>Sign up to practise your own syllabus →</Link>
           </div>
         )}
       </div>

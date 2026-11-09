@@ -8,10 +8,10 @@ import FeedbackCard from '@/components/FeedbackCard'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 const gutter = 'clamp(16px, 3vw, 48px)'
-const eyebrow: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-3)' }
+const eyebrow: React.CSSProperties = { ...mono, fontSize: '13px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-3)' }
 const primary: React.CSSProperties = { fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '16px 32px', display: 'inline-flex', alignItems: 'center', minHeight: '52px' }
 const secondary: React.CSSProperties = { fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', border: '1px solid var(--border-2)', color: 'var(--text)', padding: '16px 32px', display: 'inline-flex', alignItems: 'center', minHeight: '52px' }
-const footLink: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }
+const footLink: React.CSSProperties = { ...mono, fontSize: '13px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }
 const bigTitle: React.CSSProperties = { fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.03em', lineHeight: 0.95 }
 
 const SUBJECTS = ['Data Structures', 'Operating Systems', 'Databases', 'Computer Networks', 'OOP', 'System Design', 'Compilers', 'Theory of Computation', 'Machine Learning', 'Web Technologies']
@@ -34,9 +34,9 @@ export default function LandingPage() {
       <header style={{ position: 'sticky', top: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)', padding: `0 ${gutter}`, height: '60px', borderBottom: '1px solid var(--border)', background: 'var(--bg)' }}>
         <Link href="/" aria-label="Prepwise home" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}><Logo size="sm" /></Link>
         <nav aria-label="Main" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 2vw, 24px)', whiteSpace: 'nowrap' }}>
-          <TryLink className="landing-link hide-mobile" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>Try it</TryLink>
-          <Link href="/login" className="landing-link" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
-          <Link href="/signup" className="btn-primary" style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '10px 20px', display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}>Sign up</Link>
+          <TryLink className="landing-link hide-mobile" style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>Try it</TryLink>
+          <Link href="/login" className="landing-link" style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '44px', display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
+          <Link href="/signup" className="btn-primary" style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', padding: '10px 20px', display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}>Sign up</Link>
         </nav>
       </header>
 
@@ -66,7 +66,7 @@ export default function LandingPage() {
           <div aria-hidden="true" className="ticker" style={{ position: 'relative', borderTop: '1px solid var(--border)', height: '44px', display: 'flex', alignItems: 'center', background: 'var(--bg)' }}>
             <div className="ticker-track">
               {[...SUBJECTS, ...SUBJECTS, ...SUBJECTS].map((s, i) => (
-                <span key={i} style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-2)' }}>
+                <span key={i} style={{ ...mono, fontSize: '13px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-2)' }}>
                   {s} <span style={{ color: 'var(--lime)', marginLeft: '24px' }}>·</span>
                 </span>
               ))}
@@ -129,7 +129,7 @@ export default function LandingPage() {
           </div>
           </div>
         <footer style={{ padding: `var(--space-3) ${gutter}`, borderTop: '1px solid var(--border)', display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ ...mono, fontSize: '12px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)' }}>PREPWISE</span>
+          <span style={{ ...mono, fontSize: '13px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)' }}>PREPWISE</span>
           <nav aria-label="Footer" style={{ display: 'flex', flexWrap: 'wrap', columnGap: 'var(--space-4)' }}>
             <Link href="/privacy" className="landing-link" style={footLink}>Privacy</Link>
             <Link href="/terms" className="landing-link" style={footLink}>Terms</Link>

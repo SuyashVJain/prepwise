@@ -181,7 +181,7 @@ main section { scroll-margin-top: 0; }
 /* Try one question: two columns sized to their content, tabs with clear states, a short fade when the question changes. */
 .try-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(20px, 3vw, 48px); align-items: start; }
 @media (min-width: 900px) { .try-grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
-.demo-tab { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 10px 16px; min-height: 44px; cursor: pointer; background: transparent; color: var(--text); border: 1px solid var(--border-2); transition: border-color .1s, background .1s; }
+.demo-tab { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; padding: 10px 16px; min-height: 44px; cursor: pointer; background: transparent; color: var(--text); border: 1px solid var(--border-2); transition: border-color .1s, background .1s; }
 .demo-tab:hover { border-color: var(--lime); }
 .demo-tab[data-on="true"] { background: var(--lime); color: #0e0e0e; border-color: var(--lime); font-weight: 700; }
 .fade-swap { animation: fade-swap .2s ease both; }
@@ -242,3 +242,4 @@ html.snap { scroll-padding-top: var(--hdr); }
 
 /* How it works: content sits centred with about 96px of space above and below at 1440x900, instead of filling a whole screen. */
 .how.frame { min-height: 0; padding: clamp(40px, 10.7svh, 96px) 0; }
+@media (max-width: 599px) { .how.frame { padding: 28px 0; } .product { padding-top: 12px !important; padding-bottom: 12px !important; } }
