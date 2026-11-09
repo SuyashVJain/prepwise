@@ -175,3 +175,6 @@ summary { min-height: 40px; }
   .hero-demo { display: flex; flex-direction: column; justify-content: center; }
 }
 @media (max-width: 599px) { .hero-buttons { width: 100%; flex-direction: column; } .hero-buttons > a { width: 100%; justify-content: center; min-height: 48px; } }
+
+.lightbox::backdrop { background: rgba(0, 0, 0, .88); }
+dialog { color: var(--text); }

@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import Logo from '@/components/Logo'
 import Reveal from '@/components/Reveal'
 import ClaimDemo from '@/components/ClaimDemo'
 import TryDemo from '@/components/TryDemo'
 import TryLink from '@/components/TryLink'
+import ShotFigure from '@/components/ShotFigure'
 import StickySignup from '@/components/StickySignup'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
@@ -121,18 +121,11 @@ export default function LandingPage() {
         <section className="reveal" style={{ padding: `clamp(56px, 8vw, 120px) ${gutter}` }}>
           <div style={eyebrow}>[03 - The product]</div>
           <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 5vw, 72px)', marginBottom: 'var(--space-5)' }}>See the feedback.</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 440px), 1fr))', gap: 'clamp(16px, 2vw, 32px)' }}>
-            {[
-              { src: '/landing/interview.webp', alt: 'The interview screen after an answer: the score, the claims list with correct, incorrect and unverifiable claims, and a hint', cap: 'Interview: every claim marked' },
-              { src: '/landing/debrief.webp', alt: 'The debrief screen with the score ring, strengths and fix-next cards and a chart of scores by topic', cap: 'Debrief: what to fix next' },
-            ].map((f, i) => (
-              <figure key={f.src}>
-                <div style={{ border: '1px solid var(--border-2)', background: 'var(--bg2)' }}>
-                  <Image src={f.src} alt={f.alt} width={1600} height={1000} sizes="(min-width: 900px) 50vw, 100vw" loading={i === 0 ? undefined : 'lazy'} style={{ width: '100%', height: 'auto', display: 'block' }} />
-                </div>
-                <figcaption style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', marginTop: 'var(--space-2)' }}>{f.cap} · demo data</figcaption>
-              </figure>
-            ))}
+          <div style={{ display: 'grid', gap: 'clamp(32px, 4vw, 64px)' }}>
+            <ShotFigure src="/landing/interview.webp" width={2400} height={1500} caption="Interview: every claim marked" alt="The interview screen after an answer: the score, the claims list with correct, incorrect and unverifiable claims, and a hint" />
+            <div style={{ maxWidth: 'min(100%, 1100px)' }}>
+              <ShotFigure src="/landing/debrief.webp" width={2400} height={1500} caption="Debrief: what to fix next" alt="The debrief screen with the score ring, strengths and fix-next cards and a chart of scores by topic" />
+            </div>
           </div>
         </section>
 
