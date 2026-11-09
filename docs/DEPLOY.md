@@ -11,6 +11,15 @@ The backend (FastAPI) and the frontend (Next.js) are deployed separately. Supaba
 
 The backend fits Render's free Web Service (512 MB). Embeddings run through fastembed (ONNX), which keeps memory at about 270 MB, and speech uses cloud providers.
 
+The repository includes a Blueprint, `render.yaml`, that sets all of this up for you:
+
+1. In Render, choose **New > Blueprint** and pick this repository.
+2. Fill the three empty variables: `GROQ_API_KEY`, `SUPABASE_URL` and `FRONTEND_URL`.
+3. Click deploy. When the build finishes, open `/health` on the service address.
+4. Add the UptimeRobot keep-awake monitor described below.
+
+The settings the Blueprint applies, if you would rather create the service by hand:
+
 - **Service type:** Web Service
 - **Root directory:** `backend`
 - **Runtime:** Python 3.11 (set the environment variable `PYTHON_VERSION` to `3.11.9` if Render picks another version)

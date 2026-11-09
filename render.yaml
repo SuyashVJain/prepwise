@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: prepwise-api
+    runtime: python
+    plan: free
+    region: singapore
+    branch: main
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: VOICE_STT_PROVIDER
+        value: cloud
+      - key: VOICE_TTS_PROVIDER
+        value: cloud
+      - key: VOICE_WARMUP
+        value: "0"
+      - key: LLM_MODEL
+        value: openai/gpt-oss-120b
+      # Fill these three on the Render dashboard when you create the Blueprint.
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      # Optional. Uncomment to add them, then set the values on the dashboard.
+      # - key: SUPABASE_JWT_SECRET
+      #   sync: false
+      # - key: RATE_LIMIT_LLM
+      #   value: 30/minute
+      # - key: RATE_LIMIT_UPLOAD
+      #   value: 10/minute
+      # - key: RATE_LIMIT_DEFAULT
+      #   value: 120/minute
+      # - key: RATE_LIMIT_TUTOR
+      #   value: 20/minute
+      # - key: YOUTUBE_API_KEY
+      #   sync: false
