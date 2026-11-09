@@ -176,9 +176,9 @@ dialog { color: var(--text); }
 a.btn-primary:active, a.btn-secondary:active, button.btn-primary:active { transform: translateY(1px); }
 
 /* Landing product section: caption beside a framed screenshot of about 60% width; stacked on phones. */
-.product { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); align-items: center; }
+.product { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); align-items: start; }
 .product .shot { margin: 0; }
-@media (min-width: 900px) { .product { grid-template-columns: minmax(220px, 2fr) minmax(0, 3fr); gap: clamp(24px, 4vw, 64px); } }
+@media (min-width: 900px) { .product { grid-template-columns: minmax(220px, 3fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 64px); } }
 main section { scroll-margin-top: 72px; }
 .shot-frame:hover { border-color: var(--lime) !important; }
 
