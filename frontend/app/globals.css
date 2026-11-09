@@ -239,3 +239,6 @@ html.snap { scroll-padding-top: var(--hdr); }
 @media (max-width: 599px) { .pc-more, .fcard-summary { display: none !important; } }
 @media (max-width: 599px) and (max-height: 760px) { .fcard-q { display: none; } }
 @media (max-width: 599px) { .fcard { padding: 12px 14px !important; } .product { gap: 12px !important; } }
+
+/* How it works: content sits centred with about 96px of space above and below at 1440x900, instead of filling a whole screen. */
+.how.frame { min-height: 0; padding: clamp(40px, 10.7svh, 96px) 0; }

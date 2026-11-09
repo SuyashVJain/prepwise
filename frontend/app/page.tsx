@@ -75,9 +75,9 @@ export default function LandingPage() {
         </section>
 
         {/* HOW IT WORKS: three steps, then four one-line points */}
-        <section id="how" className="reveal frame frame-center" style={{ borderTop: '1px solid var(--border)', padding: `${sectionY} 0 0` }}>
+        <section id="how" className="reveal frame frame-center how" style={{ borderTop: '1px solid var(--border)' }}>
           <div style={{ ...eyebrow, padding: `0 ${gutter}`, marginBottom: 'var(--space-3)' }}>[How it works]</div>
-          <ol className="steps" style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 'var(--space-4) 0', paddingBottom: sectionY }}>
+          <ol className="steps" style={{ listStyle: 'none', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 'var(--space-4) 0', marginBottom: 'clamp(24px, 4svh, 44px)' }}>
             {STEPS.map(s => (
               <li key={s.n} className="step" style={{ padding: `0 ${gutter}` }}>
                 <div aria-hidden="true" className="step-n" style={{ fontSize: 'clamp(48px, min(8vw, 12svh), 120px)', fontWeight: 700, color: 'var(--lime)', lineHeight: 0.9, letterSpacing: '-.05em', marginBottom: 'var(--space-2)' }}>{s.n}</div>
