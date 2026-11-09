@@ -249,3 +249,7 @@ html.snap { scroll-padding-top: var(--hdr); }
 
 /* Ticker edges fade out so words do not look cut off. */
 .ticker { -webkit-mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent); }
+
+/* Skip link: first focusable element, hidden until focused. */
+.skip { position: absolute; left: 8px; top: -64px; z-index: 100; padding: 12px 18px; background: var(--lime); color: #0e0e0e; font-weight: 700; font-size: 14px; }
+.skip:focus, .skip:focus-visible { top: 8px; outline: 2px solid #fff; outline-offset: 2px; }

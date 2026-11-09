@@ -29,8 +29,8 @@ const sectionY = 'clamp(20px, 4svh, 56px)'
 export default function LandingPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)' }}>
+      <a href="#main" className="skip">Skip to content</a>
       <Reveal />
-      <SectionDots />
       <header style={{ position: 'sticky', top: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)', padding: `0 ${gutter}`, height: '60px', borderBottom: '1px solid var(--border)', background: 'var(--bg)' }}>
         <Link href="/" aria-label="Prepwise home" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}><Logo size="sm" /></Link>
         <nav aria-label="Main" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 2vw, 24px)', whiteSpace: 'nowrap' }}>
@@ -40,7 +40,7 @@ export default function LandingPage() {
         </nav>
       </header>
 
-      <main>
+      <main id="main" tabIndex={-1} style={{ outline: 'none' }}>
         {/* HERO: full bleed. Headline with the live claim card beside the end of its lines; stacked below 1100px. */}
         <section id="hero" className="frame frame-hero" style={{ position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
           <div aria-hidden="true" style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '80px 80px', opacity: 0.3, pointerEvents: 'none' }} />
@@ -138,6 +138,7 @@ export default function LandingPage() {
         </footer>
         </section>
       </main>
+      <SectionDots />
 
     </div>
   )
