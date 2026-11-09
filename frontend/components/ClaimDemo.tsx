@@ -18,7 +18,7 @@ const CLAIMS: { text: string; verdict: Verdict; critical?: boolean }[] = [
   { text: 'It is usually fast in practice.', verdict: 'unverifiable' },
 ]
 const FINAL_SCORE = 3.5
-const STEP_MS = 900
+const STEP_MS = 300
 
 // bare: no border or padding of its own, for use inside a panel that already has them.
 export default function ClaimDemo({ bare = false }: { bare?: boolean }) {
