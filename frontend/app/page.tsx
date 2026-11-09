@@ -4,7 +4,7 @@ import Reveal from '@/components/Reveal'
 import TryDemo from '@/components/TryDemo'
 import TryLink from '@/components/TryLink'
 import SectionDots from '@/components/SectionDots'
-import ShotFigure from '@/components/ShotFigure'
+import FeedbackCard from '@/components/FeedbackCard'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 const gutter = 'clamp(16px, 3vw, 48px)'
@@ -107,10 +107,14 @@ export default function LandingPage() {
           <div className="product-copy">
             <div style={eyebrow}>[The product]</div>
             <h2 style={{ ...bigTitle, fontSize: 'clamp(28px, min(4vw, 6.5svh), 56px)', marginBottom: 'clamp(8px, 1.6svh, 16px)' }}>See the feedback.</h2>
-            <p style={{ fontSize: '15px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '34ch' }}>A scored answer with every claim marked. Demo data.</p>
-            <p style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', marginTop: 'var(--space-2)' }}>Click the image to enlarge</p>
+            <p className="pc-more" style={{ fontSize: '16px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '36ch', marginBottom: 'var(--space-3)' }}>Every answer comes back as a scored, claim-by-claim check.</p>
+            <ul className="pc-more" style={{ listStyle: 'none', display: 'grid', gap: 'var(--space-2)' }}>
+              {['A score out of 10', 'Every claim marked correct, incorrect or unverifiable', 'A short reason for each'].map(t => (
+                <li key={t} style={{ display: 'flex', gap: 'var(--space-2)', fontSize: '15px', fontWeight: 600 }}><span aria-hidden="true" style={{ color: 'var(--lime)' }}>+</span>{t}</li>
+              ))}
+            </ul>
           </div>
-          <ShotFigure src="/landing/interview.webp" width={2400} height={2083} caption="A scored answer with every claim marked" alt="The interview screen after an answer: the score of 6.5 out of 10, a short comment, and the claims list grouped as correct, incorrect and unverifiable" />
+          <FeedbackCard />
         </section>
 
         {/* CLOSING */}
