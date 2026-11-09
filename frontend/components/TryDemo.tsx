@@ -31,6 +31,8 @@ export default function TryDemo() {
   const [phase, setPhase] = useState<Phase>('idle')
   const [waking, setWaking] = useState(false)
   const [message, setMessage] = useState('')
+  // The helper turns amber only after Check is pressed with a short answer.
+  const [triedShort, setTriedShort] = useState(false)
   const [result, setResult] = useState<Result | null>(null)
   const wakeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const tabs = useRef<(HTMLButtonElement | null)[]>([])
@@ -77,7 +79,8 @@ export default function TryDemo() {
   }
 
   async function submit() {
-    if (tooShort || phase === 'loading') return
+    if (phase === 'loading') return
+    if (tooShort) { setTriedShort(true); return }
     setPhase('loading'); setWaking(false); setMessage('')
     // A free host that was asleep needs up to a minute to answer the first request.
     wakeTimer.current = setTimeout(() => setWaking(true), 6000)
@@ -119,16 +122,16 @@ export default function TryDemo() {
         <div key={qid} className="fade-swap">
           <p id="demo-question" style={{ fontSize: 'clamp(18px, min(2.2vw, 3.4svh), 30px)', fontWeight: 700, lineHeight: 1.25, letterSpacing: '-.01em', marginBottom: 'var(--space-3)' }}>{question.text}</p>
           <label htmlFor="demo-answer" style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--text-2)', display: 'block', marginBottom: 'var(--space-1)' }}>YOUR ANSWER</label>
-          <textarea id="demo-answer" ref={box} value={answer} maxLength={MAX} rows={4} aria-describedby="demo-help" onChange={e => setDrafts(d => ({ ...d, [qid]: e.target.value }))}
+          <textarea id="demo-answer" ref={box} value={answer} maxLength={MAX} rows={4} aria-describedby="demo-help" onChange={e => { setTriedShort(false); setDrafts(d => ({ ...d, [qid]: e.target.value })) }}
             placeholder="Answer in a few sentences."
             style={{ width: '100%', background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-card)', padding: '14px', fontSize: '15px', lineHeight: 1.6, resize: 'vertical', fontFamily: 'inherit' }} />
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--space-3)', marginTop: 'var(--space-2)' }}>
-          <span id="demo-help" style={{ ...mono, fontSize: '13px', color: tooShort ? 'var(--amber, #f59e0b)' : 'var(--text-2)', lineHeight: 1.5 }}>
+          <span id="demo-help" style={{ ...mono, fontSize: '13px', color: tooShort && triedShort ? 'var(--amber, #f59e0b)' : 'var(--text-2)', lineHeight: 1.5 }}>
             {answer.length}/{MAX}{tooShort ? ` · write at least ${MIN} characters to check` : ''}
           </span>
-          <button type="button" onClick={submit} disabled={tooShort || phase === 'loading'} className="btn-primary"
+          <button type="button" onClick={submit} disabled={phase === 'loading'} aria-disabled={tooShort || undefined} className="btn-primary"
             style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 28px', minHeight: '48px', opacity: tooShort || phase === 'loading' ? 0.5 : 1 }}>
             {phase === 'loading' ? 'Checking...' : 'Check my answer →'}
           </button>
