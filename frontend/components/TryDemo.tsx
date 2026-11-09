@@ -61,7 +61,7 @@ export default function TryDemo() {
 
   function choose(i: number) {
     const q = QUESTIONS[i]
-    setQid(q.id); setPhase('idle'); setResult(null); setMessage('')
+    setQid(q.id); setPhase('idle'); setResult(null); setMessage(''); setTriedShort(false)
     tabs.current[i]?.focus()
     // Typing goes to the answer box of the new question.
     window.setTimeout(() => box.current?.focus({ preventScroll: true }), 0)
@@ -74,7 +74,7 @@ export default function TryDemo() {
       : e.key === 'Home' ? 0 : e.key === 'End' ? last : -1
     if (to < 0) return
     e.preventDefault()
-    setQid(QUESTIONS[to].id); setPhase('idle'); setResult(null); setMessage('')
+    setQid(QUESTIONS[to].id); setPhase('idle'); setResult(null); setMessage(''); setTriedShort(false)
     tabs.current[to]?.focus()
   }
 
