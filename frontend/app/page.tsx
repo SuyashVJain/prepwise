@@ -70,6 +70,9 @@ export default function LandingPage() {
                   <TryLink className="landing-link" style={secondary}>Try a question ↓</TryLink>
                 </div>
               </div>
+              <p style={{ ...mono, fontSize: 'clamp(13px, 1.1vw, 16px)', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text)', lineHeight: 1.7, marginTop: 'clamp(16px, 2.5svh, 28px)' }}>
+                For campus placements<span aria-hidden="true" style={{ color: 'var(--lime)' }}> · </span>Technical rounds<span aria-hidden="true" style={{ color: 'var(--lime)' }}> · </span>HR rounds<span aria-hidden="true" style={{ color: 'var(--lime)' }}> · </span>System design
+              </p>
             </div>
             <div className="hero-demo"><ClaimDemo compact /></div>
           </div>
