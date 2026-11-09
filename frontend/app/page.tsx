@@ -49,32 +49,31 @@ export default function LandingPage() {
       </header>
 
       <main>
-        {/* HERO: full bleed. Headline left, live claim check right on wide screens; stacked below 1100px. */}
+        {/* HERO: full bleed. Headline with the live claim card beside the end of its lines; stacked below 1100px. */}
         <section id="hero" style={{ position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', minHeight: 'calc(100svh - 60px)' }}>
           <div aria-hidden="true" style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '80px 80px', opacity: 0.3, pointerEvents: 'none' }} />
           <div className="hero-grid" style={{ position: 'relative', flex: 1, padding: `clamp(24px, 4svh, 56px) ${gutter}` }}>
-            <div className="hero-copy">
+            <div className="hero-head">
               <div style={{ ...eyebrow, marginBottom: 'var(--space-3)' }}>[Interview coach]</div>
-              <h1 className="hero-title" style={{ ...bigTitle, marginBottom: 'clamp(20px, 4svh, 48px)' }}>
+              <h1 className="hero-title" style={bigTitle}>
                 <span className="h-line"><span>Prep</span></span>
                 <span className="h-line"><span>smarter.</span></span>
                 <span className="h-line" style={{ color: 'var(--lime)' }}><span>Not generic.</span></span>
               </h1>
-              <div className="hero-actions" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', columnGap: 'clamp(24px, 3vw, 48px)', rowGap: 'var(--space-3)' }}>
-                <p style={{ fontSize: '16px', color: 'var(--text-2)', maxWidth: '460px', lineHeight: 1.7 }}>
-                  Mock interviews built from your own syllabus, with every answer checked claim by claim. Made for computer science students preparing for campus placements.
-                </p>
-                <div className="hero-buttons" style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
-                  <Link href="/signup" className="btn-primary" style={primary}>Start preparing →</Link>
-                  <Link href="#how" className="landing-link" style={secondary}>See how it works</Link>
-                  <TryLink className="landing-link" style={secondary}>Try a question ↓</TryLink>
-                </div>
-              </div>
-              <p style={{ ...mono, fontSize: 'clamp(13px, 1.1vw, 16px)', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text)', lineHeight: 1.7, marginTop: 'clamp(16px, 2.5svh, 28px)' }}>
-                <span style={{ whiteSpace: 'nowrap' }}>For campus placements</span> <span aria-hidden="true" style={{ color: 'var(--lime)', padding: '0 .6em' }}>·</span> <span style={{ whiteSpace: 'nowrap' }}>Technical rounds</span> <span aria-hidden="true" style={{ color: 'var(--lime)', padding: '0 .6em' }}>·</span> <span style={{ whiteSpace: 'nowrap' }}>HR rounds</span> <span aria-hidden="true" style={{ color: 'var(--lime)', padding: '0 .6em' }}>·</span> <span style={{ whiteSpace: 'nowrap' }}>System design</span>
-              </p>
             </div>
             <div className="hero-demo"><ClaimDemo compact /></div>
+            <div className="hero-actions">
+              <p style={{ fontSize: '16px', color: 'var(--text-2)', maxWidth: '460px', lineHeight: 1.7 }}>
+                Mock interviews built from your own syllabus, with every answer checked claim by claim.
+              </p>
+              <div className="hero-buttons">
+                <Link href="/signup" className="btn-primary" style={primary}>Start preparing →</Link>
+                <TryLink className="btn-secondary" style={secondary}>Try a question ↓</TryLink>
+              </div>
+            </div>
+            <p className="hero-who" style={{ ...mono, fontSize: 'clamp(13px, 1.1vw, 16px)', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text)', lineHeight: 1.7 }}>
+              <span style={{ whiteSpace: 'nowrap' }}>For campus placements</span> <span aria-hidden="true" style={{ color: 'var(--lime)', padding: '0 .6em' }}>·</span> <span style={{ whiteSpace: 'nowrap' }}>Technical rounds</span> <span aria-hidden="true" style={{ color: 'var(--lime)', padding: '0 .6em' }}>·</span> <span style={{ whiteSpace: 'nowrap' }}>HR rounds</span> <span aria-hidden="true" style={{ color: 'var(--lime)', padding: '0 .6em' }}>·</span> <span style={{ whiteSpace: 'nowrap' }}>System design</span>
+            </p>
           </div>
           <div aria-hidden="true" className="ticker" style={{ position: 'relative', borderTop: '1px solid var(--border)', height: '44px', display: 'flex', alignItems: 'center', background: 'var(--bg)' }}>
             <div className="ticker-track">

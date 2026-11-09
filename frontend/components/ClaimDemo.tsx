@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 
@@ -18,35 +18,44 @@ const CLAIMS: { text: string; verdict: Verdict; critical?: boolean }[] = [
   { text: 'It is usually fast in practice.', verdict: 'unverifiable' },
 ]
 const FINAL_SCORE = 3.5
-const STEP_MS = 1100
+const STEP_MS = 900
 
 export default function ClaimDemo({ compact = false }: { compact?: boolean }) {
   // The server renders the finished state, so the page reads correctly without script.
   const [shown, setShown] = useState(CLAIMS.length)
   const [score, setScore] = useState(FINAL_SCORE)
+  const root = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let dead = false
-    const timers: ReturnType<typeof setTimeout>[] = []
-    const later = (fn: () => void, ms: number) => { timers.push(setTimeout(() => { if (!dead) fn() }, ms)) }
+    const el = root.current
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return
+    let timers: ReturnType<typeof setTimeout>[] = []
+    const stop = () => { timers.forEach(clearTimeout); timers = [] }
+    const later = (fn: () => void, ms: number) => { timers.push(setTimeout(fn, ms)) }
 
+    // The first verdict shows at once, so the card is never empty.
     const run = () => {
-      setShown(0); setScore(0)
-      CLAIMS.forEach((_, i) => later(() => setShown(i + 1), STEP_MS * (i + 1)))
-      const countStart = STEP_MS * (CLAIMS.length + 1)
+      setShown(1); setScore(0)
+      for (let i = 1; i < CLAIMS.length; i++) later(() => setShown(i + 1), STEP_MS * i)
+      const countStart = STEP_MS * (CLAIMS.length - 1) + 150
       for (let s = 1; s <= 7; s++) later(() => setScore(FINAL_SCORE * s / 7), countStart + s * 90)
       later(run, countStart + 7 * 90 + 4500)
     }
-    run()
-    return () => { dead = true; timers.forEach(clearTimeout) }
+    // Off screen (or tab hidden) the card rests on its finished state.
+    const io = new IntersectionObserver(([e]) => {
+      stop()
+      if (e.isIntersecting) run()
+      else { setShown(CLAIMS.length); setScore(FINAL_SCORE) }
+    }, { threshold: 0.1 })
+    io.observe(el)
+    return () => { stop(); io.disconnect() }
   }, [])
 
   const done = shown >= CLAIMS.length
   const tally = (v: Verdict) => CLAIMS.slice(0, shown).filter(c => c.verdict === v).length
 
   return (
-    <div role="group" aria-label="Sample of a checked answer" className={compact ? 'claim-demo-compact' : undefined} style={{ background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 32px)' }}>
+    <div ref={root} role="group" aria-label="Sample of a checked answer" className={compact ? 'claim-demo-compact' : undefined} style={{ background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 32px)' }}>
       <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-2)' }}>SAMPLE, NOT A REAL SESSION</div>
       <p style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: 'var(--space-3)' }}>Explain how Dijkstra&apos;s algorithm works and what it needs from the graph.</p>
 
@@ -66,9 +75,13 @@ export default function ClaimDemo({ compact = false }: { compact?: boolean }) {
       </ol>
 
       <div aria-live="off" style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)', flexWrap: 'wrap', borderTop: '1px solid var(--border-2)', paddingTop: 'var(--space-3)' }}>
-        <span style={{ ...mono, fontSize: compact ? '44px' : '64px', fontWeight: 700, lineHeight: 1, color: done ? '#ef4444' : 'var(--text-2)', fontVariantNumeric: 'tabular-nums' }}>
-          {score.toFixed(1)}<span style={{ fontSize: '16px', color: 'var(--text-2)' }}>/10</span>
-        </span>
+        {done ? (
+          <span style={{ ...mono, fontSize: compact ? '44px' : '64px', fontWeight: 700, lineHeight: 1, color: '#ef4444', fontVariantNumeric: 'tabular-nums' }}>
+            {score.toFixed(1)}<span style={{ fontSize: '16px', color: 'var(--text-2)' }}>/10</span>
+          </span>
+        ) : (
+          <span style={{ ...mono, fontSize: '13px', letterSpacing: '.1em', color: 'var(--text-2)', minHeight: compact ? '44px' : '64px', display: 'inline-flex', alignItems: 'center' }}>CHECKING CLAIMS...</span>
+        )}
         <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', lineHeight: 1.7 }}>
           {tally('correct')} correct / {tally('incorrect')} incorrect / {tally('unverifiable')} unverifiable
           {done && <><br />Capped by one critical error.</>}
