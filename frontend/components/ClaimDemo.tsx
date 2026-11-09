@@ -20,7 +20,7 @@ const CLAIMS: { text: string; verdict: Verdict; critical?: boolean }[] = [
 const FINAL_SCORE = 3.5
 const STEP_MS = 1100
 
-export default function ClaimDemo() {
+export default function ClaimDemo({ compact = false }: { compact?: boolean }) {
   // The server renders the finished state, so the page reads correctly without script.
   const [shown, setShown] = useState(CLAIMS.length)
   const [score, setScore] = useState(FINAL_SCORE)
@@ -46,7 +46,7 @@ export default function ClaimDemo() {
   const tally = (v: Verdict) => CLAIMS.slice(0, shown).filter(c => c.verdict === v).length
 
   return (
-    <div role="group" aria-label="Sample of a checked answer" style={{ background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'clamp(20px, 2.5vw, 40px)' }}>
+    <div role="group" aria-label="Sample of a checked answer" className={compact ? 'claim-demo-compact' : undefined} style={{ background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'clamp(16px, 2vw, 32px)' }}>
       <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-2)' }}>SAMPLE, NOT A REAL SESSION</div>
       <p style={{ fontSize: '16px', lineHeight: 1.5, marginBottom: 'var(--space-3)' }}>Explain how Dijkstra&apos;s algorithm works and what it needs from the graph.</p>
 
@@ -66,7 +66,7 @@ export default function ClaimDemo() {
       </ol>
 
       <div aria-live="off" style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-3)', flexWrap: 'wrap', borderTop: '1px solid var(--border-2)', paddingTop: 'var(--space-3)' }}>
-        <span style={{ ...mono, fontSize: '64px', fontWeight: 700, lineHeight: 1, color: done ? '#ef4444' : 'var(--text-2)', fontVariantNumeric: 'tabular-nums' }}>
+        <span style={{ ...mono, fontSize: compact ? '44px' : '64px', fontWeight: 700, lineHeight: 1, color: done ? '#ef4444' : 'var(--text-2)', fontVariantNumeric: 'tabular-nums' }}>
           {score.toFixed(1)}<span style={{ fontSize: '16px', color: 'var(--text-2)' }}>/10</span>
         </span>
         <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', lineHeight: 1.7 }}>

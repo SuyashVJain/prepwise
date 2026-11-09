@@ -49,26 +49,29 @@ export default function LandingPage() {
       </header>
 
       <main>
-        {/* HERO: full bleed, fills the first screen */}
+        {/* HERO: full bleed. Headline left, live claim check right on wide screens; stacked below 1100px. */}
         <section id="hero" style={{ position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', minHeight: 'calc(100svh - 60px)' }}>
           <div aria-hidden="true" style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '80px 80px', opacity: 0.3, pointerEvents: 'none' }} />
-          <div style={{ position: 'relative', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: `clamp(24px, 4svh, 56px) ${gutter}` }}>
-            <div style={{ ...eyebrow, marginBottom: 'var(--space-3)' }}>[Interview coach]</div>
-            <h1 className="hero-title" style={{ ...bigTitle, fontSize: 'clamp(40px, min(13vw, calc((100svh - 340px) / 2.76)), 260px)', marginBottom: 'clamp(20px, 4svh, 48px)' }}>
-              <span className="h-line"><span>Prep</span></span>
-              <span className="h-line"><span>smarter.</span></span>
-              <span className="h-line" style={{ color: 'var(--lime)' }}><span>Not generic.</span></span>
-            </h1>
-            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', columnGap: 'clamp(24px, 4vw, 64px)', rowGap: 'var(--space-3)' }}>
-              <p style={{ fontSize: '16px', color: 'var(--text-2)', maxWidth: '460px', lineHeight: 1.7 }}>
-                Mock interviews built from your own syllabus, with every answer checked claim by claim. Made for computer science students preparing for campus placements.
-              </p>
-              <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
-                <Link href="/signup" className="btn-primary" style={primary}>Start preparing →</Link>
-                <Link href="#how" className="landing-link" style={secondary}>See how it works</Link>
-                <TryLink className="landing-link" style={secondary}>Try a question ↓</TryLink>
+          <div className="hero-grid" style={{ position: 'relative', flex: 1, padding: `clamp(24px, 4svh, 56px) ${gutter}` }}>
+            <div className="hero-copy">
+              <div style={{ ...eyebrow, marginBottom: 'var(--space-3)' }}>[Interview coach]</div>
+              <h1 className="hero-title" style={{ ...bigTitle, marginBottom: 'clamp(20px, 4svh, 48px)' }}>
+                <span className="h-line"><span>Prep</span></span>
+                <span className="h-line"><span>smarter.</span></span>
+                <span className="h-line" style={{ color: 'var(--lime)' }}><span>Not generic.</span></span>
+              </h1>
+              <div className="hero-actions" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', columnGap: 'clamp(24px, 3vw, 48px)', rowGap: 'var(--space-3)' }}>
+                <p style={{ fontSize: '16px', color: 'var(--text-2)', maxWidth: '460px', lineHeight: 1.7 }}>
+                  Mock interviews built from your own syllabus, with every answer checked claim by claim. Made for computer science students preparing for campus placements.
+                </p>
+                <div className="hero-buttons" style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
+                  <Link href="/signup" className="btn-primary" style={primary}>Start preparing →</Link>
+                  <Link href="#how" className="landing-link" style={secondary}>See how it works</Link>
+                  <TryLink className="landing-link" style={secondary}>Try a question ↓</TryLink>
+                </div>
               </div>
             </div>
+            <div className="hero-demo"><ClaimDemo compact /></div>
           </div>
           <div aria-hidden="true" className="ticker" style={{ position: 'relative', borderTop: '1px solid var(--border)', height: '44px', display: 'flex', alignItems: 'center', background: 'var(--bg)' }}>
             <div className="ticker-track">
@@ -81,16 +84,15 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* THE CHECK: wide split, card runs to the gutter */}
-        <section className="reveal" style={{ padding: `clamp(48px, 6vw, 80px) ${gutter} clamp(80px, 12vw, 180px)`, borderTop: '1px solid var(--border)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: 'clamp(32px, 5vw, 96px)', alignItems: 'end' }}>
+        {/* THE CHECK: the explanation only; the live card is in the hero */}
+        <section className="reveal" style={{ padding: `clamp(56px, 8vw, 120px) ${gutter} clamp(72px, 10vw, 160px)`, borderTop: '1px solid var(--border)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: 'clamp(24px, 5vw, 96px)', alignItems: 'end' }}>
           <div>
-            <div style={eyebrow}>[02 - The check, live]</div>
-            <h2 style={{ ...bigTitle, fontSize: 'clamp(40px, 7.5vw, 128px)', marginBottom: 'var(--space-4)' }}>Every claim<br />gets a<br />verdict.</h2>
-            <p style={{ fontSize: '16px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '46ch' }}>
-              Your answer is split into claims. Each one is marked correct, incorrect or unverifiable before a score is given, and one confident, critical mistake caps the score however fluent the rest sounds.
-            </p>
+            <div style={eyebrow}>[02 - The check]</div>
+            <h2 style={{ ...bigTitle, fontSize: 'clamp(40px, 7.5vw, 128px)' }}>Every claim<br />gets a<br />verdict.</h2>
           </div>
-          <ClaimDemo />
+          <p style={{ fontSize: 'clamp(16px, 1.5vw, 22px)', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '46ch' }}>
+            Your answer is split into claims. Each one is marked correct, incorrect or unverifiable before a score is given, and one confident, critical mistake caps the score however fluent the rest sounds.
+          </p>
         </section>
 
         {/* TRY IT: one real question, no account */}
