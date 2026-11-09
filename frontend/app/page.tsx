@@ -4,6 +4,7 @@ import Logo from '@/components/Logo'
 import Reveal from '@/components/Reveal'
 import ClaimDemo from '@/components/ClaimDemo'
 import TryDemo from '@/components/TryDemo'
+import TryLink from '@/components/TryLink'
 import StickySignup from '@/components/StickySignup'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
@@ -41,6 +42,7 @@ export default function LandingPage() {
       <header style={{ position: 'sticky', top: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-3)', padding: `0 ${gutter}`, height: '60px', borderBottom: '1px solid var(--border)', background: 'var(--bg)' }}>
         <Link href="/" aria-label="Prepwise home"><Logo size="sm" /></Link>
         <nav aria-label="Main" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(12px, 2vw, 24px)', whiteSpace: 'nowrap' }}>
+          <TryLink className="landing-link hide-mobile" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }}>Try it</TryLink>
           <Link href="/login" className="landing-link" style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
           <StickySignup />
         </nav>
@@ -64,6 +66,7 @@ export default function LandingPage() {
               <div style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
                 <Link href="/signup" className="btn-primary" style={primary}>Start preparing →</Link>
                 <Link href="#how" className="landing-link" style={secondary}>See how it works</Link>
+                <TryLink className="landing-link" style={secondary}>Try a question ↓</TryLink>
               </div>
             </div>
           </div>
@@ -91,7 +94,7 @@ export default function LandingPage() {
         </section>
 
         {/* TRY IT: one real question, no account */}
-        <section id="try" className="reveal" style={{ borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `clamp(48px, 7vw, 112px) ${gutter}` }}>
+        <section id="try" className="reveal" style={{ scrollMarginTop: '60px', borderTop: '1px solid var(--border)', background: 'var(--bg2)', padding: `clamp(48px, 7vw, 112px) ${gutter}` }}>
           <div style={eyebrow}>[Try it without signing up]</div>
           <h2 style={{ ...bigTitle, fontSize: 'clamp(32px, 5vw, 72px)', marginBottom: 'var(--space-5)' }}>Try one question.</h2>
           <TryDemo />
