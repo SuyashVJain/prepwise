@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Logo from '@/components/Logo'
 import Reveal from '@/components/Reveal'
-import ClaimDemo from '@/components/ClaimDemo'
 import TryDemo from '@/components/TryDemo'
 import TryLink from '@/components/TryLink'
 import ShotFigure from '@/components/ShotFigure'
@@ -52,19 +51,15 @@ export default function LandingPage() {
                 <span className="h-line" style={{ color: 'var(--lime)' }}><span>Not generic.</span></span>
               </h1>
             </div>
-            <div className="hero-demo"><ClaimDemo compact /></div>
             <div className="hero-actions">
               <p style={{ fontSize: '16px', color: 'var(--text-2)', maxWidth: '460px', lineHeight: 1.7 }}>
-                Mock interviews built from your own syllabus, with every answer checked claim by claim.
+                Mock interviews built from your own syllabus, with every answer fact-checked claim by claim. For CS students preparing for campus placements.
               </p>
               <div className="hero-buttons">
                 <Link href="/signup" className="btn-primary" style={primary}>Start preparing →</Link>
                 <TryLink className="btn-secondary" style={secondary}>Try a question ↓</TryLink>
               </div>
             </div>
-            <p className="hero-who" style={{ ...mono, fontSize: 'clamp(13px, 1.1vw, 16px)', fontWeight: 500, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text)', lineHeight: 1.7 }}>
-              <span style={{ whiteSpace: 'nowrap' }}>For campus placements</span> <span aria-hidden="true" style={{ color: 'var(--lime)', padding: '0 .6em' }}>·</span> <span style={{ whiteSpace: 'nowrap' }}>Technical rounds</span> <span aria-hidden="true" style={{ color: 'var(--lime)', padding: '0 .6em' }}>·</span> <span style={{ whiteSpace: 'nowrap' }}>HR rounds</span> <span aria-hidden="true" style={{ color: 'var(--lime)', padding: '0 .6em' }}>·</span> <span style={{ whiteSpace: 'nowrap' }}>System design</span>
-            </p>
           </div>
           <div aria-hidden="true" className="ticker" style={{ position: 'relative', borderTop: '1px solid var(--border)', height: '44px', display: 'flex', alignItems: 'center', background: 'var(--bg)' }}>
             <div className="ticker-track">
