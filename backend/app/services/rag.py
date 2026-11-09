@@ -6,13 +6,13 @@ import pymupdf
 import re
 import numpy as np
 import faiss
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 from collections import OrderedDict
 from typing import Optional
 import random
 
 print("Loading embedding model...")
-embedder = SentenceTransformer('all-MiniLM-L6-v2')
+embedder = TextEmbedding('sentence-transformers/all-MiniLM-L6-v2')
 print("Embedding model loaded.")
 
 DIMENSION = 384
@@ -47,7 +47,7 @@ class SyllabusRAG:
     Full RAG pipeline:
     1. Ingest PDF or topic list
     2. Chunk into meaningful segments
-    3. Embed with sentence-transformers (all-MiniLM-L6-v2)
+    3. Embed with fastembed (all-MiniLM-L6-v2, ONNX)
     4. Store in FAISS IndexFlatL2
     5. Retrieve top-k semantically relevant chunks for any query
     """
@@ -59,8 +59,9 @@ class SyllabusRAG:
         self.index: Optional[faiss.IndexFlatL2] = None
 
     def _embed(self, texts: list[str]) -> np.ndarray:
-        vectors = embedder.encode(texts, convert_to_numpy=True, show_progress_bar=False)
-        return vectors.astype('float32')
+        vectors = np.array(list(embedder.embed(texts)), dtype='float32')
+        # Unit length, as the sentence-transformers model produced, so stored vectors stay compatible.
+        return vectors / np.maximum(np.linalg.norm(vectors, axis=1, keepdims=True), 1e-12)
 
     def _build_index(self, vectors: Optional[np.ndarray] = None):
         if not self.chunks:

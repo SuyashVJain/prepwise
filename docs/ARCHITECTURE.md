@@ -85,8 +85,8 @@ flowchart TD
 | Frontend | Next.js 16, React, TypeScript, Tailwind CSS v4 |
 | Backend | FastAPI, Python 3.11 |
 | Language model | Groq, default model `openai/gpt-oss-120b` (set with `LLM_MODEL`) |
-| Embeddings and search | sentence-transformers `all-MiniLM-L6-v2`, FAISS |
+| Embeddings and search | fastembed (ONNX) `all-MiniLM-L6-v2`, FAISS |
 | Documents | PyMuPDF, python-docx |
 | Auth and data | Supabase (Postgres, row level security) |
 | Voice | faster-whisper and Kokoro locally; Groq Whisper and edge-tts in the cloud |
-| Deploy | Vercel (frontend), Railway (backend) |
+| Deploy | Vercel (frontend), Render (backend) |
