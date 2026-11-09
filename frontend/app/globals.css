@@ -169,7 +169,7 @@ summary { min-height: 40px; }
 .hero-buttons { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .hero-who { grid-area: who; margin-top: var(--space-2); }
 .claim-demo-compact p, .claim-demo-compact li span:first-child { font-size: 15px !important; }
-.claim-demo-compact ol li { padding: 3px 0 3px 12px !important; }
+.claim-demo-compact ol li { padding: 2px 0 2px 12px !important; }
 @media (min-width: 1100px) {
   .hero-grid { grid-template-columns: minmax(0, 1fr) clamp(380px, 26vw, 520px); grid-template-areas: "head demo" "actions demo" "who demo"; grid-template-rows: auto auto auto; column-gap: clamp(16px, 2vw, 32px); row-gap: clamp(14px, 2.4svh, 28px); }
   .hero-title { font-size: clamp(40px, min(10.6vw, calc((100svh - 375px) / 2.85)), 240px); white-space: nowrap; margin-top: 0; }
