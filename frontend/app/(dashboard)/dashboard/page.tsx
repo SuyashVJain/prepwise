@@ -217,55 +217,28 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* sessions table */}
-              <div style={{ ...cardBase }}>
-                <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
-                  <h2 className="sec-title">Recent sessions</h2>
+              {/* recent sessions: each row opens the replay */}
+              <div style={{ ...cardBase, padding: '24px 24px 8px' }}>
+                <h2 className="sec-title">Recent sessions</h2>
+                <div className="srow-head" aria-hidden="true">
+                  <span>Date</span><span>Type</span><span>Target</span><span>Score</span><span>Weak topics</span>
                 </div>
-                {sessions.length === 0 ? (
-                  <p style={{ padding: '16px 24px', fontSize: '15px', color: 'var(--text-2)' }}>Finished sessions will be listed here.</p>
-                ) : (
-                  <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', minWidth: '560px', borderCollapse: 'collapse' }}>
-                    <thead>
-                      <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                        {['DATE', 'TYPE', 'TARGET', 'SCORE', 'QUESTIONS', 'WEAK TOPICS'].map(h => (
-                          <th key={h} style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', padding: '10px 20px', textAlign: 'left', fontWeight: 400 }}>{h}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sessions.map((s, i) => (
-                        <tr key={s.id} style={{ borderBottom: i < sessions.length - 1 ? '1px solid var(--border)' : 'none', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
-                          <td style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', padding: '14px 20px' }}>
-                            {new Date(s.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                          </td>
-                          <td style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text)', padding: '14px 20px', textTransform: 'capitalize' }}>
-                            {s.interview_type?.replace('_', ' ') || '-'}
-                          </td>
-                          <td style={{ fontSize: '12px', color: 'var(--text-2)', padding: '14px 20px', textTransform: 'uppercase' }}>
-                            {s.target_company || '-'}
-                          </td>
-                          <td style={{ ...mono, fontSize: '13px', fontWeight: 700, color: scoreColor(s.score_avg || 0), padding: '14px 20px' }}>
-                            {s.score_avg || 0}/10
-                          </td>
-                          <td style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', padding: '14px 20px' }}>
-                            {s.total_questions || 0}
-                          </td>
-                          <td style={{ padding: '14px 20px' }}>
-                            <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-                              {(s.weak_topics || []).slice(0, 2).map((t: string) => (
-                                <span key={t} style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '2px 6px', border: '1px solid var(--border-2)', color: 'var(--text-2)' }}>{t}</span>
-                              ))}
-                              {(s.weak_topics || []).length > 2 && (
-                                <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>+{(s.weak_topics?.length ?? 0) - 2}</span>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table></div>
-                )}
+                {sessions.map(s => {
+                  const topics = s.weak_topics || []
+                  const shown = topics.slice(0, 2).join(', ')
+                  return (
+                    <Link key={s.id} href={`/history?session=${encodeURIComponent(s.id)}`} className="srow">
+                      <span className="sc-date">{new Date(s.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                      <span className="sc-type">{(s.interview_type || '-').replace('_', ' ')}</span>
+                      <span className="sc-target">{s.target_company || '-'}</span>
+                      <span className="sc-score" style={{ color: scoreColor(s.score_avg || 0) }}>{s.score_avg || 0}/10</span>
+                      <span className="sc-topics" title={topics.join(', ')}>
+                        {shown || <span style={{ color: 'var(--text-2)' }}>None</span>}
+                        {topics.length > 2 && <span style={{ color: 'var(--text-2)' }}> +{topics.length - 2} more</span>}
+                      </span>
+                    </Link>
+                  )
+                })}
               </div>
                 </>
               )}

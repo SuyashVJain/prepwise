@@ -280,7 +280,7 @@ html.snap { scroll-padding-top: var(--hdr); }
 }
 @media (max-width: 639px) {
   button, summary, select, input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), a.btn-primary { min-height: 44px; }
-  a[href]:not(p a):not(.skip) { display: inline-flex; align-items: center; min-height: 44px; }
+  a[href]:not(p a):not(.skip):not(.srow) { display: inline-flex; align-items: center; min-height: 44px; }
   summary { display: flex; align-items: center; }
 }
 @media (max-width: 639px) { p a[href] { padding-block: 14px; } }
@@ -325,3 +325,21 @@ button[aria-pressed="true"]::after, div[role="button"][aria-pressed="true"]::aft
 .stat-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-bottom: 24px; }
 @media (min-width: 760px) { .stat-row { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 639px) { .stat-row { gap: 16px; } }
+
+/* Recent sessions: plain rows, each one a link; stacked on phones. */
+.srow-head, .srow { display: grid; grid-template-columns: 130px minmax(0, 1fr) minmax(0, 1fr) 80px minmax(0, 2fr); gap: 16px; align-items: center; }
+.srow-head { padding: 8px 0 12px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+.srow { min-height: 56px; padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--text); font-size: 15px; transition: background-color .15s; }
+.srow:last-child { border-bottom: none; }
+.srow:hover { background: rgba(255, 255, 255, .03); }
+.srow .sc-date { white-space: nowrap; }
+.srow .sc-type { text-transform: capitalize; }
+.srow .sc-target { text-transform: capitalize; color: var(--text-2); }
+.srow .sc-score { font-weight: 700; }
+.srow .sc-topics { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
+@media (max-width: 759px) {
+  .srow-head { display: none; }
+  .srow { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "date score" "type topics"; row-gap: 4px; padding: 12px 0; }
+  .srow .sc-date { grid-area: date; } .srow .sc-score { grid-area: score; } .srow .sc-type { grid-area: type; font-size: 14px; color: var(--text-2); } .srow .sc-target { display: none; }
+  .srow .sc-topics { grid-area: topics; font-size: 14px; color: var(--text-2); text-align: right; }
+}
