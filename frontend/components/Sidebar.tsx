@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Logo from '@/components/Logo'
 import { NAME_EVENT } from '@/lib/profileEvents'
-import { DashboardIcon, NewSessionIcon, StudyIcon, TutorIcon, HistoryIcon, ProgressIcon, SettingsIcon } from '@/components/icons'
+import { DashboardIcon, NewSessionIcon, StudyIcon, TutorIcon, HistoryIcon, ProgressIcon, SettingsIcon, LogoutIcon } from '@/components/icons'
 
 type NavItem = { label: string; href: string; icon: () => React.JSX.Element }
 
@@ -95,29 +95,31 @@ export default function Sidebar() {
             </div>
           ))}
         </nav>
-        <nav aria-label="Account" className="nav-account">
-          {navLink(SETTINGS)}
-        </nav>
-        <div style={{ padding: '16px 24px', borderTop: '1px solid var(--border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-            <div aria-hidden="true" style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg3)', border: '1px solid var(--border-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', ...mono, fontSize: '12px', color: 'var(--lime)', fontWeight: 700, flexShrink: 0 }}>
-              {loaded ? (name?.[0]?.toUpperCase() || 'U') : ''}
-            </div>
-            <div style={{ minWidth: 0 }}>
+        <div className="nav-bottom">
+          <nav aria-label="Account" className="nav-account">
+            {navLink(SETTINGS)}
+          </nav>
+          {/* The user block is one link to Settings, where the name can be changed. */}
+          <Link href="/settings" className="nav-user" onClick={() => setOpen(false)} aria-label={loaded ? `${name || 'Student'}, account settings` : 'Account settings'}>
+            <span aria-hidden="true" className="nav-avatar">{loaded ? (name?.[0]?.toUpperCase() || 'U') : ''}</span>
+            <span className="nav-user-text">
               {loaded ? (
                 <>
-                  <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text)', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name || 'Student'}</div>
-                  <div style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{university || '-'}</div>
+                  <span className="nav-user-name">{name || 'Student'}</span>
+                  <span className="nav-user-sub">{university || '-'}</span>
                 </>
               ) : (
-                <div aria-hidden="true">
-                  <div className="skeleton" style={{ width: '96px', height: '14px', marginBottom: '6px' }} />
-                  <div className="skeleton" style={{ width: '56px', height: '11px' }} />
-                </div>
+                <span aria-hidden="true" className="nav-user-skeleton">
+                  <span className="skeleton" style={{ display: 'block', width: '96px', height: '14px', marginBottom: '6px' }} />
+                  <span className="skeleton" style={{ display: 'block', width: '56px', height: '11px' }} />
+                </span>
               )}
-            </div>
-          </div>
-          <button type="button" onClick={signOut} className="signout">Sign out</button>
+            </span>
+          </Link>
+          <button type="button" onClick={signOut} className="nav-link nav-signout">
+            <LogoutIcon />
+            <span>Sign out</span>
+          </button>
         </div>
       </aside>
     </>
