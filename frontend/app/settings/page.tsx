@@ -117,7 +117,7 @@ export default function SettingsPage() {
 
             <section aria-label="Session defaults" style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '24px', marginBottom: '16px' }}>
               <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '4px' }}>SESSION DEFAULTS</div>
-              <p style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: '20px' }}>Used to pre-fill the new session screen. Saved in this browser only.</p>
+              <p style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text-2)', marginBottom: '20px' }}>Used to pre-fill the new session screen. Saved in this browser only.</p>
               <span style={label}>Interview type</span>
               <div role="group" aria-label="Interview type" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
                 {Object.entries(TYPES).map(([id, name]) => (
