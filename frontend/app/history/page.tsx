@@ -177,6 +177,7 @@ export default function HistoryPage() {
             <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '24px' }}>
               {formatDate(selected.created_at)} · {typeName(selected.interview_type)} · AVERAGE {selected.score_avg || 0}/10
             </p>
+            <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '24px', marginTop: '-12px' }}>Scores come from a language model. Treat them as a guide.</p>
             {loadingQuestions ? (
               <div role="status" aria-label="Loading" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}><Skeleton height={110} /><Skeleton height={110} /></div>
             ) : questions.length === 0 ? (

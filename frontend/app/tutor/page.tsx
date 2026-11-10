@@ -361,7 +361,7 @@ export default function TutorPage() {
           </div>
           <p style={{ fontSize: '13px', color: syllabus ? 'var(--lime)' : 'var(--text-3)', marginBottom: '32px' }}>
             {!syllabusChecked ? 'CHECKING YOUR SYLLABUS...'
-              : syllabus ? `✓ ${syllabus.name} · ${syllabus.topics.length} TOPICS · ${syllabus.raw_chunks.length} CHUNKS`
+              : syllabus ? `✓ ${syllabus.name} · ${syllabus.topics.length} TOPICS · ${syllabus.raw_chunks.length} SECTIONS`
                 : 'NO SYLLABUS UPLOADED YET. ADD ONE IN ONBOARDING TO USE THIS MODE.'}
           </p>
 
@@ -416,7 +416,7 @@ export default function TutorPage() {
               {sessionTitle}
             </h1>
             <div style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', color: 'var(--text-2)', marginTop: 'var(--space-2)', textTransform: 'uppercase' }}>
-              {subject} · {mode === 'documents' ? `YOUR DOCUMENTS${docsInfo ? ` (${docsInfo.chunks} CHUNKS)` : ''}` : 'GENERAL KNOWLEDGE'}
+              {subject} · {mode === 'documents' ? `YOUR DOCUMENTS${docsInfo ? ` (${docsInfo.chunks} SECTIONS)` : ''}` : 'GENERAL KNOWLEDGE'}
             </div>
           </div>
           <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>

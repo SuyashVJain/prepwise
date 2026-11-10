@@ -640,7 +640,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
           {syllabus ? (
             <p style={{ fontSize: '13px', color: 'var(--lime)', marginBottom: '32px' }}>
-              ✓ {syllabus.name} · {(syllabus.topics || []).length} TOPICS · {(syllabus.raw_chunks || []).length} CHUNKS INDEXED
+              ✓ {syllabus.name} · {(syllabus.topics || []).length} TOPICS READY
             </p>
           ) : (
             <div style={{ ...mono, fontSize: '12px', color: '#f59e0b', letterSpacing: '.06em', marginBottom: '32px', padding: '12px 16px', border: '1px solid rgba(245,158,11,0.3)', background: 'rgba(245,158,11,0.08)' }}>
@@ -795,7 +795,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             </div>
 
             {result && (
-              <div ref={scoreRef} style={{ margin: '0 32px 32px', padding: '20px', border: '1px solid var(--lime-border)', background: 'var(--lime-dim)' }}>
+              <div ref={scoreRef} role="status" aria-live="polite" style={{ margin: '0 32px 32px', padding: '20px', border: '1px solid var(--lime-border)', background: 'var(--lime-dim)' }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', flexWrap: 'wrap', marginBottom: '12px' }}>
                   <span style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
                     <span style={{ fontSize: '56px', fontWeight: 700, color: scoreColor(result.score), lineHeight: 1, ...mono }}>{result.score}</span>
@@ -811,6 +811,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                 </div>
                 <p style={{ fontSize: '14px', color: 'var(--text)', lineHeight: 1.7 }}>{result.hint}</p>
                 <ClaimsList claims={result.claims} />
+                <p style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: '12px' }}>Scores come from a language model. Treat them as a guide.</p>
               </div>
             )}
           </div>
@@ -925,6 +926,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                 ))}
               </div>
             </div>
+
+            <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: 'var(--space-3)' }}>Scores come from a language model. Treat them as a guide.</p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
               {(assessmentParts ?? [{ title: 'ASSESSMENT', text: debrief.debrief }]).map(part => (
