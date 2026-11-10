@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
-import { optionStyle, fieldStyle } from '@/lib/ui'
+import { optionStyle, fieldStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import { DEFAULTS_KEY } from '@/lib/stats'
@@ -105,13 +105,13 @@ export default function SettingsPage() {
           <div className="page-narrow">
             <PageHeader label="SETTINGS" title="Settings" />
 
-            <section aria-label="Account" style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '24px', marginBottom: '16px' }}>
+            <section aria-label="Account" style={{ ...cardBase, padding: '24px', marginBottom: '16px' }}>
               <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '20px' }}>ACCOUNT</div>
               <Row k="Email" v={email} />
               <Row k="Display name" v={name} />
             </section>
 
-            <section aria-label="Session defaults" style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '24px', marginBottom: '16px' }}>
+            <section aria-label="Session defaults" style={{ ...cardBase, padding: '24px', marginBottom: '16px' }}>
               <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '4px' }}>SESSION DEFAULTS</div>
               <p style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text-2)', marginBottom: '20px' }}>Used to pre-fill the new session screen. Saved in this browser only.</p>
               <span style={label}>Interview type</span>

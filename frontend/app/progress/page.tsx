@@ -4,12 +4,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
+import { cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import { type SessionRow, scoreColor, formatDate, formatTime, sessionsPerWeek, topicTrends } from '@/lib/stats'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
-const card: React.CSSProperties = { background: 'var(--bg2)', border: '1px solid var(--border)', padding: '24px' }
+const card: React.CSSProperties = { ...cardBase, padding: '24px' }
 const cardTitle: React.CSSProperties = { ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '20px' }
 
 export default function ProgressPage() {
@@ -69,7 +70,7 @@ export default function ProgressPage() {
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px' }}>
                   {[
                     { label: 'SESSIONS', value: String(sessions.length) },
                     { label: 'AVERAGE SCORE', value: `${avg}/10` },

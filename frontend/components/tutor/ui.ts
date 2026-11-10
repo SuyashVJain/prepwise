@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { optionStyle } from '@/lib/ui'
+import { optionStyle, cardBase } from '@/lib/ui'
 
 // Shared inline-style pieces for the tutor screens, matching the rest of the app.
 export const mono: CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
@@ -22,7 +22,7 @@ export const ghostButton: CSSProperties = {
   fontSize: '10px', letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer',
 }
 
-export const panel: CSSProperties = { background: 'var(--bg2)', border: '1px solid var(--border)' }
+export const panel: CSSProperties = cardBase
 
 export function tile(active: boolean): CSSProperties {
   return optionStyle(active)

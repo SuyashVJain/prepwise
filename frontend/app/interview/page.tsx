@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import { DEFAULTS_KEY } from '@/lib/stats'
 import PageShell from '@/components/PageShell'
-import { optionStyle } from '@/lib/ui'
+import { optionStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import MicHelp from '@/components/MicHelp'
@@ -564,7 +564,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             </p>
           )}
 
-          <details open style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '16px 20px', marginBottom: '28px' }}>
+          <details open style={{ ...cardBase, padding: '16px 24px', marginBottom: '28px' }}>
             <summary style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--lime)', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}>HOW A SESSION WORKS</summary>
             <ul style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7, paddingLeft: '20px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <li><strong style={{ color: 'var(--text)' }}>Device and browser:</strong> a laptop or desktop with Chrome or Edge. Voice answers need one of those and microphone access. Typing works in any browser.</li>
@@ -809,7 +809,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           <div style={{ ...mono, fontSize: '12px', color: 'var(--text-3)', letterSpacing: '.08em' }}>ARIA IS ANALYSING YOUR SESSION...</div>
         ) : debrief && (
           <>
-            <div data-print-card style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', flexWrap: 'wrap', background: 'var(--bg2)', border: '1px solid var(--border)', padding: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
+            <div data-print-card style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', flexWrap: 'wrap', ...cardBase, padding: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
               <ScoreRing score={debrief.avg_score} />
               <div style={{ flex: 1, minWidth: '240px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 'var(--space-2)' }}>
                 {[
@@ -835,7 +835,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             </div>
 
             {topicAverages.length > 0 && (
-              <div data-print-card style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
+              <div data-print-card style={{ ...cardBase, padding: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
                 <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-3)' }}>AVERAGE SCORE BY TOPIC</div>
                 <svg width="100%" viewBox={`0 0 560 ${topicAverages.length * 32 + 8}`} role="img" aria-label={'Average score by topic: ' + topicAverages.map(t => `${t.topic} ${t.avg}`).join(', ')}>
                   {topicAverages.map((t, i) => (
@@ -851,7 +851,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             )}
 
             {(debrief.weak_topics?.length ?? 0) > 0 && (
-              <div data-print-card style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: 'var(--space-4)', marginBottom: 'var(--space-4)' }}>
+              <div data-print-card style={{ ...cardBase, padding: 'var(--space-4)', marginBottom: 'var(--space-4)' }}>
                 <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-3)' }}>PRACTISE THESE NEXT</div>
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                   {debrief.weak_topics!.map(t => (
@@ -871,7 +871,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
               <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: '16px' }}>QUESTION BREAKDOWN</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {sessionQuestions.map((q, i) => (
-                  <div key={i} data-print-card style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
+                  <div key={i} data-print-card style={{ ...cardBase, padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ ...mono, fontSize: '11px', color: 'var(--text-2)', marginBottom: '6px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                         <span>Q{i + 1} · {q.topic}</span>

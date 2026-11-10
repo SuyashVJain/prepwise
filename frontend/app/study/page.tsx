@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import PageShell from '@/components/PageShell'
 import PageHeader from '@/components/PageHeader'
-import { optionStyle } from '@/lib/ui'
+import { optionStyle, cardBase } from '@/lib/ui'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 
 
@@ -387,7 +387,7 @@ function renderMarkdown(text: string): string {
                                 placeholder={`Ask anything across ${docs.length} document${docs.length > 1 ? 's' : ''}... (Enter to send)`}
                                 rows={2}
                                 style={{
-                                    flex: 1, background: 'var(--bg2)', border: '1px solid var(--border)', padding: '12px var(--space-3)',
+                                    flex: 1, ...cardBase, padding: '12px var(--space-3)',
                                     fontSize: '14px', color: 'var(--text)', outline: 'none', resize: 'none', lineHeight: 1.5,
                                     caretColor: 'var(--lime)', fontFamily: "'Space Grotesk', sans-serif",
                                 }}
@@ -455,7 +455,7 @@ function renderMarkdown(text: string): string {
 
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', marginBottom: '32px' }}>
                                     {quizQuestions.map((q, qi) => (
-                                        <div key={qi} style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: 'var(--space-4)' }}>
+                                        <div key={qi} style={{ ...cardBase, padding: 'var(--space-4)' }}>
                                             <div style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.08em', marginBottom: '10px' }}>Q{qi + 1}</div>
                                             <p style={{ fontSize: '15px', fontWeight: 500, color: 'var(--text)', marginBottom: 'var(--space-3)', lineHeight: 1.5 }}>{q.question}</p>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
-import { fieldStyle } from '@/lib/ui'
+import { fieldStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import Skeleton, { PageSkeleton } from '@/components/Skeleton'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
@@ -128,7 +128,7 @@ export default function HistoryPage() {
         {error && <div style={{ ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em', marginBottom: '16px' }}>{error}</div>}
 
         {!selected && (sessions.length === 0 ? (
-          <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '32px' }}>
+          <div style={{ ...cardBase, padding: '24px' }}>
             <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: '16px' }}>No sessions yet. Start your first mock interview.</div>
             <button onClick={() => router.push('/interview')}
               style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '12px 28px', fontSize: '11px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
@@ -168,7 +168,7 @@ export default function HistoryPage() {
             )}
             {visible.map(s => (
               <button key={s.id} onClick={() => openSession(s)}
-                style={{ textAlign: 'left', color: 'inherit', background: 'var(--bg2)', border: '1px solid var(--border)', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', cursor: 'pointer' }}>
+                style={{ textAlign: 'left', color: 'inherit', ...cardBase, padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', cursor: 'pointer' }}>
                 <div style={{ display: 'flex', gap: '32px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <div><div style={label}>DATE</div><div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>{formatDate(s.created_at)}</div></div>
                   <div><div style={label}>TYPE</div><div style={{ fontSize: '13px', fontWeight: 600, textTransform: 'capitalize' }}>{typeName(s.interview_type)}</div></div>
@@ -194,7 +194,7 @@ export default function HistoryPage() {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {questions.map((q, i) => (
-                  <div key={q.id} style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '20px 24px' }}>
+                  <div key={q.id} style={{ ...cardBase, padding: '16px 24px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', marginBottom: '12px' }}>
                       <div>
                         <div style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.1em', marginBottom: '6px' }}>

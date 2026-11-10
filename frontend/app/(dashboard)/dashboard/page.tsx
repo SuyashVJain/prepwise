@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
+import { cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
@@ -143,14 +144,14 @@ export default function DashboardPage() {
               </div>
 
               {/* stat cards */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px', marginBottom: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginBottom: '24px' }}>
                 {[
                   { label: 'SESSIONS DONE', value: totalSessions.toString(), suffix: '', icon: totalSessions > 0 ? '↗' : '' },
                   { label: 'AVG SCORE', value: avgScore.toString(), suffix: '/10', icon: '' },
                   { label: 'BEST STREAK', value: streak.toString(), suffix: ' DAYS', icon: '' },
                   { label: 'WEAK TOPICS', value: weakTopics.length.toString(), suffix: '', icon: weakTopics.length > 0 ? '⚠' : '' },
                 ].map(stat => (
-                  <div key={stat.label} style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '20px 20px 16px' }}>
+                  <div key={stat.label} style={{ ...cardBase, padding: '16px' }}>
                     <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '10px' }}>{stat.label}</div>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                       <span style={{ fontSize: '36px', fontWeight: 700, color: 'var(--lime)', letterSpacing: '-.02em', lineHeight: 1 }}>{stat.value}</span>
@@ -162,8 +163,8 @@ export default function DashboardPage() {
               </div>
 
               {/* charts row */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '8px', marginBottom: '24px' }}>
-                <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+                <div style={{ ...cardBase, padding: '24px' }}>
                   <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '20px' }}>PERFORMANCE OVER TIME</div>
                   {scores.length >= 2 ? (
                     <svg width="100%" viewBox={`0 0 ${chartW} ${chartH}`} style={{ overflow: 'visible' }}>
@@ -192,7 +193,7 @@ export default function DashboardPage() {
                   )}
                 </div>
 
-                <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '24px' }}>
+                <div style={{ ...cardBase, padding: '24px' }}>
                   <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '20px' }}>WEAK TOPICS ANALYSIS</div>
                   {weakTopics.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -220,7 +221,7 @@ export default function DashboardPage() {
               </div>
 
               {/* sessions table */}
-              <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)' }}>
+              <div style={{ ...cardBase }}>
                 <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
                   <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)' }}>RECENT SESSIONS</div>
                 </div>

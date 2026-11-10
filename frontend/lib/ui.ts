@@ -14,3 +14,6 @@ export const fieldStyle: CSSProperties = {
   minHeight: '44px', padding: '10px 12px', background: 'var(--bg3)', color: 'var(--text)',
   border: '1px solid var(--border-2)', borderRadius: 'var(--radius-card)', fontSize: '15px',
 }
+
+// Cards on every page: same surface, border and radius; padding is 16 or 24.
+export const cardBase: CSSProperties = { background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--radius-card)' }
