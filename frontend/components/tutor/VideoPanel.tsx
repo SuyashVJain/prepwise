@@ -30,9 +30,9 @@ function VideoCard({ video }: { video: Video }) {
       }} />
       <div style={{ minWidth: 0, flex: 1 }}>
         <div style={{ fontSize: '12px', fontWeight: 600, lineHeight: 1.3, color: 'var(--text)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{video.title}</div>
-        <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', textTransform: 'uppercase', margin: 'var(--space-1) 0' }}>{video.channel}</div>
+        <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.06em', textTransform: 'uppercase', margin: 'var(--space-1) 0' }}>{video.channel}</div>
         <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer"
-          style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', color: 'var(--lime)', textDecoration: 'none' }}>
+          style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--lime)', textDecoration: 'none' }}>
           WATCH ON YOUTUBE ↗
         </a>
       </div>
@@ -64,7 +64,7 @@ export default function VideoPanel({ subjectId, subjectName, topic }: { subjectI
     return () => { cancelled = true }
   }, [subjectName, topic, pickIds])
 
-  const note = { ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em' }
+  const note = { ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.04em' }
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
       <div style={label}>START HERE</div>

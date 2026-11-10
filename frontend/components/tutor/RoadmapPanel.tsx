@@ -23,14 +23,14 @@ export default function RoadmapPanel({ subjectId, currentTopic, startLabel, onSt
   const doneCount = topics.filter(t => progress[t.id]).length
 
   if (topics.length === 0) {
-    return <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em' }}>No roadmap for this subject yet.</p>
+    return <p style={{ fontSize: '13px', color: 'var(--text-2)', letterSpacing: '.04em' }}>No roadmap for this subject yet.</p>
   }
 
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 'var(--space-2)' }}>
         <span style={label}>ROADMAP</span>
-        <span style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', color: doneCount > 0 ? 'var(--lime)' : 'var(--text-3)' }}>
+        <span style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', color: doneCount > 0 ? 'var(--lime)' : 'var(--text-3)' }}>
           {doneCount} / {topics.length} DONE
         </span>
       </div>
@@ -48,20 +48,20 @@ export default function RoadmapPanel({ subjectId, currentTopic, startLabel, onSt
                 style={{ marginTop: '3px', accentColor: '#d4fe42', width: '14px', height: '14px', flexShrink: 0, cursor: 'pointer' }} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: '13px', fontWeight: 600, color: done ? 'var(--text-3)' : 'var(--text)', textDecoration: done ? 'line-through' : 'none' }}>
-                  <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', marginRight: '6px' }}>{String(i + 1).padStart(2, '0')}</span>
+                  <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginRight: '6px' }}>{String(i + 1).padStart(2, '0')}</span>
                   {t.title}
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-3)', lineHeight: 1.4, marginTop: '2px' }}>{t.summary}</div>
+                <div style={{ fontSize: '12px', color: 'var(--text-2)', lineHeight: 1.4, marginTop: '2px' }}>{t.summary}</div>
               </div>
               <button type="button" onClick={() => onStart(t.title)}
-                style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', padding: 'var(--space-1) var(--space-2)', cursor: 'pointer', flexShrink: 0, background: 'transparent', border: '1px solid var(--border-2)', color: current ? 'var(--lime)' : 'var(--text-2)' }}>
+                style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', padding: 'var(--space-1) var(--space-2)', cursor: 'pointer', flexShrink: 0, background: 'transparent', border: '1px solid var(--border-2)', color: current ? 'var(--lime)' : 'var(--text-2)' }}>
                 {current ? 'CURRENT' : startLabel}
               </button>
             </li>
           )
         })}
       </ol>
-      <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em', marginTop: '10px' }}>Progress is saved in this browser only.</p>
+      <p style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: '10px' }}>Progress is saved in this browser only.</p>
     </div>
   )
 }

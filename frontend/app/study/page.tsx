@@ -238,7 +238,7 @@ function renderMarkdown(text: string): string {
                     <div style={{ display: 'flex' }}>
                         {(['chat', 'quiz'] as const).map(t => (
                             <button key={t} onClick={() => setTab(t)} style={{
-                                ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase',
+                                ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase',
                                 padding: '10px var(--space-4)', background: 'transparent', border: 'none',
                                 borderBottom: `2px solid ${tab === t ? 'var(--lime)' : 'transparent'}`,
                                 color: tab === t ? 'var(--lime)' : 'var(--text-3)', cursor: 'pointer',
@@ -252,13 +252,13 @@ function renderMarkdown(text: string): string {
                 {/* DOC LIST BAR */}
                 {docs.length > 0 && (
                     <div style={{ padding: '10px var(--page-gutter)', borderBottom: '1px solid var(--border)', display: 'flex', gap: 'var(--space-2)', alignItems: 'center', flexWrap: 'wrap', flexShrink: 0, background: 'var(--bg2)' }}>
-                        <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', marginRight: 'var(--space-1)' }}>LOADED:</span>
+                        <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.08em', textTransform: 'uppercase', marginRight: 'var(--space-1)' }}>LOADED:</span>
                         {docs.map((doc, i) => (
                             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: 'var(--space-1) 10px', background: 'var(--lime-dim)', border: '1px solid var(--lime-border)' }}>
-                                <span style={{ ...mono, fontSize: '11px', color: 'var(--lime)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.name}</span>
-                                <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)' }}>{doc.wordCount.toLocaleString()}w</span>
+                                <span style={{ ...mono, fontSize: '12px', color: 'var(--lime)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.name}</span>
+                                <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>{doc.wordCount.toLocaleString()}w</span>
                                 <button onClick={() => setDocs(prev => prev.filter((_, idx) => idx !== i))}
-                                    style={{ background: 'none', border: 'none', color: 'var(--text-3)', cursor: 'pointer', ...mono, fontSize: '13px', lineHeight: 1, padding: '0 0 0 2px' }}>×</button>
+                                    style={{ background: 'none', border: 'none', color: 'var(--text-2)', cursor: 'pointer', ...mono, fontSize: '13px', lineHeight: 1, padding: '0 0 0 2px' }}>×</button>
                             </div>
                         ))}
                         <input type="file" id="doc-add" multiple style={{ display: 'none' }}
@@ -267,13 +267,13 @@ function renderMarkdown(text: string): string {
                         <label htmlFor="doc-add" style={{
                             display: 'inline-flex', alignItems: 'center', gap: '6px', padding: 'var(--space-1) 12px',
                             border: '1px dashed var(--border-2)', cursor: uploading ? 'not-allowed' : 'pointer',
-                            ...mono, fontSize: '11px', color: uploading ? 'var(--lime)' : 'var(--text-3)',
+                            ...mono, fontSize: '12px', color: uploading ? 'var(--lime)' : 'var(--text-3)',
                             letterSpacing: '.06em', textTransform: 'uppercase',
                         }}>
                             {uploading ? 'PROCESSING...' : '+ ADD MORE'}
                         </label>
                         <button onClick={clearAll} style={{
-                            ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase',
+                            ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase',
                             color: '#ef4444', background: 'none', border: '1px solid rgba(239,68,68,0.2)',
                             padding: 'var(--space-1) 10px', cursor: 'pointer', marginLeft: 'auto',
                         }}>CLEAR ALL</button>
@@ -284,7 +284,7 @@ function renderMarkdown(text: string): string {
                 {uploadProgress.length > 0 && (
                     <div style={{ padding: 'var(--space-2) var(--page-gutter)', background: 'var(--bg3)', borderBottom: '1px solid var(--border)', display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', flexShrink: 0 }}>
                         {uploadProgress.map((p, i) => (
-                            <span key={i} style={{ ...mono, fontSize: '11px', color: p.startsWith('✓') ? 'var(--lime)' : p.startsWith('✗') ? '#ef4444' : 'var(--text-3)', letterSpacing: '.06em' }}>{p}</span>
+                            <span key={i} style={{ ...mono, fontSize: '12px', color: p.startsWith('✓') ? 'var(--lime)' : p.startsWith('✗') ? '#ef4444' : 'var(--text-3)', letterSpacing: '.06em' }}>{p}</span>
                         ))}
                     </div>
                 )}
@@ -292,7 +292,7 @@ function renderMarkdown(text: string): string {
                 {/* UPLOAD ERROR */}
                 {uploadError && (
                     <div style={{ padding: 'var(--space-2) var(--page-gutter)', background: 'rgba(239,68,68,0.08)', borderBottom: '1px solid rgba(239,68,68,0.2)', flexShrink: 0 }}>
-                        <span style={{ ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em' }}>{uploadError}</span>
+                        <span style={{ ...mono, fontSize: '12px', color: '#ef4444', letterSpacing: '.06em' }}>{uploadError}</span>
                     </div>
                 )}
 
@@ -302,8 +302,8 @@ function renderMarkdown(text: string): string {
                         <div style={{ width: '100%', maxWidth: '560px', textAlign: 'center' }}>
                             <div style={{ ...mono, fontSize: '32px', color: 'var(--lime)', marginBottom: 'var(--space-3)' }}>[DOC]</div>
                             <h2 style={{ fontSize: '24px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.01em', marginBottom: 'var(--space-2)' }}>Upload your study material</h2>
-                            <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', marginBottom: '6px' }}>Select one or multiple files at once</p>
-                            <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', marginBottom: '32px' }}>PDF · DOCX · TXT · PNG · JPG</p>
+                            <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '6px' }}>Select one or multiple files at once</p>
+                            <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '32px' }}>Pdf · DOCX · TXT · PNG · JPG</p>
                             <input type="file" id="doc-upload" multiple style={{ display: 'none' }}
                                 accept=".pdf,.docx,.txt,.png,.jpg,.jpeg"
                                 onChange={e => handleFiles(e.target.files)} />
@@ -314,11 +314,11 @@ function renderMarkdown(text: string): string {
                             }}>
                                 <span style={{ fontSize: '24px' }}>↑</span>
                                 CHOOSE FILES
-                                <span style={{ fontSize: '11px', color: 'var(--text-3)', marginTop: 'var(--space-1)' }}>Hold Ctrl / Cmd to select multiple</span>
+                                <span style={{ fontSize: '12px', color: 'var(--text-2)', marginTop: 'var(--space-1)' }}>Hold Ctrl / Cmd to select multiple</span>
                             </label>
                             <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)', justifyContent: 'center' }}>
                                 {['Lecture notes', 'Textbook chapter', 'Research paper', 'Study guide', 'Past paper'].map(ex => (
-                                    <span key={ex} style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase', padding: 'var(--space-1) 10px', border: '1px solid var(--border)', color: 'var(--text-3)' }}>{ex}</span>
+                                    <span key={ex} style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: 'var(--space-1) 10px', border: '1px solid var(--border)', color: 'var(--text-2)' }}>{ex}</span>
                                 ))}
                             </div>
                         </div>
@@ -331,7 +331,7 @@ function renderMarkdown(text: string): string {
                         <div style={{ display: 'flex', gap: '6px' }}>
                             {[0, 1, 2].map(i => <div key={i} style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--lime)', animation: `bounce 1s ease-in-out ${i * 0.15}s infinite` }} />)}
                         </div>
-                        <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase' }}>PROCESSING FILES...</span>
+                        <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.08em', textTransform: 'uppercase' }}>PROCESSING FILES...</span>
                     </div>
                 )}
 
@@ -346,7 +346,7 @@ function renderMarkdown(text: string): string {
                                         background: msg.role === 'user' ? 'var(--bg3)' : 'var(--lime-dim)',
                                         border: `1px solid ${msg.role === 'user' ? 'var(--border)' : 'var(--lime-border)'}`,
                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        ...mono, fontSize: '11px', fontWeight: 700, color: msg.role === 'user' ? 'var(--text-2)' : 'var(--lime)',
+                                        ...mono, fontSize: '12px', fontWeight: 700, color: msg.role === 'user' ? 'var(--text-2)' : 'var(--lime)',
                                     }}>
                                         {msg.role === 'user' ? 'U' : 'Ar'}
                                     </div>
@@ -364,7 +364,7 @@ function renderMarkdown(text: string): string {
 
                             {chatLoading && (
                                 <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--lime-dim)', border: '1px solid var(--lime-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, ...mono, fontSize: '11px', fontWeight: 700, color: 'var(--lime)' }}>Ar</div>
+                                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--lime-dim)', border: '1px solid var(--lime-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, ...mono, fontSize: '12px', fontWeight: 700, color: 'var(--lime)' }}>Ar</div>
                                     <div style={{ padding: '12px var(--space-3)', background: 'var(--bg2)', border: '1px solid var(--lime-border)', display: 'flex', gap: 'var(--space-1)', alignItems: 'center' }}>
                                         {[0, 1, 2].map(i => <div key={i} style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--lime)', animation: `bounce 1s ease-in-out ${i * 0.15}s infinite` }} />)}
                                     </div>
@@ -396,7 +396,7 @@ function renderMarkdown(text: string): string {
                             <button onClick={sendMessage} disabled={chatLoading || !input.trim()} style={{
                                 background: chatLoading || !input.trim() ? 'var(--bg3)' : 'var(--lime)',
                                 color: chatLoading || !input.trim() ? 'var(--text-3)' : '#0e0e0e',
-                                border: 'none', padding: '12px 20px', ...mono, fontSize: '11px', fontWeight: 700,
+                                border: 'none', padding: '12px 20px', ...mono, fontSize: '12px', fontWeight: 700,
                                 letterSpacing: '.08em', textTransform: 'uppercase',
                                 cursor: chatLoading || !input.trim() ? 'not-allowed' : 'pointer', height: '48px',
                             }}>SEND →</button>
@@ -409,9 +409,9 @@ function renderMarkdown(text: string): string {
                     <div style={{ flex: 1, overflowY: 'auto', padding: '28px var(--page-gutter)' }}>
                         {!quizQuestions.length && !quizLoading && (
                             <div style={{ maxWidth: '500px' }}>
-                                <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-4)' }}>[QUIZ GENERATOR]</div>
+                                <div style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-4)' }}>[QUIZ GENERATOR]</div>
                                 <div style={{ marginBottom: 'var(--space-4)' }}>
-                                    <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>NUMBER OF QUESTIONS</div>
+                                    <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '12px' }}>NUMBER OF QUESTIONS</div>
                                     <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
                                         {[5, 10, 15, 20].map(n => (
                                             <div key={n} onClick={() => setNumQuestions(n)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setNumQuestions(n))() } }} aria-pressed={numQuestions === n} style={{ ...optionStyle(numQuestions === n), minWidth: '64px', justifyContent: 'center' }}>{n}</div>
@@ -419,7 +419,7 @@ function renderMarkdown(text: string): string {
                                     </div>
                                 </div>
                                 <div style={{ marginBottom: '32px' }}>
-                                    <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>DIFFICULTY</div>
+                                    <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '12px' }}>DIFFICULTY</div>
                                     <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
                                         {(['easy', 'medium', 'hard'] as const).map(d => (
                                             <div key={d} onClick={() => setDifficulty(d)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setDifficulty(d))() } }} aria-pressed={difficulty === d} style={{ ...optionStyle(difficulty === d), textTransform: 'capitalize' }}>{d}</div>
@@ -433,7 +433,7 @@ function renderMarkdown(text: string): string {
                         )}
 
                         {quizLoading && (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', ...mono, fontSize: '12px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.08em', textTransform: 'uppercase' }}>
                                 <div style={{ display: 'flex', gap: 'var(--space-1)' }}>
                                     {[0, 1, 2].map(i => <div key={i} style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--lime)', animation: `bounce 1s ease-in-out ${i * 0.15}s infinite` }} />)}
                                 </div>
@@ -446,7 +446,7 @@ function renderMarkdown(text: string): string {
                                 {submitted && (
                                     <div style={{ marginBottom: '28px', padding: '20px var(--space-4)', border: '1px solid var(--lime-border)', background: 'var(--lime-dim)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <div>
-                                            <div style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 'var(--space-1)' }}>QUIZ COMPLETE</div>
+                                            <div style={{ ...mono, fontSize: '12px', color: 'var(--lime)', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 'var(--space-1)' }}>QUIZ COMPLETE</div>
                                             <div style={{ fontSize: '14px', color: 'var(--text-2)' }}>You scored {score} out of {quizQuestions.length} correctly.</div>
                                         </div>
                                         <div style={{ fontSize: '48px', fontWeight: 700, color: scoreColor(score, quizQuestions.length), ...mono, lineHeight: 1 }}>{score}/{quizQuestions.length}</div>
@@ -456,7 +456,7 @@ function renderMarkdown(text: string): string {
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', marginBottom: '32px' }}>
                                     {quizQuestions.map((q, qi) => (
                                         <div key={qi} style={{ ...cardBase, padding: 'var(--space-4)' }}>
-                                            <div style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.08em', marginBottom: '10px' }}>Q{qi + 1}</div>
+                                            <div style={{ ...mono, fontSize: '12px', color: 'var(--lime)', letterSpacing: '.08em', marginBottom: '10px' }}>Q{qi + 1}</div>
                                             <p style={{ fontSize: '15px', fontWeight: 500, color: 'var(--text)', marginBottom: 'var(--space-3)', lineHeight: 1.5 }}>{q.question}</p>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                                                 {Object.entries(q.options).map(([key, val]) => {
@@ -472,17 +472,17 @@ function renderMarkdown(text: string): string {
                                                             padding: '12px var(--space-3)', background: bg, border: `1px solid ${border}`,
                                                             cursor: submitted ? 'default' : 'pointer', display: 'flex', gap: '12px', alignItems: 'flex-start',
                                                         }}>
-                                                            <span style={{ ...mono, fontSize: '11px', fontWeight: 700, color, flexShrink: 0 }}>{key}</span>
+                                                            <span style={{ ...mono, fontSize: '12px', fontWeight: 700, color, flexShrink: 0 }}>{key}</span>
                                                             <span style={{ fontSize: '13px', color, lineHeight: 1.5 }}>{val as string}</span>
-                                                            {isCorrect && <span style={{ ...mono, fontSize: '11px', color: 'var(--lime)', marginLeft: 'auto', flexShrink: 0 }}>✓</span>}
-                                                            {isWrong && <span style={{ ...mono, fontSize: '11px', color: '#ef4444', marginLeft: 'auto', flexShrink: 0 }}>✗</span>}
+                                                            {isCorrect && <span style={{ ...mono, fontSize: '12px', color: 'var(--lime)', marginLeft: 'auto', flexShrink: 0 }}>✓</span>}
+                                                            {isWrong && <span style={{ ...mono, fontSize: '12px', color: '#ef4444', marginLeft: 'auto', flexShrink: 0 }}>✗</span>}
                                                         </div>
                                                     )
                                                 })}
                                             </div>
                                             {submitted && (
                                                 <div style={{ marginTop: '12px', padding: '10px 14px', background: 'var(--bg3)', border: '1px solid var(--border)' }}>
-                                                    <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', textTransform: 'uppercase' }}>EXPLANATION: </span>
+                                                    <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.06em', textTransform: 'uppercase' }}>EXPLANATION: </span>
                                                     <span style={{ fontSize: '13px', color: 'var(--text-2)' }}>{q.explanation}</span>
                                                 </div>
                                             )}

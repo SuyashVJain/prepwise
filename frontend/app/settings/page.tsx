@@ -13,7 +13,7 @@ const TYPES: Record<string, string> = { technical: 'Technical', hr: 'HR / Behavi
 const COUNTS = [5, 10, 15]
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
-const label: React.CSSProperties = { ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '8px', display: 'block' }
+const label: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '8px', display: 'block' }
 
 function Row({ k, v }: { k: string; v: string }) {
   return (
@@ -106,13 +106,13 @@ export default function SettingsPage() {
             <PageHeader label="SETTINGS" title="Settings" />
 
             <section aria-label="Account" style={{ ...cardBase, padding: '24px', marginBottom: '16px' }}>
-              <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '20px' }}>ACCOUNT</div>
+              <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '20px' }}>ACCOUNT</div>
               <Row k="Email" v={email} />
               <Row k="Display name" v={name} />
             </section>
 
             <section aria-label="Session defaults" style={{ ...cardBase, padding: '24px', marginBottom: '16px' }}>
-              <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '4px' }}>SESSION DEFAULTS</div>
+              <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '4px' }}>SESSION DEFAULTS</div>
               <p style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text-2)', marginBottom: '20px' }}>Used to pre-fill the new session screen. Saved in this browser only.</p>
               <span style={label}>Interview type</span>
               <div role="group" aria-label="Interview type" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
@@ -133,7 +133,7 @@ export default function SettingsPage() {
             </section>
 
             <section aria-label="Delete my data" style={{ background: 'var(--bg2)', border: '1px solid rgba(239,68,68,0.5)', padding: '24px', marginBottom: '16px' }}>
-              <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: '#ef4444', marginBottom: '8px' }}>DELETE MY DATA</div>
+              <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: '#ef4444', marginBottom: '8px' }}>DELETE MY DATA</div>
               <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7, marginBottom: '16px' }}>
                 This permanently deletes all of your sessions, answers, scores and voice tutor notes. It cannot be undone. Your account stays; to remove it too, use the contact link on the home page.
               </p>

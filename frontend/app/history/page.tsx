@@ -32,7 +32,7 @@ type QuestionRow = {
 }
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
-const label: React.CSSProperties = { ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: '3px' }
+const label: React.CSSProperties = { ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: '3px' }
 
 function scoreColor(s: number) {
   if (s >= 7) return '#d4fe42'
@@ -108,7 +108,7 @@ export default function HistoryPage() {
   const trend = [...visible].sort((a, b) => (a.created_at < b.created_at ? -1 : 1)).map(s => s.score_avg || 0)
 
   const control: React.CSSProperties = fieldStyle
-  const controlLabel: React.CSSProperties = { ...mono, fontSize: '11px', letterSpacing: '.08em', color: 'var(--text-2)', display: 'flex', flexDirection: 'column', gap: '4px' }
+  const controlLabel: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--text-2)', display: 'flex', flexDirection: 'column', gap: '4px' }
 
   if (loading) {
     return <PageShell><PageSkeleton rows={4} /></PageShell>
@@ -119,19 +119,19 @@ export default function HistoryPage() {
       <div>
         {selected && (
           <button onClick={() => setSelected(null)}
-            style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border)', padding: '10px 20px', cursor: 'pointer', marginBottom: '32px' }}>
+            style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border)', padding: '10px 20px', cursor: 'pointer', marginBottom: '32px' }}>
             ← ALL SESSIONS
           </button>
         )}
         <PageHeader label="HISTORY" title={selected ? 'Session replay' : 'Past sessions'} />
 
-        {error && <div style={{ ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em', marginBottom: '16px' }}>{error}</div>}
+        {error && <div style={{ ...mono, fontSize: '12px', color: '#ef4444', letterSpacing: '.06em', marginBottom: '16px' }}>{error}</div>}
 
         {!selected && (sessions.length === 0 ? (
           <div style={{ ...cardBase, padding: '24px' }}>
-            <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: '16px' }}>No sessions yet. Start your first mock interview.</div>
+            <div style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '16px' }}>No sessions yet. Start your first mock interview.</div>
             <button onClick={() => router.push('/interview')}
-              style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '12px 28px', fontSize: '11px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
+              style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '12px 28px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
               START SESSION →
             </button>
           </div>
@@ -180,7 +180,7 @@ export default function HistoryPage() {
                   <div><div style={label}>QUESTIONS ANSWERED</div><div style={{ ...mono, fontSize: '13px', color: 'var(--text-2)' }}>{s.total_questions || 0}</div></div>
                 </div>
                 <div style={{ ...mono, fontSize: '28px', fontWeight: 700, color: scoreColor(s.score_avg || 0), lineHeight: 1 }}>
-                  {s.score_avg || 0}<span style={{ fontSize: '12px', color: 'var(--text-3)' }}>/10</span>
+                  {s.score_avg || 0}<span style={{ fontSize: '12px', color: 'var(--text-2)' }}>/10</span>
                 </div>
               </button>
             ))}
@@ -189,20 +189,20 @@ export default function HistoryPage() {
 
         {selected && (
           <div>
-            <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: '24px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '24px' }}>
               {formatDate(selected.created_at)} · {typeName(selected.interview_type)} · AVERAGE {selected.score_avg || 0}/10
             </p>
             {loadingQuestions ? (
               <div role="status" aria-label="Loading" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}><Skeleton height={110} /><Skeleton height={110} /></div>
             ) : questions.length === 0 ? (
-              <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase' }}>No questions were saved for this session.</div>
+              <div style={{ fontSize: '13px', color: 'var(--text-2)', textTransform: 'uppercase' }}>No questions were saved for this session.</div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {questions.map((q, i) => (
                   <div key={q.id} style={{ ...cardBase, padding: '16px 24px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', marginBottom: '12px' }}>
                       <div>
-                        <div style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.1em', marginBottom: '6px' }}>
+                        <div style={{ ...mono, fontSize: '12px', color: 'var(--lime)', letterSpacing: '.1em', marginBottom: '6px' }}>
                           [Q.{String(i + 1).padStart(2, '0')}]{q.is_follow_up ? ' · FOLLOW-UP' : ''}
                           {typeof q.time_taken_seconds === 'number' ? ` · ${formatTime(q.time_taken_seconds)}` : ''}
                         </div>

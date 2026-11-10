@@ -103,7 +103,7 @@ export default function WalkthroughPanel({ subjectId, topic, cue, onExplain }: P
 
   const current = available.find(w => w.id === chosenId) ?? suggested ?? available[0]
   if (!current) {
-    return <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em' }}>No walkthroughs for this subject yet.</p>
+    return <p style={{ fontSize: '13px', color: 'var(--text-2)', letterSpacing: '.04em' }}>No walkthroughs for this subject yet.</p>
   }
 
   const last = current.steps.length - 1
@@ -128,7 +128,7 @@ export default function WalkthroughPanel({ subjectId, topic, cue, onExplain }: P
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
         {available.map(w => (
           <button key={w.id} type="button" onClick={() => choose(w.id)} aria-pressed={w.id === current.id}
-            style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px var(--space-2)', cursor: 'pointer', background: w.id === current.id ? 'var(--lime-dim)' : 'var(--bg4)', border: `1px solid ${w.id === current.id ? 'var(--lime)' : 'var(--border)'}`, color: w.id === current.id ? 'var(--lime)' : 'var(--text-2)' }}>
+            style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px var(--space-2)', cursor: 'pointer', background: w.id === current.id ? 'var(--lime-dim)' : 'var(--bg4)', border: `1px solid ${w.id === current.id ? 'var(--lime)' : 'var(--border)'}`, color: w.id === current.id ? 'var(--lime)' : 'var(--text-2)' }}>
             {w.title}
           </button>
         ))}
@@ -137,13 +137,13 @@ export default function WalkthroughPanel({ subjectId, topic, cue, onExplain }: P
       <div style={{ border: '1px solid var(--border)', background: 'var(--bg2)', padding: 'var(--space-2) var(--space-2) var(--space-1)' }}>
         <Diagram step={step} linked={current.layout === 'linked'} />
       </div>
-      <pre style={{ ...mono, fontSize: '11px', color: 'var(--lime)', background: 'var(--bg4)', padding: 'var(--space-2) 10px', margin: '0', whiteSpace: 'pre-wrap', border: '1px solid var(--border)', borderTop: 'none' }}>{step.code}</pre>
+      <pre style={{ ...mono, fontSize: '12px', color: 'var(--lime)', background: 'var(--bg4)', padding: 'var(--space-2) 10px', margin: '0', whiteSpace: 'pre-wrap', border: '1px solid var(--border)', borderTop: 'none' }}>{step.code}</pre>
       <p aria-live="polite" style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text)', margin: '12px 0', minHeight: '62px' }}>{step.note}</p>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: '10px' }}>
         <button type="button" onClick={() => goTo(index - 1)} disabled={index === 0} style={disabled(ghostButton, index === 0)}>← BACK</button>
-        <button type="button" onClick={() => goTo(index + 1)} disabled={index === last} style={disabled({ ...primaryButton, padding: '10px 18px', fontSize: '11px' }, index === last)}>NEXT →</button>
-        <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', marginLeft: 'auto' }}>STEP {index + 1} / {current.steps.length}</span>
+        <button type="button" onClick={() => goTo(index + 1)} disabled={index === last} style={disabled({ ...primaryButton, padding: '10px 18px', fontSize: '12px' }, index === last)}>NEXT →</button>
+        <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.06em', marginLeft: 'auto' }}>STEP {index + 1} / {current.steps.length}</span>
       </div>
       <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
         <button type="button" onClick={() => onExplain(`In the ${current.title} walkthrough, explain this step: ${step.code}. ${step.note}`)} style={ghostButton}>
@@ -155,7 +155,7 @@ export default function WalkthroughPanel({ subjectId, topic, cue, onExplain }: P
           FOLLOW ARIA: {following ? 'ON' : 'OFF'}
         </button>
       </div>
-      <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em', marginTop: '10px' }}>
+      <p style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: '10px' }}>
         With follow on, the diagram moves one step each time Aria finishes a reply.
       </p>
     </div>

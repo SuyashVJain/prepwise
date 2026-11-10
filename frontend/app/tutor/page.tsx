@@ -337,7 +337,7 @@ export default function TutorPage() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '28px' }}>
             {subjectTopics.map(t => (
               <button key={t} type="button" onClick={() => setTopic(t)}
-                style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 10px', cursor: 'pointer', background: topic === t ? 'var(--lime-dim)' : 'var(--bg4)', border: `1px solid ${topic === t ? 'var(--lime)' : 'var(--border)'}`, color: topic === t ? 'var(--lime)' : 'var(--text-2)' }}>
+                style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 10px', cursor: 'pointer', background: topic === t ? 'var(--lime-dim)' : 'var(--bg4)', border: `1px solid ${topic === t ? 'var(--lime)' : 'var(--border)'}`, color: topic === t ? 'var(--lime)' : 'var(--text-2)' }}>
                 {t}
               </button>
             ))}
@@ -352,14 +352,14 @@ export default function TutorPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-2)', marginBottom: '12px' }}>
             <button type="button" onClick={() => setMode('standalone')} style={tile(mode === 'standalone')}>
               General knowledge
-              <div style={{ ...mono, fontSize: '11px', fontWeight: 400, color: 'var(--text-3)', marginTop: '6px' }}>Aria teaches the topic from scratch.</div>
+              <div style={{ ...mono, fontSize: '12px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Aria teaches the topic from scratch.</div>
             </button>
             <button type="button" disabled={docsUnavailable} onClick={() => setMode('documents')} style={disabled(tile(mode === 'documents'), docsUnavailable)}>
               Use my documents
-              <div style={{ ...mono, fontSize: '11px', fontWeight: 400, color: 'var(--text-3)', marginTop: '6px' }}>Answers only from your syllabus, with citations.</div>
+              <div style={{ ...mono, fontSize: '12px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Answers only from your syllabus, with citations.</div>
             </button>
           </div>
-          <p style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', color: syllabus ? 'var(--lime)' : 'var(--text-3)', marginBottom: '32px' }}>
+          <p style={{ fontSize: '13px', color: syllabus ? 'var(--lime)' : 'var(--text-3)', marginBottom: '32px' }}>
             {!syllabusChecked ? 'CHECKING YOUR SYLLABUS...'
               : syllabus ? `✓ ${syllabus.name} · ${syllabus.topics.length} TOPICS · ${syllabus.raw_chunks.length} CHUNKS`
                 : 'NO SYLLABUS UPLOADED YET. ADD ONE IN ONBOARDING TO USE THIS MODE.'}
@@ -370,15 +370,15 @@ export default function TutorPage() {
             <button type="button" onClick={() => setHinglish(false)} style={tile(!hinglish)}>English</button>
             <button type="button" onClick={() => setHinglish(true)} style={tile(hinglish)}>
               Hinglish
-              <div style={{ ...mono, fontSize: '11px', fontWeight: 400, color: 'var(--text-3)', marginTop: '6px' }}>Hindi and English mixed. Code and terms stay in English.</div>
+              <div style={{ ...mono, fontSize: '12px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Hindi and English mixed. Code and terms stay in English.</div>
             </button>
           </div>
 
-          {error && <div role="alert" style={{ ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em', marginBottom: '12px' }}>{error}</div>}
+          {error && <div role="alert" style={{ ...mono, fontSize: '12px', color: '#ef4444', letterSpacing: '.06em', marginBottom: '12px' }}>{error}</div>}
           <button type="button" onClick={() => { void startSession() }} disabled={phase === 'connecting'} style={disabled(primaryButton, phase === 'connecting')}>
             {phase === 'connecting' ? 'CONNECTING...' : 'START SESSION →'}
           </button>
-          <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em', marginTop: 'var(--space-3)' }}>
+          <p style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: 'var(--space-3)' }}>
             Works best in Chrome or Edge with headphones. No microphone? You can type instead.
           </p>
         </div>
@@ -402,12 +402,12 @@ export default function TutorPage() {
             <h1 style={{ fontSize: '26px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1 }}>
               {sessionTitle}
             </h1>
-            <div style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', color: 'var(--text-3)', marginTop: 'var(--space-2)', textTransform: 'uppercase' }}>
+            <div style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', color: 'var(--text-2)', marginTop: 'var(--space-2)', textTransform: 'uppercase' }}>
               {subject} · {mode === 'documents' ? `YOUR DOCUMENTS${docsInfo ? ` (${docsInfo.chunks} CHUNKS)` : ''}` : 'GENERAL KNOWLEDGE'}
             </div>
           </div>
           <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
-            <span style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', color: 'var(--text-3)', textAlign: 'right', textTransform: 'uppercase' }}>
+            <span style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', color: 'var(--text-2)', textAlign: 'right', textTransform: 'uppercase' }}>
               EARS: {providerLabel(providers?.stt ?? null)}<br />VOICE: {providerLabel(providers?.tts ?? null)}
             </span>
             <button type="button" onClick={endSession} style={ghostButton}>END + NOTES</button>
@@ -429,10 +429,10 @@ export default function TutorPage() {
           </div>
           <div>
             <div style={{ ...mono, fontSize: '12px', fontWeight: 700, letterSpacing: '.1em', color: active ? 'var(--lime)' : 'var(--text-3)' }}>[ARIA] {copy.tag}</div>
-            <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em', marginTop: '2px' }}>{copy.hint}</div>
+            <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.04em', marginTop: '2px' }}>{copy.hint}</div>
           </div>
           {lastTiming?.first_audio_ms != null && (
-            <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', marginLeft: 'auto' }}>
+            <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.06em', marginLeft: 'auto' }}>
               FIRST AUDIO {lastTiming.first_audio_ms} MS · REPLY {lastTiming.total_ms} MS
             </span>
           )}
@@ -440,7 +440,7 @@ export default function TutorPage() {
 
         {(error || disconnected) && (
           <div role="alert" style={{ padding: 'var(--space-2) var(--space-5)', background: 'rgba(239,68,68,0.08)', borderBottom: '1px solid rgba(239,68,68,0.2)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-            <span style={{ ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em' }}>
+            <span style={{ ...mono, fontSize: '12px', color: '#ef4444', letterSpacing: '.06em' }}>
               {disconnected ? 'CONNECTION LOST.' : error}
             </span>
             {disconnected && <button type="button" onClick={() => { void startSession() }} style={{ ...ghostButton, padding: 'var(--space-1) 10px' }}>RECONNECT</button>}
@@ -450,11 +450,11 @@ export default function TutorPage() {
         {/* TRANSCRIPT */}
         <div style={{ flex: 1, overflowY: 'auto', padding: 'var(--space-4) var(--space-5)' }}>
           {messages.length === 0 && (
-            <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em' }}>THE TRANSCRIPT OF BOTH SIDES APPEARS HERE.</p>
+            <p style={{ fontSize: '13px', color: 'var(--text-2)', letterSpacing: '.06em' }}>The transcript of both sides appears here.</p>
           )}
           {messages.map(m => (
             <div key={m.id} style={{ marginBottom: 'var(--space-3)', maxWidth: '760px', marginLeft: m.role === 'student' ? 'auto' : 0 }}>
-              <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: m.role === 'tutor' ? 'var(--lime)' : 'var(--text-3)', marginBottom: 'var(--space-1)' }}>
+              <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: m.role === 'tutor' ? 'var(--lime)' : 'var(--text-3)', marginBottom: 'var(--space-1)' }}>
                 {m.role === 'tutor' ? '[ARIA]' : '[YOU]'}
                 {m.turn !== undefined && pendingNotes[m.turn] ? ` · ${pendingNotes[m.turn]}` : ''}
                 {m.note ? ` · ${m.note}` : ''}
@@ -465,7 +465,7 @@ export default function TutorPage() {
               {m.citations && m.citations.length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '6px' }}>
                   {m.citations.map(c => (
-                    <span key={c.n} title={c.snippet} style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', padding: '2px var(--space-2)', background: 'var(--lime-dim)', border: '1px solid var(--lime-border)', color: 'var(--lime)' }}>
+                    <span key={c.n} title={c.snippet} style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', padding: '2px var(--space-2)', background: 'var(--lime-dim)', border: '1px solid var(--lime-border)', color: 'var(--lime)' }}>
                       ↗ {c.topic}{c.page ? ` · P.${c.page}` : ''}
                     </span>
                   ))}
@@ -483,7 +483,7 @@ export default function TutorPage() {
               onPointerDown={holdStart} onPointerUp={holdEnd} onPointerLeave={holdEnd}
               onKeyDown={e => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) { e.preventDefault(); void holdStart() } }}
               onKeyUp={e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); holdEnd() } }}
-              style={disabled({ ...primaryButton, padding: '12px var(--space-4)', fontSize: '11px', touchAction: 'none', background: holding ? 'var(--text)' : 'var(--lime)' }, micBlocked || disconnected)}>
+              style={disabled({ ...primaryButton, padding: '12px var(--space-4)', fontSize: '12px', touchAction: 'none', background: holding ? 'var(--text)' : 'var(--lime)' }, micBlocked || disconnected)}>
               {holding ? 'RELEASE TO SEND' : 'HOLD TO TALK'}
             </button>
             <button type="button" disabled={micBlocked || disconnected} onClick={toggleHandsFree} aria-pressed={handsFree}
@@ -502,14 +502,14 @@ export default function TutorPage() {
               style={disabled({ ...ghostButton, borderColor: hinglish ? 'var(--lime)' : 'var(--border)', color: hinglish ? 'var(--lime)' : 'var(--text-2)' }, disconnected)}>
               HINGLISH: {hinglish ? 'ON' : 'OFF'}
             </button>
-            {micBlocked && <span style={{ ...mono, fontSize: '11px', color: '#f59e0b', letterSpacing: '.06em' }}>MIC OFF. TYPE BELOW.</span>}
+            {micBlocked && <span style={{ ...mono, fontSize: '12px', color: '#f59e0b', letterSpacing: '.06em' }}>MIC OFF. TYPE BELOW.</span>}
           </div>
           <MicHelp blocked={micBlocked} />
           <form onSubmit={e => { e.preventDefault(); sendText() }} style={{ display: 'flex', gap: 'var(--space-2)' }}>
             <input value={input} onChange={e => setInput(e.target.value)} placeholder="Or type your question..." maxLength={2000} disabled={disconnected}
               aria-label="Type your question"
               style={{ flex: 1, background: 'var(--bg3)', border: '1px solid var(--border-2)', padding: '12px 14px', fontSize: '14px', color: 'var(--text)', outline: 'none' }} />
-            <button type="submit" disabled={!input.trim() || disconnected} style={disabled({ ...primaryButton, padding: '12px var(--space-4)', fontSize: '11px' }, !input.trim() || disconnected)}>SEND →</button>
+            <button type="submit" disabled={!input.trim() || disconnected} style={disabled({ ...primaryButton, padding: '12px var(--space-4)', fontSize: '12px' }, !input.trim() || disconnected)}>SEND →</button>
           </form>
         </div>
       </div>
@@ -519,7 +519,7 @@ export default function TutorPage() {
         <div role="tablist" style={{ display: 'flex', borderBottom: '1px solid var(--border)', flexShrink: 0, flexWrap: 'wrap' }}>
           {sideTabs.map(tab => (
             <button key={tab.id} type="button" role="tab" aria-selected={activeTab === tab.id} onClick={() => setSideTab(tab.id)}
-              style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', padding: '12px 14px', cursor: 'pointer', background: 'transparent', border: 'none', borderBottom: `2px solid ${activeTab === tab.id ? 'var(--lime)' : 'transparent'}`, color: activeTab === tab.id ? 'var(--lime)' : 'var(--text-3)', fontWeight: activeTab === tab.id ? 700 : 400 }}>
+              style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', padding: '12px 14px', cursor: 'pointer', background: 'transparent', border: 'none', borderBottom: `2px solid ${activeTab === tab.id ? 'var(--lime)' : 'transparent'}`, color: activeTab === tab.id ? 'var(--lime)' : 'var(--text-3)', fontWeight: activeTab === tab.id ? 700 : 400 }}>
               {tab.label}
             </button>
           ))}

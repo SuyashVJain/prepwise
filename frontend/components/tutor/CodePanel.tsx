@@ -73,7 +73,7 @@ export default function CodePanel({ topic }: { topic: string }) {
       <p style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text)', margin: 'var(--space-2) 0 12px' }}>{exercise.prompt}</p>
 
       <div style={{ display: 'flex', border: '1px solid var(--border-2)', background: 'var(--bg3)', height: `${Math.min(lineCount, 16) * LINE_HEIGHT + 16}px` }}>
-        <div ref={gutter} aria-hidden="true" style={{ ...mono, fontSize: '12px', lineHeight: `${LINE_HEIGHT}px`, color: 'var(--text-3)', textAlign: 'right', padding: 'var(--space-2) var(--space-2) var(--space-2) 6px', background: 'var(--bg4)', overflow: 'hidden', userSelect: 'none', minWidth: '34px' }}>
+        <div ref={gutter} aria-hidden="true" style={{ ...mono, fontSize: '12px', lineHeight: `${LINE_HEIGHT}px`, color: 'var(--text-2)', textAlign: 'right', padding: 'var(--space-2) var(--space-2) var(--space-2) 6px', background: 'var(--bg4)', overflow: 'hidden', userSelect: 'none', minWidth: '34px' }}>
           {Array.from({ length: lineCount }, (_, i) => (
             <div key={i} style={{ color: shown?.line === i + 1 ? '#ef4444' : undefined }}>{i + 1}</div>
           ))}
@@ -86,16 +86,16 @@ export default function CodePanel({ topic }: { topic: string }) {
       </div>
 
       <div style={{ display: 'flex', gap: 'var(--space-2)', margin: '12px 0' }}>
-        <button type="button" onClick={check} disabled={checking} style={disabled({ ...primaryButton, padding: '10px 18px', fontSize: '11px' }, checking)}>
+        <button type="button" onClick={check} disabled={checking} style={disabled({ ...primaryButton, padding: '10px 18px', fontSize: '12px' }, checking)}>
           {checking ? 'CHECKING...' : 'CHECK MY CODE'}
         </button>
         <button type="button" onClick={() => { setCode(exercise.starter); setReview(null); setError('') }} style={ghostButton}>RESET</button>
       </div>
 
-      {error && <p role="alert" style={{ ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em' }}>{error}</p>}
+      {error && <p role="alert" style={{ ...mono, fontSize: '12px', color: '#ef4444', letterSpacing: '.06em' }}>{error}</p>}
       {shown && (
         <div aria-live="polite" style={{ border: '1px solid var(--border)', background: 'var(--bg2)', padding: '12px 14px' }}>
-          <div style={{ ...mono, fontSize: '11px', fontWeight: 700, letterSpacing: '.1em', color: VERDICT_COPY[shown.verdict].color, marginBottom: '6px' }}>
+          <div style={{ ...mono, fontSize: '12px', fontWeight: 700, letterSpacing: '.1em', color: VERDICT_COPY[shown.verdict].color, marginBottom: '6px' }}>
             {VERDICT_COPY[shown.verdict].text}
           </div>
           <p style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text)' }}>{shown.feedback}</p>
@@ -110,7 +110,7 @@ export default function CodePanel({ topic }: { topic: string }) {
           )}
         </div>
       )}
-      <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em', marginTop: '10px' }}>
+      <p style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: '10px' }}>
         Your code is read and reviewed. It is not run.
       </p>
     </div>

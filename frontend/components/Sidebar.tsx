@@ -47,14 +47,14 @@ export default function Sidebar() {
       <div className="app-topbar">
         <Link href="/dashboard" style={{ ...mono, fontSize: '13px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)' }}>PREPWISE</Link>
         <button type="button" onClick={() => setOpen(o => !o)} aria-expanded={open} aria-controls="app-sidebar"
-          style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border-2)', padding: '8px 14px', cursor: 'pointer' }}>
+          style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border-2)', padding: '8px 14px', cursor: 'pointer' }}>
           {open ? 'CLOSE' : 'MENU'}
         </button>
       </div>
       <aside id="app-sidebar" className={`app-sidebar${open ? ' open' : ''}`}>
         <div style={{ padding: '24px 24px 20px', borderBottom: '1px solid var(--border)' }}>
           <Link href="/dashboard" style={{ ...mono, fontSize: '13px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)', display: 'block' }}>Prepwise</Link>
-          <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginTop: '3px' }}>INTERVIEW PREP</div>
+          <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginTop: '3px' }}>INTERVIEW PREP</div>
         </div>
         <nav aria-label="Main" style={{ flex: 1, padding: '16px 0', overflowY: 'auto' }}>
           {NAV_ITEMS.map(item => {
@@ -77,7 +77,7 @@ export default function Sidebar() {
               {loaded ? (
                 <>
                   <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text)', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name || 'Student'}</div>
-                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', color: 'var(--text-3)', marginTop: '2px' }}>{university || '-'}</div>
+                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', color: 'var(--text-2)', marginTop: '2px' }}>{university || '-'}</div>
                 </>
               ) : (
                 <div aria-hidden="true">
@@ -88,7 +88,7 @@ export default function Sidebar() {
             </div>
           </div>
           <button type="button" onClick={signOut}
-            style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', color: 'var(--text-2)', background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}>
+            style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--text-2)', background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}>
             SIGN OUT →
           </button>
         </div>

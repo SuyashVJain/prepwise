@@ -5,11 +5,11 @@ import { optionStyle, cardBase } from '@/lib/ui'
 export const mono: CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 
 export const eyebrow: CSSProperties = {
-  ...mono, fontSize: '10px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)',
+  ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)',
 }
 
 export const label: CSSProperties = {
-  ...mono, fontSize: '10px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)',
+  ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)',
 }
 
 export const primaryButton: CSSProperties = {
@@ -19,7 +19,7 @@ export const primaryButton: CSSProperties = {
 
 export const ghostButton: CSSProperties = {
   ...mono, background: 'transparent', color: 'var(--text-2)', border: '1px solid var(--border)', padding: '10px 18px',
-  fontSize: '10px', letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer',
+  fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer',
 }
 
 export const panel: CSSProperties = cardBase

@@ -132,7 +132,7 @@ export default function DashboardPage() {
               {/* next best action: plain rule, no model call */}
               <div style={{ background: 'var(--lime-dim)', border: '1px solid var(--lime-border)', padding: '16px 20px', marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
                 <div>
-                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--lime)', marginBottom: '4px' }}>NEXT BEST ACTION</div>
+                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--lime)', marginBottom: '4px' }}>NEXT BEST ACTION</div>
                   <div style={{ fontSize: '15px', color: 'var(--text)' }}>
                     {nextTopic ? `Practise ${nextTopic}, your most frequent weak topic.` : 'Start your first mock interview to find your weak topics.'}
                   </div>
@@ -152,10 +152,10 @@ export default function DashboardPage() {
                   { label: 'WEAK TOPICS', value: weakTopics.length.toString(), suffix: '', icon: weakTopics.length > 0 ? '⚠' : '' },
                 ].map(stat => (
                   <div key={stat.label} style={{ ...cardBase, padding: '16px' }}>
-                    <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '10px' }}>{stat.label}</div>
+                    <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '10px' }}>{stat.label}</div>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                       <span style={{ fontSize: '36px', fontWeight: 700, color: 'var(--lime)', letterSpacing: '-.02em', lineHeight: 1 }}>{stat.value}</span>
-                      <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)' }}>{stat.suffix}</span>
+                      <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>{stat.suffix}</span>
                       {stat.icon && <span style={{ fontSize: '14px', color: stat.label === 'WEAK TOPICS' ? '#f59e0b' : 'var(--lime)', marginLeft: '4px' }}>{stat.icon}</span>}
                     </div>
                   </div>
@@ -165,7 +165,7 @@ export default function DashboardPage() {
               {/* charts row */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', marginBottom: '24px' }}>
                 <div style={{ ...cardBase, padding: '24px' }}>
-                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '20px' }}>PERFORMANCE OVER TIME</div>
+                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '20px' }}>PERFORMANCE OVER TIME</div>
                   {scores.length >= 2 ? (
                     <svg width="100%" viewBox={`0 0 ${chartW} ${chartH}`} style={{ overflow: 'visible' }}>
                       {[0, 0.25, 0.5, 0.75, 1].map((t, i) => (
@@ -183,18 +183,18 @@ export default function DashboardPage() {
                         const date = fmt(s.created_at)
                         // Each day is labelled once, at its first point; the full time is in the hover title.
                         if (i > 0 && fmt(chartSessions[i - 1].created_at) === date) return null
-                        return <text key={i} x={x} y={chartH + 4} textAnchor="middle" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', fill: 'var(--text-3)' }}>{date}</text>
+                        return <text key={i} x={x} y={chartH + 4} textAnchor="middle" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '12px', fill: 'var(--text-2)' }}>{date}</text>
                       })}
                     </svg>
                   ) : (
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.08em', textTransform: 'uppercase' }}>
                       Complete 2+ sessions to see chart
                     </div>
                   )}
                 </div>
 
                 <div style={{ ...cardBase, padding: '24px' }}>
-                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '20px' }}>WEAK TOPICS ANALYSIS</div>
+                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '20px' }}>WEAK TOPICS ANALYSIS</div>
                   {weakTopics.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                       {weakTopics.map(({ topic, count, total }) => {
@@ -202,8 +202,8 @@ export default function DashboardPage() {
                         return (
                           <div key={topic}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', gap: '12px' }}>
-                              <span style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase', color: 'var(--text-2)' }}>{topic}</span>
-                              <span style={{ ...mono, fontSize: '11px', color: 'var(--lime)', fontWeight: 700, whiteSpace: 'nowrap' }}>{count} of {total} sessions</span>
+                              <span style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', color: 'var(--text-2)' }}>{topic}</span>
+                              <span style={{ ...mono, fontSize: '12px', color: 'var(--lime)', fontWeight: 700, whiteSpace: 'nowrap' }}>{count} of {total} sessions</span>
                             </div>
                             <div style={{ height: '3px', background: 'var(--bg4)' }}>
                               <div style={{ height: '100%', width: `${pct}%`, background: 'var(--lime)', transition: 'width .6s ease' }} />
@@ -213,7 +213,7 @@ export default function DashboardPage() {
                       })}
                     </div>
                   ) : (
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.08em', textTransform: 'uppercase', textAlign: 'center' }}>
                       No weak topics yet.<br />Complete a session first.
                     </div>
                   )}
@@ -223,13 +223,13 @@ export default function DashboardPage() {
               {/* sessions table */}
               <div style={{ ...cardBase }}>
                 <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
-                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)' }}>RECENT SESSIONS</div>
+                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)' }}>RECENT SESSIONS</div>
                 </div>
                 {sessions.length === 0 ? (
                   <div style={{ padding: '60px 24px', textAlign: 'center' }}>
-                    <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: '16px' }}>No sessions yet. Start your first mock interview.</div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '16px' }}>No sessions yet. Start your first mock interview.</div>
                     <Link href="/interview">
-                      <button style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '12px 28px', ...grotesk, fontSize: '11px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
+                      <button style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '12px 28px', ...grotesk, fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                         START SESSION →
                       </button>
                     </Link>
@@ -239,14 +239,14 @@ export default function DashboardPage() {
                     <thead>
                       <tr style={{ borderBottom: '1px solid var(--border)' }}>
                         {['DATE', 'TYPE', 'TARGET', 'SCORE', 'QUESTIONS', 'WEAK TOPICS'].map(h => (
-                          <th key={h} style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', padding: '10px 20px', textAlign: 'left', fontWeight: 400 }}>{h}</th>
+                          <th key={h} style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', padding: '10px 20px', textAlign: 'left', fontWeight: 400 }}>{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
                       {sessions.map((s, i) => (
                         <tr key={s.id} style={{ borderBottom: i < sessions.length - 1 ? '1px solid var(--border)' : 'none', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
-                          <td style={{ ...mono, fontSize: '11px', color: 'var(--text-2)', padding: '14px 20px' }}>
+                          <td style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', padding: '14px 20px' }}>
                             {new Date(s.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                           </td>
                           <td style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text)', padding: '14px 20px', textTransform: 'capitalize' }}>
@@ -258,16 +258,16 @@ export default function DashboardPage() {
                           <td style={{ ...mono, fontSize: '13px', fontWeight: 700, color: scoreColor(s.score_avg || 0), padding: '14px 20px' }}>
                             {s.score_avg || 0}/10
                           </td>
-                          <td style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', padding: '14px 20px' }}>
+                          <td style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', padding: '14px 20px' }}>
                             {s.total_questions || 0}
                           </td>
                           <td style={{ padding: '14px 20px' }}>
                             <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
                               {(s.weak_topics || []).slice(0, 2).map((t: string) => (
-                                <span key={t} style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '2px 6px', border: '1px solid var(--border-2)', color: 'var(--text-3)' }}>{t}</span>
+                                <span key={t} style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '2px 6px', border: '1px solid var(--border-2)', color: 'var(--text-2)' }}>{t}</span>
                               ))}
                               {(s.weak_topics || []).length > 2 && (
-                                <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)' }}>+{(s.weak_topics?.length ?? 0) - 2}</span>
+                                <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>+{(s.weak_topics?.length ?? 0) - 2}</span>
                               )}
                             </div>
                           </td>

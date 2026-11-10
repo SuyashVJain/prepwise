@@ -549,17 +549,17 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           <PageHeader label="NEW SESSION" title="Configure your session" />
 
           {syllabus ? (
-            <p style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.06em', marginBottom: '32px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--lime)', marginBottom: '32px' }}>
               ✓ {syllabus.name} · {(syllabus.topics || []).length} TOPICS · {(syllabus.raw_chunks || []).length} CHUNKS INDEXED
             </p>
           ) : (
-            <div style={{ ...mono, fontSize: '11px', color: '#f59e0b', letterSpacing: '.06em', marginBottom: '32px', padding: '12px 16px', border: '1px solid rgba(245,158,11,0.3)', background: 'rgba(245,158,11,0.08)' }}>
+            <div style={{ ...mono, fontSize: '12px', color: '#f59e0b', letterSpacing: '.06em', marginBottom: '32px', padding: '12px 16px', border: '1px solid rgba(245,158,11,0.3)', background: 'rgba(245,158,11,0.08)' }}>
               ⚠ NO SYLLABUS FOUND - <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => router.push('/onboarding')}>UPLOAD ONE FIRST</span>
             </div>
           )}
 
           {presetTopic && (
-            <p style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.06em', margin: '-20px 0 32px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--lime)', margin: '-20px 0 32px' }}>
               ✓ TOPIC FOR THIS SESSION: {presetTopic.toUpperCase()}
             </p>
           )}
@@ -577,7 +577,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
           {/* interview type */}
           <div style={{ marginBottom: '28px' }}>
-            <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>INTERVIEW TYPE</div>
+            <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '12px' }}>INTERVIEW TYPE</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
               {Object.entries(TYPE_MAP).map(([id, label]) => (
                 <div key={id} onClick={() => setInterviewType(id)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setInterviewType(id))() } }}
@@ -590,7 +590,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
           {/* target */}
           <div style={{ marginBottom: '28px' }}>
-            <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>TARGET COMPANY</div>
+            <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '12px' }}>TARGET COMPANY</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
               {Object.entries(COMPANY_MAP).map(([id, label]) => (
                 <div key={id} onClick={() => setTargetCompany(id)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setTargetCompany(id))() } }}
@@ -603,7 +603,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
           {/* question count */}
           <div style={{ marginBottom: '40px' }}>
-            <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>NUMBER OF QUESTIONS</div>
+            <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '12px' }}>NUMBER OF QUESTIONS</div>
             <div style={{ display: 'flex', gap: '8px' }}>
               {[5, 10, 15].map(n => (
                 <div key={n} onClick={() => setTotalQuestions(n)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setTotalQuestions(n))() } }}
@@ -618,7 +618,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           {slow && startingSession && <p style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: '12px' }}>Still working. The server is slower than usual.</p>}
           <div style={{ display: 'flex', gap: '12px' }}>
             <button onClick={() => router.push('/dashboard')}
-              style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-3)', background: 'transparent', border: '1px solid var(--border)', padding: '14px 24px', cursor: 'pointer' }}>
+              style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border)', padding: '14px 24px', cursor: 'pointer' }}>
               ← BACK
             </button>
             <button onClick={startSession} disabled={startingSession || !syllabus}
@@ -639,17 +639,17 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
         {/* TOP BAR */}
         <div className="interview-top" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 32px', height: '52px', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
           <button onClick={exitSession} aria-label="Exit the interview and go to the dashboard"
-            style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border)', padding: '6px 14px', cursor: 'pointer' }}>
+            style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border)', padding: '6px 14px', cursor: 'pointer' }}>
             ← EXIT
           </button>
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-            <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', textTransform: 'uppercase' }}>{TYPE_MAP[interviewType]}</span>
-            <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', textTransform: 'uppercase' }}>{COMPANY_MAP[targetCompany]}</span>
+            <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.06em', textTransform: 'uppercase' }}>{TYPE_MAP[interviewType]}</span>
+            <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.06em', textTransform: 'uppercase' }}>{COMPANY_MAP[targetCompany]}</span>
             <span style={{ ...mono, fontSize: '12px', color: 'var(--lime)', fontWeight: 700, letterSpacing: '.06em' }}>QUESTION {qNumber} OF {totalQuestions}</span>
           </div>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <span style={{ ...mono, fontSize: '13px', color: timeLeft < 120 ? '#ef4444' : 'var(--text-2)', fontWeight: 700 }}>{formatTime(timeLeft)}</span>
-            <button onClick={fetchDebrief} style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-3)', background: 'transparent', border: '1px solid var(--border)', padding: '6px 14px', cursor: 'pointer' }}>
+            <button onClick={fetchDebrief} style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border)', padding: '6px 14px', cursor: 'pointer' }}>
               END SESSION
             </button>
           </div>
@@ -666,7 +666,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           {/* LEFT - ARIA */}
           <div className="interview-pane" style={{ borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column' }}>
             <div style={{ padding: '32px', borderBottom: '1px solid var(--border)', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '20px' }}>
-              <span style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-3)' }}>[ARIA]</span>
+              <span style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-2)' }}>[ARIA]</span>
               <div className="aria-bars" data-state={ariaState} aria-hidden="true">
                 {[0.4, 0.7, 1, 0.6, 0.9, 0.5, 0.8, 0.3, 0.7, 1, 0.5].map((h, i) => (
                   <div key={i} className="aria-bar" style={{ height: `${h * 48}px`, animationDelay: `${i * 0.07}s` }} />
@@ -684,21 +684,21 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             <div style={{ padding: '32px', flex: 1 }}>
               {currentQ ? (
                 <>
-                  <span style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.1em', marginBottom: '16px', display: 'block' }}>[Q.{String(qNumber).padStart(2, '0')}]</span>
+                  <span style={{ ...mono, fontSize: '12px', color: 'var(--lime)', letterSpacing: '.1em', marginBottom: '16px', display: 'block' }}>[Q.{String(qNumber).padStart(2, '0')}]</span>
                   <p style={{ fontSize: '20px', fontWeight: 500, lineHeight: 1.5, color: 'var(--text)', marginBottom: '20px' }}>{currentQ.question}</p>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                    <span style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', textTransform: 'uppercase', padding: '4px 10px', border: '1px solid var(--border)', color: 'var(--text-3)' }}>
+                    <span style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', padding: '4px 10px', border: '1px solid var(--border)', color: 'var(--text-2)' }}>
                       {currentQ.topic_tag?.replace(/_/g, ' ') || currentQ.topic}
                     </span>
                     {currentQ.is_follow_up && (
-                      <span style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', textTransform: 'uppercase', padding: '4px 10px', border: '1px solid var(--lime-border)', color: 'var(--lime)' }}>
+                      <span style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', padding: '4px 10px', border: '1px solid var(--lime-border)', color: 'var(--lime)' }}>
                         FOLLOW-UP
                       </span>
                     )}
                   </div>
                 </>
               ) : (
-                <div style={{ ...mono, fontSize: '12px', color: 'var(--text-3)' }}>Loading question...</div>
+                <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>Loading question...</div>
               )}
             </div>
 
@@ -726,14 +726,14 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           {/* RIGHT - ANSWER */}
           <div className="interview-right">
             <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
-              <span style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-3)' }}>[YOUR ANSWER]</span>
+              <span style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-2)' }}>[YOUR ANSWER]</span>
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button onClick={() => { setVoiceMode(false); recognitionRef.current?.stop(); setListening(false) }}
-                  style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 12px', border: '1px solid var(--border)', background: !voiceMode ? 'var(--lime)' : 'transparent', color: !voiceMode ? '#0e0e0e' : 'var(--text-3)', cursor: 'pointer' }}>
+                  style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 12px', border: '1px solid var(--border)', background: !voiceMode ? 'var(--lime)' : 'transparent', color: !voiceMode ? '#0e0e0e' : 'var(--text-3)', cursor: 'pointer' }}>
                   TEXT
                 </button>
                 <button onClick={toggleVoice}
-                  style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 12px', border: '1px solid var(--border)', background: voiceMode ? 'var(--lime)' : 'transparent', color: voiceMode ? '#0e0e0e' : 'var(--text-3)', cursor: 'pointer' }}>
+                  style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 12px', border: '1px solid var(--border)', background: voiceMode ? 'var(--lime)' : 'transparent', color: voiceMode ? '#0e0e0e' : 'var(--text-3)', cursor: 'pointer' }}>
                   VOICE {listening ? '●' : '○'}
                 </button>
               </div>
@@ -751,7 +751,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                 <div>
                   <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.8, marginBottom: '24px' }}>{answer}</p>
                   <div style={{ borderTop: '1px solid var(--border)', paddingTop: '20px' }}>
-                    <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '10px' }}>IDEAL ANSWER</div>
+                    <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '10px' }}>IDEAL ANSWER</div>
                     <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.8 }}>{result.ideal_answer}</p>
                   </div>
                 </div>
@@ -765,7 +765,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             </div>
 
             <div className="interview-footer" style={{ padding: '16px 24px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap', flexShrink: 0 }}>
-              <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em' }}>
+              <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.06em' }}>
                 {answer.trim().split(/\s+/).filter(Boolean).length} WORDS
                 <span style={{ marginLeft: '16px', color: elapsed > SOFT_TARGET_SECONDS ? '#f59e0b' : 'var(--text-3)' }}>
                   {formatTime(elapsed)} / TARGET {formatTime(SOFT_TARGET_SECONDS)}
@@ -782,12 +782,12 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
               )}
               {result ? (
                 <button onClick={nextQuestion}
-                  style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '12px 28px', fontSize: '11px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
+                  style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '12px 28px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                   {qNumber >= totalQuestions ? 'VIEW DEBRIEF →' : 'NEXT QUESTION →'}
                 </button>
               ) : (
                 <button onClick={trySubmit} disabled={submitting || !answer.trim()}
-                  style={{ background: submitting || !answer.trim() ? 'var(--bg4)' : 'var(--lime)', color: submitting || !answer.trim() ? 'var(--text-3)' : '#0e0e0e', border: 'none', padding: '12px 28px', fontSize: '11px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: submitting || !answer.trim() ? 'not-allowed' : 'pointer', transition: 'all .1s' }}>
+                  style={{ background: submitting || !answer.trim() ? 'var(--bg4)' : 'var(--lime)', color: submitting || !answer.trim() ? 'var(--text-3)' : '#0e0e0e', border: 'none', padding: '12px 28px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: submitting || !answer.trim() ? 'not-allowed' : 'pointer', transition: 'all .1s' }}>
                   {submitting ? 'EVALUATING...' : 'SUBMIT ANSWER →'}
                 </button>
               )}
@@ -806,7 +806,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
         <PageHeader label="SESSION COMPLETE" title="Session debrief" />
 
         {loadingDebrief ? (
-          <div style={{ ...mono, fontSize: '12px', color: 'var(--text-3)', letterSpacing: '.08em' }}>ARIA IS ANALYSING YOUR SESSION...</div>
+          <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.08em' }}>ARIA IS ANALYSING YOUR SESSION...</div>
         ) : debrief && (
           <>
             <div data-print-card style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', flexWrap: 'wrap', ...cardBase, padding: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
@@ -818,7 +818,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                   { label: 'WEAK TOPICS', value: String(debrief.weak_topics?.length || 0), suffix: '' },
                 ].map(st => (
                   <div key={st.label} style={{ border: '1px solid var(--border)', padding: 'var(--space-3)' }}>
-                    <div style={{ ...mono, fontSize: '11px', color: 'var(--text-2)', letterSpacing: '.1em', marginBottom: 'var(--space-1)' }}>{st.label}</div>
+                    <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.1em', marginBottom: 'var(--space-1)' }}>{st.label}</div>
                     <div style={{ ...mono, fontSize: '28px', fontWeight: 700, color: 'var(--text)', lineHeight: 1.1 }}>{st.value}<span style={{ fontSize: '14px', color: 'var(--text-2)' }}>{st.suffix}</span></div>
                   </div>
                 ))}
@@ -828,7 +828,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
               {(assessmentParts ?? [{ title: 'ASSESSMENT', text: debrief.debrief }]).map(part => (
                 <div key={part.title} data-print-card style={{ background: 'var(--bg2)', border: `1px solid ${part.title === 'STRENGTH' ? 'var(--lime-border)' : part.title === 'FIX NEXT' ? 'rgba(245,158,11,0.5)' : 'var(--border)'}`, padding: 'var(--space-4)', gridColumn: part.title === 'OVERALL' || part.title === 'ASSESSMENT' ? '1 / -1' : undefined }}>
-                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: part.title === 'STRENGTH' ? 'var(--lime)' : part.title === 'FIX NEXT' ? '#f59e0b' : 'var(--text-2)', marginBottom: 'var(--space-2)' }}>{part.title}</div>
+                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: part.title === 'STRENGTH' ? 'var(--lime)' : part.title === 'FIX NEXT' ? '#f59e0b' : 'var(--text-2)', marginBottom: 'var(--space-2)' }}>{part.title}</div>
                   <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'var(--text)', maxWidth: '65ch' }}>{part.text}</p>
                 </div>
               ))}
@@ -836,7 +836,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
             {topicAverages.length > 0 && (
               <div data-print-card style={{ ...cardBase, padding: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
-                <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-3)' }}>AVERAGE SCORE BY TOPIC</div>
+                <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-3)' }}>AVERAGE SCORE BY TOPIC</div>
                 <svg width="100%" viewBox={`0 0 560 ${topicAverages.length * 32 + 8}`} role="img" aria-label={'Average score by topic: ' + topicAverages.map(t => `${t.topic} ${t.avg}`).join(', ')}>
                   {topicAverages.map((t, i) => (
                     <g key={t.topic} transform={`translate(0 ${i * 32 + 4})`}>
@@ -852,7 +852,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
             {(debrief.weak_topics?.length ?? 0) > 0 && (
               <div data-print-card style={{ ...cardBase, padding: 'var(--space-4)', marginBottom: 'var(--space-4)' }}>
-                <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-3)' }}>PRACTISE THESE NEXT</div>
+                <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: 'var(--space-3)' }}>PRACTISE THESE NEXT</div>
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                   {debrief.weak_topics!.map(t => (
                     <li key={t} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
@@ -868,12 +868,12 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             )}
 
             <div style={{ marginBottom: '32px' }}>
-              <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: '16px' }}>QUESTION BREAKDOWN</div>
+              <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: '16px' }}>QUESTION BREAKDOWN</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {sessionQuestions.map((q, i) => (
                   <div key={i} data-print-card style={{ ...cardBase, padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ ...mono, fontSize: '11px', color: 'var(--text-2)', marginBottom: '6px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                      <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginBottom: '6px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                         <span>Q{i + 1} · {q.topic}</span>
                         {q.is_follow_up && <span style={{ color: 'var(--lime)', border: '1px solid var(--lime-border)', padding: '0 6px' }}>FOLLOW-UP</span>}
                         {q.time_taken !== undefined && <span>{formatTime(q.time_taken)}</span>}
@@ -881,7 +881,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                       <div style={{ fontSize: '14px', color: 'var(--text)', lineHeight: 1.6 }}>{q.question}</div>
                       {savedSessionId && (
                         <Link href={`/history?session=${savedSessionId}`} className="no-print"
-                          style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', color: 'var(--lime)', display: 'inline-block', marginTop: '8px' }}>
+                          style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', color: 'var(--lime)', display: 'inline-block', marginTop: '8px' }}>
                           OPEN IN HISTORY →
                         </Link>
                       )}

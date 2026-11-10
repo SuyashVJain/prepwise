@@ -11,7 +11,7 @@ import { type SessionRow, scoreColor, formatDate, formatTime, sessionsPerWeek, t
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 const card: React.CSSProperties = { ...cardBase, padding: '24px' }
-const cardTitle: React.CSSProperties = { ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '20px' }
+const cardTitle: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '20px' }
 
 export default function ProgressPage() {
   const [sessions, setSessions] = useState<SessionRow[]>([])
@@ -78,7 +78,7 @@ export default function ProgressPage() {
                     { label: 'AVG TIME / ANSWER', value: avgSeconds === null ? '-' : formatTime(avgSeconds) },
                   ].map(s => (
                     <div key={s.label} style={{ ...card, padding: '20px' }}>
-                      <div style={{ ...mono, fontSize: '11px', color: 'var(--text-2)', letterSpacing: '.1em', marginBottom: '8px' }}>{s.label}</div>
+                      <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.1em', marginBottom: '8px' }}>{s.label}</div>
                       <div style={{ ...mono, fontSize: '32px', fontWeight: 700, color: 'var(--lime)', lineHeight: 1 }}>{s.value}</div>
                     </div>
                   ))}
@@ -93,14 +93,14 @@ export default function ProgressPage() {
                         return (
                           <g key={v}>
                             <line x1="24" x2={W - 24} y1={y} y2={y} stroke="var(--border-2)" />
-                            <text x="0" y={y + 4} style={{ ...mono, fontSize: '11px', fill: 'var(--text-3)' }}>{v}</text>
+                            <text x="0" y={y + 4} style={{ ...mono, fontSize: '12px', fill: 'var(--text-2)' }}>{v}</text>
                           </g>
                         )
                       })}
                       <polyline fill="none" stroke="var(--lime)" strokeWidth="2.5" strokeLinejoin="round" points={scores.map((v, i) => point(v, i).join(',')).join(' ')} />
                       {scores.map((v, i) => <circle key={i} cx={point(v, i)[0]} cy={point(v, i)[1]} r="4" fill="var(--lime)"><title>{`${v}/10 on ${new Date(ordered[i].created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })}`}</title></circle>)}
-                      <text x="24" y={H + 12} style={{ ...mono, fontSize: '11px', fill: 'var(--text-3)' }}>{formatDate(ordered[0].created_at)}</text>
-                      {formatDate(ordered[0].created_at) !== formatDate(ordered[ordered.length - 1].created_at) && <text x={W - 24} y={H + 12} textAnchor="end" style={{ ...mono, fontSize: '11px', fill: 'var(--text-3)' }}>{formatDate(ordered[ordered.length - 1].created_at)}</text>}
+                      <text x="24" y={H + 12} style={{ ...mono, fontSize: '12px', fill: 'var(--text-2)' }}>{formatDate(ordered[0].created_at)}</text>
+                      {formatDate(ordered[0].created_at) !== formatDate(ordered[ordered.length - 1].created_at) && <text x={W - 24} y={H + 12} textAnchor="end" style={{ ...mono, fontSize: '12px', fill: 'var(--text-2)' }}>{formatDate(ordered[ordered.length - 1].created_at)}</text>}
                     </svg>
                   ) : (
                     <p style={{ fontSize: '14px', color: 'var(--text-2)' }}>Complete 2 or more sessions to see your score over time.</p>
@@ -113,12 +113,12 @@ export default function ProgressPage() {
                     <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '120px' }}>
                       {weeks.map(w => (
                         <div key={w.start} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', height: '100%' }}>
-                          <span style={{ ...mono, fontSize: '11px', color: 'var(--text-2)', marginBottom: '4px' }}>{w.count}</span>
+                          <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginBottom: '4px' }}>{w.count}</span>
                           <div style={{ width: '100%', height: `${(w.count / maxWeek) * 80}px`, minHeight: '2px', background: w.count ? 'var(--lime)' : 'var(--bg4)' }} />
                         </div>
                       ))}
                     </div>
-                    <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', marginTop: '8px' }}>LAST 8 WEEKS, OLDEST FIRST</div>
+                    <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginTop: '8px' }}>LAST 8 WEEKS, OLDEST FIRST</div>
                   </section>
 
                   <section style={card} aria-label="Weak topic trend">
@@ -142,7 +142,7 @@ export default function ProgressPage() {
                   </section>
                 </div>
 
-                <p style={{ ...mono, fontSize: '12px', color: 'var(--text-3)' }}>
+                <p style={{ fontSize: '13px', color: 'var(--text-2)' }}>
                   Latest session: <span style={{ color: scoreColor(sessions[0].score_avg || 0) }}>{sessions[0].score_avg || 0}/10</span> on {formatDate(sessions[0].created_at)}. <Link href="/history" style={{ color: 'var(--lime)' }}>OPEN HISTORY →</Link>
                 </p>
               </div>

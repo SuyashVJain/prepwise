@@ -32,10 +32,10 @@ export default function ClaimsList({ claims }: { claims?: Claim[] | null }) {
         if (items.length === 0) return null
         return (
           <div key={g.verdict} style={{ marginTop: '10px' }}>
-            <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: g.color, marginBottom: '4px' }}>{g.label} ({items.length})</div>
+            <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: g.color, marginBottom: '4px' }}>{g.label} ({items.length})</div>
             {items.map((c, i) => (
               <div key={i} style={{ fontSize: '14px', color: 'var(--text)', lineHeight: 1.6, marginBottom: '8px' }}>
-                {c.critical && <span style={{ ...mono, fontSize: '11px', color: '#ef4444', fontWeight: 700 }}>[CRITICAL] </span>}
+                {c.critical && <span style={{ ...mono, fontSize: '12px', color: '#ef4444', fontWeight: 700 }}>[CRITICAL] </span>}
                 {c.claim}
                 {c.reason && <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginTop: '2px' }}>{c.reason}</div>}
               </div>
