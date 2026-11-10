@@ -128,6 +128,7 @@ export default function InterviewPage() {
   const [waitSeconds, setWaitSeconds] = useState(0)
   const [slow, setSlow] = useState(false)
   const [confirmShort, setConfirmShort] = useState(false)
+  const [saveError, setSaveError] = useState('')
   // Set when the page is opened as /interview?topic=..., e.g. from the voice tutor.
   const [presetTopic, setPresetTopic] = useState('')
 
@@ -135,6 +136,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const questionStartRef = useRef(0)
   const scoreRef = useRef<HTMLDivElement | null>(null)
   const recognitionRef = useRef<SpeechRec | null>(null)
+  // The saved session row, so a retry after a failed answers save does not create a second session.
+  const savedIdRef = useRef<string | null>(null)
   const router = useRouter()
   const supabase = createClient()
   const toast = useToast()
@@ -253,6 +256,11 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     router.push('/dashboard')
   }
 
+  // Asks before leaving a debrief whose save failed, because the answers would be lost.
+  function leaveUnsaved() {
+    return !saveError || window.confirm('This session has not been saved. Leave anyway?')
+  }
+
   function startQuestionClock() {
     questionStartRef.current = Date.now()
     setNow(questionStartRef.current)
@@ -291,9 +299,9 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const waiting = submitting || startingSession || loadingDebrief
   useEffect(() => {
     if (!waiting) return
-    const t = setTimeout(() => setSlow(true), 8000)
+    const t = setTimeout(() => setSlow(true), startingSession ? 4000 : 8000)
     return () => { clearTimeout(t); setSlow(false) }
-  }, [waiting])
+  }, [waiting, startingSession])
 
   async function startSession() {
     if (!syllabus) { router.push('/onboarding'); return }
@@ -422,9 +430,10 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   }
 
   async function fetchDebrief() {
-    try { sessionStorage.removeItem(SESSION_KEY) } catch { /* ignore */ }
     setLoadingDebrief(true)
     setSavedSessionId(null)
+    setSaveError('')
+    savedIdRef.current = null
     setPhase('debrief')
     if (timerRef.current) clearInterval(timerRef.current)
 
@@ -450,44 +459,64 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
       })
       data = await okJson(res)
     } catch (err) {
+      // The answers and the stored session stay as they are, so Retry picks up where this left off.
       showApiError(err, 'debrief')
       setPhase('interview')
       setLoadingDebrief(false)
       return
     }
-    setDebrief({ ...data, avg_score: avgScore })
+    const full: Debrief = { ...data, avg_score: avgScore }
+    setDebrief(full)
     setLoadingDebrief(false)
+    await saveSession(full)
+  }
 
-    const { data: { user } } = await supabase.auth.getUser()
+  // Saves the session and its answers. The stored copy is cleared only when both writes succeed.
+  async function saveSession(d: Debrief) {
+    setSaveError('')
     // An early end with nothing answered has nothing worth saving.
-    if (user && sessionQuestions.length > 0) {
-      const { data: session } = await supabase.from('sessions').insert({
-        user_id: user.id,
-        syllabus_id: syllabus?.id || null,
-        interview_type: interviewType,
-        target_company: targetCompany,
-        // The number actually answered, which is lower than the configured count when the session ends early.
-        total_questions: sessionQuestions.length,
-        score_avg: avgScore,
-        weak_topics: data.weak_topics || [],
-        completed: true,
-      }).select().single()
-
-      if (session) {
-        setSavedSessionId(session.id)
-        const rows = sessionQuestions.map(q => ({
-          session_id: session.id,
-          question_text: q.question,
-          user_answer: q.answer,
-          score: q.result?.score || 0,
-          hint: q.result?.hint || '',
-          ideal_answer: q.result?.ideal_answer || '',
-        }))
-        // The extra columns come from docs/migrations/question_extras.sql; until it is applied, save the basic rows.
-        const extras = sessionQuestions.map((q, i) => ({ ...rows[i], claims: q.result?.claims ?? null, time_taken_seconds: q.time_taken ?? null, is_follow_up: !!q.is_follow_up }))
-        const { error } = await supabase.from('questions').insert(extras)
-        if (error) await supabase.from('questions').insert(rows)
+    if (sessionQuestions.length === 0) {
+      try { sessionStorage.removeItem(SESSION_KEY) } catch { /* ignore */ }
+      return
+    }
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not signed in')
+      let id = savedIdRef.current
+      if (!id) {
+        const { data: session, error } = await supabase.from('sessions').insert({
+          user_id: user.id,
+          syllabus_id: syllabus?.id || null,
+          interview_type: interviewType,
+          target_company: targetCompany,
+          // The number actually answered, which is lower than the configured count when the session ends early.
+          total_questions: sessionQuestions.length,
+          score_avg: d.avg_score,
+          weak_topics: d.weak_topics || [],
+          completed: true,
+        }).select().single()
+        if (error || !session) throw error ?? new Error('No session returned')
+        id = session.id as string
+        savedIdRef.current = id
       }
+      const rows = sessionQuestions.map(q => ({
+        session_id: id,
+        question_text: q.question,
+        user_answer: q.answer,
+        score: q.result?.score || 0,
+        hint: q.result?.hint || '',
+        ideal_answer: q.result?.ideal_answer || '',
+      }))
+      // The extra columns come from docs/migrations/question_extras.sql; until it is applied, save the basic rows.
+      const extras = sessionQuestions.map((q, i) => ({ ...rows[i], claims: q.result?.claims ?? null, time_taken_seconds: q.time_taken ?? null, is_follow_up: !!q.is_follow_up }))
+      let { error } = await supabase.from('questions').insert(extras)
+      if (error) ({ error } = await supabase.from('questions').insert(rows))
+      if (error) throw error
+      setSavedSessionId(id)
+      try { sessionStorage.removeItem(SESSION_KEY) } catch { /* ignore */ }
+    } catch (err) {
+      console.error('Session save error:', err)
+      setSaveError('Your session could not be saved. Your answers are still here. Check your connection and try again.')
     }
   }
 
@@ -609,7 +638,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           </div>
 
           {errorBar}
-          {slow && startingSession && <p style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: '12px' }}>Still working. The server is slower than usual.</p>}
+          {slow && startingSession && <p role="status" style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: '12px' }}>Waking the server, this can take up to a minute.</p>}
           <div>
             <button onClick={startSession} disabled={startingSession || !syllabus}
               style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: (startingSession || !syllabus) ? 'not-allowed' : 'pointer', opacity: (startingSession || !syllabus) ? 0.5 : 1 }}>
@@ -813,6 +842,15 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.08em' }}>ARIA IS ANALYSING YOUR SESSION...</div>
         ) : debrief && (
           <>
+            {saveError && (
+              <div role="alert" className="no-print" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: 'var(--space-3)', padding: '12px 16px', border: '1px solid rgba(239,68,68,0.5)' }}>
+                <span style={{ fontSize: '14px', color: '#ef4444' }}>{saveError}</span>
+                <button type="button" onClick={() => saveSession(debrief)}
+                  style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--text)', background: 'transparent', border: '1px solid var(--border-2)', padding: '8px 16px', minHeight: '40px' }}>
+                  RETRY SAVE
+                </button>
+              </div>
+            )}
             <div data-print-card style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', flexWrap: 'wrap', ...cardBase, padding: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
               <ScoreRing score={debrief.avg_score} />
               <div style={{ flex: 1, minWidth: '240px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 'var(--space-2)' }}>
@@ -907,11 +945,11 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                 style={{ flex: 1, background: 'transparent', color: 'var(--lime)', border: '1px solid var(--lime-border)', padding: '16px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                 EXPORT PDF
               </button>
-              <button onClick={() => { setPhase('setup'); setSessionQuestions([]); setDebrief(null); setTimeLeft(900); setResult(null); setAnswer(''); setSavedSessionId(null) }}
+              <button onClick={() => { if (leaveUnsaved()) { setPhase('setup'); setSessionQuestions([]); setDebrief(null); setTimeLeft(900); setResult(null); setAnswer(''); setSavedSessionId(null); setSaveError('') } }}
                 style={{ flex: 1, background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '16px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                 NEW SESSION →
               </button>
-              <button onClick={() => router.push('/dashboard')}
+              <button onClick={() => { if (leaveUnsaved()) router.push('/dashboard') }}
                 style={{ flex: 1, background: 'transparent', color: 'var(--text-2)', border: '1px solid var(--border)', padding: '16px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                 BACK TO DASHBOARD
               </button>
