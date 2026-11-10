@@ -1,7 +1,7 @@
 // Study mode: chat with uploaded documents and generate quizzes.
 'use client'
 import { useState, useRef, useEffect } from 'react'
-import Sidebar from '@/components/Sidebar'
+import PageShell from '@/components/PageShell'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 
 
@@ -222,15 +222,12 @@ function renderMarkdown(text: string): string {
 }
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', display: 'flex', fontFamily: "'Space Grotesk', sans-serif" }}>
-
-            <Sidebar />
-
+        <PageShell full>
             {/* MAIN */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
                 {/* TOP BAR */}
-                <div style={{ padding: '28px var(--space-5) 0', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+                <div style={{ padding: '32px var(--page-gutter) 0', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
                     <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '6px' }}>[STUDY MODE]</div>
                     <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '20px' }}>
                         <h1 style={{ fontSize: '28px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1 }}>
@@ -258,7 +255,7 @@ function renderMarkdown(text: string): string {
 
                 {/* DOC LIST BAR */}
                 {docs.length > 0 && (
-                    <div style={{ padding: '10px var(--space-5)', borderBottom: '1px solid var(--border)', display: 'flex', gap: 'var(--space-2)', alignItems: 'center', flexWrap: 'wrap', flexShrink: 0, background: 'var(--bg2)' }}>
+                    <div style={{ padding: '10px var(--page-gutter)', borderBottom: '1px solid var(--border)', display: 'flex', gap: 'var(--space-2)', alignItems: 'center', flexWrap: 'wrap', flexShrink: 0, background: 'var(--bg2)' }}>
                         <span style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', marginRight: 'var(--space-1)' }}>LOADED:</span>
                         {docs.map((doc, i) => (
                             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: 'var(--space-1) 10px', background: 'var(--lime-dim)', border: '1px solid var(--lime-border)' }}>
@@ -289,7 +286,7 @@ function renderMarkdown(text: string): string {
 
                 {/* UPLOAD PROGRESS */}
                 {uploadProgress.length > 0 && (
-                    <div style={{ padding: 'var(--space-2) var(--space-5)', background: 'var(--bg3)', borderBottom: '1px solid var(--border)', display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', flexShrink: 0 }}>
+                    <div style={{ padding: 'var(--space-2) var(--page-gutter)', background: 'var(--bg3)', borderBottom: '1px solid var(--border)', display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', flexShrink: 0 }}>
                         {uploadProgress.map((p, i) => (
                             <span key={i} style={{ ...mono, fontSize: '11px', color: p.startsWith('✓') ? 'var(--lime)' : p.startsWith('✗') ? '#ef4444' : 'var(--text-3)', letterSpacing: '.06em' }}>{p}</span>
                         ))}
@@ -298,14 +295,14 @@ function renderMarkdown(text: string): string {
 
                 {/* UPLOAD ERROR */}
                 {uploadError && (
-                    <div style={{ padding: 'var(--space-2) var(--space-5)', background: 'rgba(239,68,68,0.08)', borderBottom: '1px solid rgba(239,68,68,0.2)', flexShrink: 0 }}>
+                    <div style={{ padding: 'var(--space-2) var(--page-gutter)', background: 'rgba(239,68,68,0.08)', borderBottom: '1px solid rgba(239,68,68,0.2)', flexShrink: 0 }}>
                         <span style={{ ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em' }}>{uploadError}</span>
                     </div>
                 )}
 
                 {/* UPLOAD ZONE - no docs yet */}
                 {docs.length === 0 && !uploading && (
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--space-5)' }}>
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--page-gutter)' }}>
                         <div style={{ width: '100%', maxWidth: '560px', textAlign: 'center' }}>
                             <div style={{ ...mono, fontSize: '32px', color: 'var(--lime)', marginBottom: 'var(--space-3)' }}>[DOC]</div>
                             <h2 style={{ fontSize: '24px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.01em', marginBottom: 'var(--space-2)' }}>Upload your study material</h2>
@@ -316,7 +313,7 @@ function renderMarkdown(text: string): string {
                                 onChange={e => handleFiles(e.target.files)} />
                             <label htmlFor="doc-upload" style={{
                                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                                gap: 'var(--space-2)', padding: 'var(--space-5)', border: '1px dashed var(--border-2)', cursor: 'pointer',
+                                gap: 'var(--space-2)', padding: 'var(--page-gutter)', border: '1px dashed var(--border-2)', cursor: 'pointer',
                                 ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)',
                             }}>
                                 <span style={{ fontSize: '24px' }}>↑</span>
@@ -345,7 +342,7 @@ function renderMarkdown(text: string): string {
                 {/* CHAT TAB */}
                 {docs.length > 0 && tab === 'chat' && (
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                        <div style={{ flex: 1, overflowY: 'auto', padding: 'var(--space-4) var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                        <div style={{ flex: 1, overflowY: 'auto', padding: 'var(--space-4) var(--page-gutter)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
                             {messages.map((msg, i) => (
                                 <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', flexDirection: msg.role === 'user' ? 'row-reverse' : 'row' }}>
                                     <div style={{
@@ -381,7 +378,7 @@ function renderMarkdown(text: string): string {
                         </div>
 
                         {messages.length <= 1 && (
-                            <div style={{ padding: '0 var(--space-5) 12px', display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+                            <div style={{ padding: '0 var(--page-gutter) 12px', display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
                                 {['Summarize the key points', 'Explain the main concepts', 'What are the most important topics?', 'Compare topics across documents'].map(q => (
                                     <button key={q} onClick={() => setInput(q)} style={{
                                         ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase',
@@ -392,7 +389,7 @@ function renderMarkdown(text: string): string {
                             </div>
                         )}
 
-                        <div style={{ padding: 'var(--space-3) var(--space-5)', borderTop: '1px solid var(--border)', display: 'flex', gap: '12px', alignItems: 'flex-end', flexShrink: 0 }}>
+                        <div style={{ padding: 'var(--space-3) var(--page-gutter)', borderTop: '1px solid var(--border)', display: 'flex', gap: '12px', alignItems: 'flex-end', flexShrink: 0 }}>
                             <textarea value={input} onChange={e => setInput(e.target.value)}
                                 onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() } }}
                                 placeholder={`Ask anything across ${docs.length} document${docs.length > 1 ? 's' : ''}... (Enter to send)`}
@@ -417,7 +414,7 @@ function renderMarkdown(text: string): string {
 
                 {/* QUIZ TAB */}
                 {docs.length > 0 && tab === 'quiz' && (
-                    <div style={{ flex: 1, overflowY: 'auto', padding: '28px var(--space-5)' }}>
+                    <div style={{ flex: 1, overflowY: 'auto', padding: '28px var(--page-gutter)' }}>
                         {!quizQuestions.length && !quizLoading && (
                             <div style={{ maxWidth: '500px' }}>
                                 <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: 'var(--space-4)' }}>[QUIZ GENERATOR]</div>
@@ -545,6 +542,6 @@ function renderMarkdown(text: string): string {
           50% { transform: translateY(-4px); opacity: 1; }
         }
       `}</style>
-        </div>
+        </PageShell>
     )
 }

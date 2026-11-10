@@ -6,6 +6,7 @@ import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import { TutorClient } from '@/lib/tutor/voiceClient'
 import type { Citation, ProviderInfo, SyllabusPayload, TutorState, TurnEnd } from '@/lib/tutor/voiceClient'
 import Sidebar from '@/components/Sidebar'
+import PageShell from '@/components/PageShell'
 import MicHelp from '@/components/MicHelp'
 import VideoPanel from '@/components/tutor/VideoPanel'
 import RoadmapPanel from '@/components/tutor/RoadmapPanel'
@@ -314,9 +315,8 @@ export default function TutorPage() {
   if (phase !== 'session') {
     const docsUnavailable = syllabusChecked && !syllabus
     return (
-      <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', display: 'flex', fontFamily: "'Space Grotesk', sans-serif" }}>
-        <Sidebar />
-        <div style={{ flex: 1, padding: 'var(--space-5)', maxWidth: '860px' }}>
+      <PageShell>
+        <div className="page-narrow">
           <div style={{ ...eyebrow, marginBottom: '12px' }}>[VOICE TUTOR]</div>
           <h1 style={{ fontSize: '42px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 'var(--space-2)' }}>Learn by<br />talking</h1>
           <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em', marginBottom: '32px' }}>
@@ -384,7 +384,7 @@ export default function TutorPage() {
             Works best in Chrome or Edge with headphones. No microphone? You can type instead.
           </p>
         </div>
-      </div>
+      </PageShell>
     )
   }
 

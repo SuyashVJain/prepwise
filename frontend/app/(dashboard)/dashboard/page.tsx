@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import Sidebar from '@/components/Sidebar'
+import PageShell from '@/components/PageShell'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
 import { weakTopicStats } from '@/lib/stats'
@@ -93,26 +93,19 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex' }}>
-        <Sidebar />
-        <main style={{ flex: 1, minWidth: 0 }}><PageSkeleton rows={4} /></main>
-      </div>
+      <PageShell><PageSkeleton rows={4} /></PageShell>
     )
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', display: 'flex', ...grotesk }}>
-
-      <Sidebar />
+    <PageShell>
       <WelcomeGuide />
-
-      {/* ── MAIN CONTENT ── */}
-      <div style={{ flex: 1, overflow: 'auto' }}>
+      <div>
 
         {/* ── DASHBOARD VIEW ── */}
         {(
           <>
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', padding: '32px clamp(16px, 4vw, 40px) 0', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
               <div>
                 <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '6px' }}>TECHNICAL OVERVIEW / SYSTEM ACTIVE</div>
                 <h1 style={{ fontSize: 'clamp(26px, 6vw, 36px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1 }}>CANDIDATE DASHBOARD</h1>
@@ -124,7 +117,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div style={{ padding: '0 clamp(16px, 4vw, 40px) 40px' }}>
+            <div>
               {sessions.length === 0 && (
                 <div style={{ background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'clamp(24px, 5vw, 56px)', textAlign: 'center' }}>
                   <div style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', color: 'var(--lime)', marginBottom: '16px' }}>[START HERE]</div>
@@ -295,13 +288,6 @@ export default function DashboardPage() {
         )}
 
       </div>
-
-      {/* right margin */}
-      <div style={{ width: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-        <span style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--border-2)', writingMode: 'vertical-rl', whiteSpace: 'nowrap' }}>
-          PREPWISE // RELEASE_CANDIDATE // ACTIVE
-        </span>
-      </div>
-    </div>
+    </PageShell>
   )
 }

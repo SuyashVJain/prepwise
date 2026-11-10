@@ -285,3 +285,11 @@ html.snap { scroll-padding-top: var(--hdr); }
 }
 @media (max-width: 639px) { p a[href] { padding-block: 14px; } }
 @media (max-width: 639px) { table td, table th { white-space: nowrap; } }
+
+/* ---- Signed-in pages: one shell ---- */
+:root { --page-gutter: clamp(16px, 4vw, 40px); }
+.app-shell { min-height: 100vh; background: var(--bg); color: var(--text); display: flex; font-family: 'Space Grotesk', sans-serif; }
+.app-main { flex: 1; min-width: 0; }
+.app-main[data-full] { display: flex; flex-direction: column; min-height: 100vh; }
+.page-wrap { max-width: 1120px; padding: 32px var(--page-gutter) 48px; margin: 0; }
+.page-narrow { max-width: 760px; }

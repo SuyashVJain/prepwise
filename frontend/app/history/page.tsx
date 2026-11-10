@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import Sidebar from '@/components/Sidebar'
+import PageShell from '@/components/PageShell'
 import Skeleton, { PageSkeleton } from '@/components/Skeleton'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
 import { typeName } from '@/lib/stats'
@@ -30,7 +30,6 @@ type QuestionRow = {
 }
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
-const grotesk: React.CSSProperties = { fontFamily: "'Space Grotesk', sans-serif" }
 const label: React.CSSProperties = { ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: '3px' }
 
 function scoreColor(s: number) {
@@ -109,18 +108,13 @@ export default function HistoryPage() {
   const control: React.CSSProperties = { background: 'var(--bg3)', color: 'var(--text)', border: '1px solid var(--border-2)', padding: '8px 10px', fontSize: '14px' }
   const controlLabel: React.CSSProperties = { ...mono, fontSize: '11px', letterSpacing: '.08em', color: 'var(--text-2)', display: 'flex', flexDirection: 'column', gap: '4px' }
 
-  const shell: React.CSSProperties = { minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', ...grotesk, display: 'flex' }
-  const content: React.CSSProperties = { flex: 1, minWidth: 0, padding: 'clamp(16px, 4vw, 40px)' }
-
   if (loading) {
-    return <div style={shell}><Sidebar /><main style={{ flex: 1, minWidth: 0 }}><PageSkeleton rows={4} /></main></div>
+    return <PageShell><PageSkeleton rows={4} /></PageShell>
   }
 
   return (
-    <div style={shell}>
-      <Sidebar />
-      <main style={content}>
-      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+    <PageShell>
+      <div>
         {selected && (
           <button onClick={() => setSelected(null)}
             style={{ ...mono, fontSize: '11px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border)', padding: '10px 20px', cursor: 'pointer', marginBottom: '32px' }}>
@@ -232,7 +226,6 @@ export default function HistoryPage() {
           </div>
         )}
       </div>
-      </main>
-    </div>
+    </PageShell>
   )
 }

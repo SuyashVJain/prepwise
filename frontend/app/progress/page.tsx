@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import Sidebar from '@/components/Sidebar'
+import PageShell from '@/components/PageShell'
 import { PageSkeleton } from '@/components/Skeleton'
 import { type SessionRow, scoreColor, formatDate, formatTime, sessionsPerWeek, topicTrends } from '@/lib/stats'
 
@@ -55,11 +55,9 @@ export default function ProgressPage() {
   ]
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', display: 'flex' }}>
-      <Sidebar />
-      <main style={{ flex: 1, minWidth: 0 }}>
+    <PageShell>
         {loading ? <PageSkeleton /> : (
-          <div style={{ padding: '32px clamp(16px, 4vw, 40px)' }}>
+          <div>
             <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', color: 'var(--lime)', marginBottom: '12px' }}>[PROGRESS]</div>
             <h1 style={{ fontSize: '36px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: '32px' }}>Your trajectory</h1>
             {error && <p role="alert" style={{ ...mono, fontSize: '12px', color: '#ef4444', marginBottom: '16px' }}>{error}</p>}
@@ -150,7 +148,6 @@ export default function ProgressPage() {
             )}
           </div>
         )}
-      </main>
-    </div>
+    </PageShell>
   )
 }

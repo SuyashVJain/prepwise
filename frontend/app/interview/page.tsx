@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import { DEFAULTS_KEY } from '@/lib/stats'
-import Sidebar from '@/components/Sidebar'
+import PageShell from '@/components/PageShell'
 import { PageSkeleton } from '@/components/Skeleton'
 import MicHelp from '@/components/MicHelp'
 import { useToast } from '@/components/Toast'
@@ -522,12 +522,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   }
 
   if (loadingProfile) {
-    return (
-      <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex' }}>
-        <Sidebar />
-        <main style={{ flex: 1, minWidth: 0 }}><PageSkeleton rows={3} /></main>
-      </div>
-    )
+    return <PageShell><PageSkeleton rows={3} /></PageShell>
   }
 
   const errorBar = apiError ? (
@@ -547,10 +542,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   // ── SETUP ──
   if (phase === 'setup') {
     return (
-      <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', ...grotesk, display: 'flex' }}>
-        <Sidebar />
-        <main style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
-        <div style={{ width: '100%', maxWidth: '600px' }}>
+      <PageShell>
+        <div className="page-narrow">
           <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '12px' }}>[NEW SESSION]</div>
           <h1 style={{ fontSize: '42px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: '8px' }}>Configure<br />your session</h1>
 
@@ -633,8 +626,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             </button>
           </div>
         </div>
-        </main>
-      </div>
+      </PageShell>
     )
   }
 
