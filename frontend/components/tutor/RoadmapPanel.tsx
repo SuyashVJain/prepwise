@@ -43,9 +43,11 @@ export default function RoadmapPanel({ subjectId, currentTopic, startLabel, onSt
           const current = t.title.toLowerCase() === currentTopic.trim().toLowerCase()
           return (
             <li key={t.id} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', padding: 'var(--space-2) 10px', background: current ? 'var(--lime-dim)' : 'var(--bg2)', border: `1px solid ${current ? 'var(--lime-border)' : 'var(--border)'}` }}>
-              <input type="checkbox" checked={done} onChange={e => setTopicDone(t.id, e.target.checked)}
+              <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '44px', minHeight: '44px', margin: '-10px -14px -10px -14px', flexShrink: 0, cursor: 'pointer' }}>
+                <input type="checkbox" checked={done} onChange={e => setTopicDone(t.id, e.target.checked)}
                 aria-label={`Mark ${t.title} as done`}
-                style={{ marginTop: '3px', accentColor: '#d4fe42', width: '14px', height: '14px', flexShrink: 0, cursor: 'pointer' }} />
+                style={{ accentColor: '#d4fe42', width: '18px', height: '18px', cursor: 'pointer' }} />
+              </label>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: '13px', fontWeight: 600, color: done ? 'var(--text-3)' : 'var(--text)', textDecoration: done ? 'line-through' : 'none' }}>
                   <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginRight: '6px' }}>{String(i + 1).padStart(2, '0')}</span>

@@ -303,7 +303,7 @@ function renderMarkdown(text: string): string {
                             <div style={{ ...mono, fontSize: '32px', color: 'var(--lime)', marginBottom: 'var(--space-3)' }}>[DOC]</div>
                             <h2 style={{ fontSize: '24px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.01em', marginBottom: 'var(--space-2)' }}>Upload your study material</h2>
                             <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '6px' }}>Select one or multiple files at once</p>
-                            <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '32px' }}>Pdf · DOCX · TXT · PNG · JPG</p>
+                            <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '32px' }}>PDF · DOCX · TXT · PNG · JPG</p>
                             <input type="file" id="doc-upload" multiple style={{ display: 'none' }}
                                 accept=".pdf,.docx,.txt,.png,.jpg,.jpeg"
                                 onChange={e => handleFiles(e.target.files)} />

@@ -25,7 +25,7 @@ export const ghostButton: CSSProperties = {
 export const panel: CSSProperties = cardBase
 
 export function tile(active: boolean): CSSProperties {
-  return optionStyle(active)
+  return { ...optionStyle(active), display: 'block' }
 }
 
 export function disabled(style: CSSProperties, isDisabled: boolean): CSSProperties {
