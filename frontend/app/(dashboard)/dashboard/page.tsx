@@ -11,6 +11,7 @@ import ScoreChart from '@/components/ScoreChart'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
 import { warmBackend } from '@/lib/api'
+import { NAME_EVENT } from '@/lib/profileEvents'
 import { weakTopicStats, typeName, companyName, capFirst, longestStreak } from '@/lib/stats'
 import { useRouter } from 'next/navigation'
 
@@ -71,6 +72,12 @@ export default function DashboardPage() {
     }
     setLoading(false)
   }
+
+  useEffect(() => {
+    const onName = (e: Event) => setFirstName(String((e as CustomEvent<string>).detail || '').trim().split(' ')[0] || '')
+    window.addEventListener(NAME_EVENT, onName)
+    return () => window.removeEventListener(NAME_EVENT, onName)
+  }, [])
 
   useEffect(() => {
     load()

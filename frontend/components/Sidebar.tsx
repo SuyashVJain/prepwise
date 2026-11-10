@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Logo from '@/components/Logo'
+import { NAME_EVENT } from '@/lib/profileEvents'
 
 export const NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard' },
@@ -36,6 +37,13 @@ export default function Sidebar() {
       setUniversity(data?.university || '')
       setLoaded(true)
     }).catch(() => setLoaded(true))
+  }, [])
+
+  // Settings announces a new display name, so the block updates at once.
+  useEffect(() => {
+    const onName = (e: Event) => setName(String((e as CustomEvent<string>).detail || ''))
+    window.addEventListener(NAME_EVENT, onName)
+    return () => window.removeEventListener(NAME_EVENT, onName)
   }, [])
 
   async function signOut() {

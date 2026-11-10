@@ -8,6 +8,8 @@ import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import { DEFAULTS_KEY } from '@/lib/stats'
 import { useToast } from '@/components/Toast'
+import { cleanDisplayName } from '@/lib/displayName'
+import { announceName } from '@/lib/profileEvents'
 
 const TYPES: Record<string, string> = { technical: 'Technical', hr: 'HR / Behavioural', system_design: 'System Design', subject: 'Subject-Specific' }
 const COUNTS = [5, 10, 15]
@@ -27,6 +29,11 @@ function Row({ k, v }: { k: string; v: string }) {
 export default function SettingsPage() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
+  const [userId, setUserId] = useState('')
+  const [savedName, setSavedName] = useState('')
+  const [nameSaving, setNameSaving] = useState(false)
+  const [nameSaved, setNameSaved] = useState(false)
+  const [nameError, setNameError] = useState('')
   const [type, setType] = useState('technical')
   const [count, setCount] = useState(5)
   const [saved, setSaved] = useState(false)
@@ -43,8 +50,10 @@ export default function SettingsPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push('/login'); return }
       setEmail(user.email || '')
+      setUserId(user.id)
       const { data } = await supabase.from('profiles').select('full_name').eq('id', user.id).single()
       setName(data?.full_name || '')
+      setSavedName(data?.full_name || '')
       try {
         const d = JSON.parse(localStorage.getItem(DEFAULTS_KEY) || '{}')
         if (d.type in TYPES) setType(d.type)
@@ -95,6 +104,27 @@ export default function SettingsPage() {
 
   const tile = optionStyle
 
+  // Live check of what is typed; the cleaned value is what gets saved.
+  const cleaned = cleanDisplayName(name)
+  const canSaveName = !cleaned.error && cleaned.value !== savedName && !nameSaving
+  const shownNameError = nameError || (name !== savedName ? cleaned.error : '')
+
+  // Saves to the signed-in user's own profile row only (row level security allows nothing else).
+  async function saveName(e: React.FormEvent) {
+    e.preventDefault()
+    if (!canSaveName || !userId) return
+    setNameSaving(true)
+    setNameSaved(false)
+    setNameError('')
+    const { error } = await supabase.from('profiles').update({ full_name: cleaned.value }).eq('id', userId).select('full_name').single()
+    setNameSaving(false)
+    if (error) { setNameError('We could not save your name. Check your connection and try again.'); return }
+    setSavedName(cleaned.value)
+    setName(cleaned.value)
+    setNameSaved(true)
+    announceName(cleaned.value)
+  }
+
   return (
     <PageShell>
         {loading ? <PageSkeleton rows={2} /> : (
@@ -105,7 +135,20 @@ export default function SettingsPage() {
             <section aria-label="Account" style={{ ...cardBase, padding: '24px', marginBottom: '24px' }}>
               <h2 className="sec-title">Account</h2>
               <Row k="Email" v={email} />
-              <Row k="Display name" v={name} />
+              <p style={{ fontSize: '13px', color: 'var(--text-2)', margin: '-12px 0 20px' }}>Email can&apos;t be changed here.</p>
+              <form onSubmit={saveName} noValidate>
+                <label htmlFor="display-name" style={label}>Display name</label>
+                <input id="display-name" value={name} autoComplete="name" maxLength={80} aria-invalid={shownNameError ? true : undefined} aria-describedby="display-name-msg"
+                  onChange={e => { setName(e.target.value); setNameSaved(false); setNameError('') }}
+                  style={{ ...fieldStyle, width: '100%', display: 'block' }} />
+                <p id="display-name-msg" role="status" style={{ fontSize: '14px', minHeight: '22px', margin: '8px 0 12px', color: shownNameError ? '#ef4444' : 'var(--lime)' }}>
+                  {shownNameError || (nameSaved ? 'Saved' : '')}
+                </p>
+                <button type="submit" disabled={!canSaveName} className="btn-primary"
+                  style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', minHeight: '44px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', cursor: canSaveName ? 'pointer' : 'not-allowed', opacity: canSaveName ? 1 : 0.5 }}>
+                  {nameSaving ? 'SAVING...' : 'SAVE NAME'}
+                </button>
+              </form>
             </section>
 
             <section aria-label="Session defaults" style={{ ...cardBase, padding: '24px', marginBottom: '24px' }}>
