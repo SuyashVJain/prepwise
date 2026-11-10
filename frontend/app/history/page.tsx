@@ -136,7 +136,18 @@ export default function HistoryPage() {
             </button>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {trend.length >= 2 && (
+              <section aria-label="Score trend" style={{ ...cardBase, padding: '16px 24px', marginBottom: '8px' }}>
+                <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '8px' }}>SCORE TREND</div>
+                <svg width="100%" viewBox="0 0 460 90" role="img" aria-label={`Score trend across ${trend.length} sessions, from ${trend[0]} to ${trend[trend.length - 1]}`}>
+                  {[0, 5, 10].map(v => <line key={v} x1="0" x2="460" y1={80 - (v / 10) * 70} y2={80 - (v / 10) * 70} stroke="var(--border-2)" />)}
+                  <polyline fill="none" stroke="var(--lime)" strokeWidth="2.5" strokeLinejoin="round"
+                    points={trend.map((v, i) => `${8 + (i / (trend.length - 1)) * 444},${80 - (v / 10) * 70}`).join(' ')} />
+                  {trend.map((v, i) => <circle key={i} cx={8 + (i / (trend.length - 1)) * 444} cy={80 - (v / 10) * 70} r="3.5" fill="var(--lime)" />)}
+                </svg>
+              </section>
+            )}
             <div role="group" aria-label="Filter and sort sessions" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'flex-end', marginBottom: '8px' }}>
               <label style={controlLabel}>TYPE
                 <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} style={control}>
@@ -156,12 +167,6 @@ export default function HistoryPage() {
                   <option value="score">Highest score</option>
                 </select>
               </label>
-              {trend.length >= 2 && (
-                <svg width="140" height="40" viewBox="0 0 140 40" role="img" aria-label={`Score trend across ${trend.length} sessions, from ${trend[0]} to ${trend[trend.length - 1]}`} style={{ marginLeft: 'auto' }}>
-                  <polyline fill="none" stroke="var(--lime)" strokeWidth="2" strokeLinejoin="round"
-                    points={trend.map((v, i) => `${4 + (i / (trend.length - 1)) * 132},${36 - (v / 10) * 32}`).join(' ')} />
-                </svg>
-              )}
             </div>
             {visible.length === 0 && (
               <p style={{ fontSize: '14px', color: 'var(--text-2)', padding: '24px 0' }}>No sessions match these filters.</p>
