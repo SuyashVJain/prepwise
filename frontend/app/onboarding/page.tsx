@@ -48,6 +48,7 @@ export default function OnboardingPage() {
   const [slow, setSlow] = useState(false)
   // Set once the syllabus row is written, so a retry after a later failure does not insert it twice.
   const syllabusSaved = useRef(false)
+  const saveErrorRef = useRef<HTMLParagraphElement>(null)
   const router = useRouter()
   const supabase = createClient()
 
@@ -60,6 +61,11 @@ export default function OnboardingPage() {
     const t = setTimeout(() => setSlow(true), 5000)
     return () => { clearTimeout(t); setSlow(false) }
   }, [uploading])
+
+  // The message sits under the button, which can be below the fold on a phone.
+  useEffect(() => {
+    if (saveError) saveErrorRef.current?.scrollIntoView({ block: 'nearest' })
+  }, [saveError])
 
   function toggleTarget(id: string) {
     setTargets(prev => prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id])
@@ -385,7 +391,7 @@ export default function OnboardingPage() {
             </button>
           </div>
           {finishHint && <p style={{ fontSize: '14px', color: 'var(--text-2)', marginTop: '12px', textAlign: 'right' }}>{finishHint}</p>}
-          {saveError && <p role="alert" style={{ fontSize: '14px', color: '#ef4444', marginTop: '12px', textAlign: 'right' }}>{saveError}</p>}
+          {saveError && <p ref={saveErrorRef} role="alert" style={{ fontSize: '14px', color: '#ef4444', marginTop: '12px', textAlign: 'right' }}>{saveError}</p>}
         </div>
 
         <div style={{ width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
