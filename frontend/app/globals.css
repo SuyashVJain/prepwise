@@ -426,11 +426,10 @@ input[type="number"].num-field::-webkit-inner-spin-button, input[type="number"].
 .settings-card { display: flex; flex-direction: column; }
 .settings-form { display: flex; flex-direction: column; flex: 1; }
 .settings-foot { margin-top: auto; padding-top: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
-/* Equal-size options: four in one row when the card is wide enough, otherwise 2 x 2; the count is always three in a row. */
+/* Equal-size options: interview type is always 2 x 2, the count is always three in a row. */
 .opt-box { container-type: inline-size; }
 .opt-grid { display: grid; gap: 8px; }
 .opt-grid-type { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-@container (min-width: 500px) { .opt-grid-type { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .opt-grid-count { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 /* Sidebar navigation (components/Sidebar.tsx): icon and label rows, grouped under small mono labels. */
