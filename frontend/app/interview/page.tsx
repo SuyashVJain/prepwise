@@ -51,7 +51,7 @@ type SessionQuestion = Question & { answer: string; result: AnswerResult | null;
 type Profile = { university?: string; semester?: number }
 type Syllabus = { id?: string; name?: string; topics?: string[]; raw_chunks?: string[]; vectors?: Record<string, unknown>[] }
 type Debrief = { debrief: string; avg_score: number; weak_topics?: string[] }
-type SpeechRec = { continuous: boolean; interimResults: boolean; onerror: ((e: { error: string }) => void) | null; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; start(): void; stop(): void }
+type SpeechRec = { continuous: boolean; interimResults: boolean; onerror: ((e: { error: string }) => void) | null; onend: (() => void) | null; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; start(): void; stop(): void }
 type SpeechRecCtor = new () => SpeechRec
 type Phase = 'setup' | 'interview' | 'debrief'
 
@@ -136,6 +136,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const questionStartRef = useRef(0)
   const scoreRef = useRef<HTMLDivElement | null>(null)
   const recognitionRef = useRef<SpeechRec | null>(null)
+  // The text typed before voice input started; recognised speech is added after it.
+  const baseAnswerRef = useRef('')
   // The saved session row, so a retry after a failed answers save does not create a second session.
   const savedIdRef = useRef<string | null>(null)
   const router = useRouter()
@@ -250,6 +252,26 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     } catch { toast('Could not copy. Select the text and copy it by hand.', 'error') }
   }
 
+  // Detach first so a late result from the old question can never write into the next one.
+  function stopRecognition() {
+    const rec = recognitionRef.current
+    recognitionRef.current = null
+    if (rec) {
+      rec.onresult = null
+      rec.onend = null
+      rec.onerror = null
+      try { rec.stop() } catch { /* already stopped */ }
+    }
+    setVoiceMode(false)
+    setListening(false)
+  }
+
+  // Release the microphone when leaving the page.
+  useEffect(() => () => {
+    const rec = recognitionRef.current
+    if (rec) { rec.onresult = null; rec.onend = null; rec.onerror = null; try { rec.stop() } catch { /* ignore */ } }
+  }, [])
+
   function exitSession() {
     if (sessionQuestions.length > 0 && !window.confirm('Leave now? Answers so far will not be saved. Use END SESSION to save them.')) return
     try { sessionStorage.removeItem(SESSION_KEY) } catch { /* ignore */ }
@@ -351,6 +373,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   async function submitAnswer() {
     if (!currentQ || !answer.trim()) return
+    stopRecognition()
     setSubmitting(true)
 
     setApiError('')
@@ -383,6 +406,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   async function nextQuestion() {
     if (qNumber >= totalQuestions) { await fetchDebrief(); return }
+    stopRecognition()
+    baseAnswerRef.current = ''
     const nextNum = qNumber + 1
     setQNumber(nextNum)
     setAnswer('')
@@ -430,6 +455,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   }
 
   async function fetchDebrief() {
+    stopRecognition()
     setLoadingDebrief(true)
     setSavedSessionId(null)
     setSaveError('')
@@ -521,12 +547,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   }
 
   function toggleVoice() {
-    if (voiceMode) {
-      setVoiceMode(false)
-      recognitionRef.current?.stop()
-      setListening(false)
-      return
-    }
+    if (voiceMode) { stopRecognition(); return }
     const w = window as unknown as { SpeechRecognition?: SpeechRecCtor; webkitSpeechRecognition?: SpeechRecCtor }
     const SR = w.SpeechRecognition || w.webkitSpeechRecognition
     if (!SR) {
@@ -534,23 +555,33 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
       return
     }
     setVoiceNote('')
-    setVoiceMode(true)
+    // Results are cumulative for one recognition run, so each result replaces the whole spoken part after the typed text.
+    baseAnswerRef.current = answer.trim() ? answer.trimEnd() + ' ' : ''
     const rec = new SR()
     rec.continuous = true
     rec.interimResults = true
     rec.onresult = e => {
-      const t = Array.from(e.results).map(r => r[0].transcript).join('')
-      setAnswer(t)
+      if (recognitionRef.current !== rec) return
+      const spoken = Array.from(e.results).map(r => r[0].transcript).join('').trim()
+      setAnswer(baseAnswerRef.current + spoken)
     }
     rec.onerror = e => {
       if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
         setVoiceNote('The microphone is blocked. Allow it in the browser address bar, or type your answer.')
-        setVoiceMode(false)
-        setListening(false)
+        stopRecognition()
       }
     }
-    rec.start()
+    // The browser can end a run by itself, for example after silence.
+    rec.onend = () => {
+      if (recognitionRef.current !== rec) return
+      recognitionRef.current = null
+      setVoiceMode(false)
+      setListening(false)
+      setVoiceNote('Voice input stopped. Press VOICE to continue.')
+    }
     recognitionRef.current = rec
+    try { rec.start() } catch { recognitionRef.current = null; setVoiceNote('Voice input could not start. Type your answer instead.'); return }
+    setVoiceMode(true)
     setListening(true)
   }
 
@@ -761,7 +792,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
               <span style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-2)' }}>[YOUR ANSWER]</span>
               <div style={{ display: 'flex', gap: '8px' }}>
-                <button onClick={() => { setVoiceMode(false); recognitionRef.current?.stop(); setListening(false) }}
+                <button onClick={stopRecognition}
                   style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 12px', border: '1px solid var(--border)', background: !voiceMode ? 'var(--lime)' : 'transparent', color: !voiceMode ? '#0e0e0e' : 'var(--text-3)', cursor: 'pointer' }}>
                   TEXT
                 </button>
