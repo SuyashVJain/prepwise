@@ -57,7 +57,6 @@ button:not(:disabled), [role="button"], a.btn-primary { cursor: pointer; transit
 button:not(:disabled):hover, a.btn-primary:hover { filter: brightness(1.15); }
 button:not(:disabled):hover, [role="button"]:hover { border-color: var(--lime-border) !important; }
 button:disabled { opacity: .55; cursor: not-allowed !important; }
-.nav-link:hover { background: var(--bg2) !important; }
 
 /* Aria visual: one set of bars, four states. Motion stops for reduced-motion users. */
 .aria-bars { display: flex; align-items: flex-end; gap: 4px; height: 48px; }
@@ -441,5 +440,10 @@ input[type="number"].num-field::-webkit-inner-spin-button, input[type="number"].
 .nav-account { padding: 8px 0; border-top: 1px solid var(--border); }
 .nav-link { display: flex; align-items: center; gap: 12px; padding: 0 24px; min-height: 44px; border-left: 3px solid transparent; color: var(--text-2); font-size: 14px; font-weight: 400; }
 .nav-link svg { flex-shrink: 0; }
-.nav-link[aria-current="page"] { border-left-color: var(--lime); background: var(--bg2); color: var(--text); font-weight: 600; }
+/* Hover changes colour only, so nothing shifts. Active: lime icon and bar, brighter text, a faint lime tint (about 8%). */
+.nav-link:hover { background: rgba(255, 255, 255, .05); color: var(--text); }
+.nav-link:focus-visible { outline: 2px solid var(--lime); outline-offset: -2px; }
+.nav-link[aria-current="page"] { border-left-color: var(--lime); background: rgba(212, 254, 66, .08); color: var(--text); font-weight: 600; }
+.nav-link[aria-current="page"] svg { color: var(--lime); }
+.nav-link[aria-current="page"]:hover { background: rgba(212, 254, 66, .12); }
 
