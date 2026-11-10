@@ -260,3 +260,12 @@ html.snap { scroll-padding-top: var(--hdr); }
   .dots a:hover::before, .dots a:focus-visible::before { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .dots a::before { transition: none; } }
+
+/* Phones (under 640px): no text below 12px, and body copy at 14px or larger. Inline sizes are matched by attribute because the pages style themselves inline; the server string has no space after the colon. */
+@media (max-width: 639px) {
+  [style*="font-size:11px"], [style*="font-size: 11px"], [style*="font-size:10px"], [style*="font-size: 10px"], [style*="font-size:9px"], [style*="font-size: 9px"] { font-size: 12px !important; }
+  [style*="font-size:12px"]:not([style*="JetBrains"]):not(button):not(a):not(label):not(summary):not(th),
+  [style*="font-size: 12px"]:not([style*="JetBrains"]):not(button):not(a):not(label):not(summary):not(th),
+  [style*="font-size:13px"]:not([style*="JetBrains"]):not(button):not(a):not(label):not(summary):not(th),
+  [style*="font-size: 13px"]:not([style*="JetBrains"]):not(button):not(a):not(label):not(summary):not(th) { font-size: 14px !important; }
+}
