@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { optionStyle, fieldStyle } from '@/lib/ui'
+import { visibleSubjects } from '@/lib/subjectRow'
 
 export type SubjectOption = { value: string; label: string; category?: string }
 
@@ -70,10 +71,8 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
   const everything: SubjectOption[] = [...(leading ? [leading] : []), ...options]
   const selectedOption = other?.selected ? { value: OTHER_VALUE, label: 'Other' } : everything.find(o => o.value === value)
 
-  // The selection is always visible: when it is not among the pills that fit, it replaces the last one.
-  const shown = Math.max(1, Math.min(fit, MAX_VISIBLE, candidates.length || 1))
-  let visible = candidates.slice(0, shown)
-  if (selectedOption && !visible.some(o => o.value === selectedOption.value)) visible = [...visible.slice(0, Math.max(0, shown - 1)), selectedOption]
+  // Selecting a visible subject never moves a pill; a hidden selection takes the place of the last visible pill.
+  const visible = visibleSubjects(candidates, selectedOption, fit, MAX_VISIBLE)
 
   // Measure the natural width of every candidate (and More) in a hidden copy, then keep as many as fit the row.
   const keys = candidates.map(c => c.value).join('|')

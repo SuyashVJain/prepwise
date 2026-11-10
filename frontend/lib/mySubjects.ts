@@ -51,9 +51,9 @@ export function useMySubjects(subjects: SubjectInfo[]) {
 
   const remember = useCallback((id: string) => {
     if (!user.current) return
+    // Saved for next time only. The order on this page stays as it was, so picking a subject never reshuffles the row.
     rememberPicked(storage(), user.current, id)
-    compute()
-  }, [compute])
+  }, [])
 
   return { ids, remember }
 }
