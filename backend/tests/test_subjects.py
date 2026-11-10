@@ -47,6 +47,15 @@ class SubjectListTests(unittest.TestCase):
         for s in SUBJECTS:
             self.assertTrue(s["topics"], s["id"])
 
+    def test_every_subject_has_one_of_the_three_categories_in_order(self):
+        order = ["Core CS", "Theory and hardware", "Software and applied"]
+        seen = []
+        for s in SUBJECTS:
+            self.assertIn(s["category"], order, s["id"])
+            if not seen or seen[-1] != s["category"]:
+                seen.append(s["category"])
+        self.assertEqual(seen, order)
+
     @unittest.skipUnless(FRONTEND_COPY.exists(), "frontend copy not present in this checkout")
     def test_frontend_copy_is_identical(self):
         self.assertEqual(json.loads(FRONTEND_COPY.read_text(encoding="utf-8")), SUBJECTS)

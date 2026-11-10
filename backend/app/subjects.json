@@ -2,6 +2,7 @@
   {
     "id": "python",
     "name": "Python",
+    "category": "Core CS",
     "topics": [
       "Variables and types",
       "Lists and slicing",
@@ -14,6 +15,7 @@
   {
     "id": "dsa",
     "name": "DSA",
+    "category": "Core CS",
     "topics": [
       "Big-O notation",
       "Arrays",
@@ -28,6 +30,7 @@
   {
     "id": "dbms",
     "name": "DBMS",
+    "category": "Core CS",
     "topics": [
       "Relational model",
       "Keys",
@@ -38,8 +41,22 @@
     ]
   },
   {
+    "id": "oop",
+    "name": "OOP",
+    "category": "Core CS",
+    "topics": [
+      "Classes and objects",
+      "Encapsulation",
+      "Inheritance",
+      "Polymorphism",
+      "Abstraction",
+      "Interfaces and abstract classes"
+    ]
+  },
+  {
     "id": "os",
     "name": "Operating Systems",
+    "category": "Core CS",
     "topics": [
       "Processes and threads",
       "CPU scheduling",
@@ -52,6 +69,7 @@
   {
     "id": "cn",
     "name": "Computer Networks",
+    "category": "Core CS",
     "topics": [
       "OSI and TCP/IP layers",
       "IP addressing",
@@ -62,32 +80,9 @@
     ]
   },
   {
-    "id": "oop",
-    "name": "OOP",
-    "topics": [
-      "Classes and objects",
-      "Encapsulation",
-      "Inheritance",
-      "Polymorphism",
-      "Abstraction",
-      "Interfaces and abstract classes"
-    ]
-  },
-  {
-    "id": "system-design",
-    "name": "System Design",
-    "topics": [
-      "Requirements and estimation",
-      "Load balancing",
-      "Caching",
-      "Databases and sharding",
-      "Message queues",
-      "Designing a URL shortener"
-    ]
-  },
-  {
     "id": "toc",
     "name": "Theory of Computation",
+    "category": "Theory and hardware",
     "topics": [
       "Finite automata",
       "Regular expressions",
@@ -100,6 +95,7 @@
   {
     "id": "compilers",
     "name": "Compilers",
+    "category": "Theory and hardware",
     "topics": [
       "Lexical analysis",
       "Parsing",
@@ -110,32 +106,9 @@
     ]
   },
   {
-    "id": "ml",
-    "name": "Machine Learning",
-    "topics": [
-      "Supervised and unsupervised learning",
-      "Linear regression",
-      "Logistic regression",
-      "Overfitting and regularisation",
-      "Decision trees",
-      "Evaluation metrics"
-    ]
-  },
-  {
-    "id": "se",
-    "name": "Software Engineering",
-    "topics": [
-      "Software development life cycle",
-      "Agile and Scrum",
-      "Requirements engineering",
-      "Design patterns",
-      "Testing",
-      "Version control"
-    ]
-  },
-  {
     "id": "coa",
     "name": "Computer Organization and Architecture",
+    "category": "Theory and hardware",
     "topics": [
       "Number systems and data representation",
       "Instruction cycle",
@@ -146,32 +119,22 @@
     ]
   },
   {
-    "id": "ai",
-    "name": "Artificial Intelligence",
+    "id": "digital",
+    "name": "Digital Electronics",
+    "category": "Theory and hardware",
     "topics": [
-      "Uninformed search",
-      "Heuristic search and A*",
-      "Adversarial search and minimax",
-      "Propositional and predicate logic",
-      "Constraint satisfaction",
-      "Bayesian reasoning"
-    ]
-  },
-  {
-    "id": "web",
-    "name": "Web Technologies",
-    "topics": [
-      "HTML and CSS",
-      "JavaScript basics",
-      "The DOM and events",
-      "HTTP and REST",
-      "Cookies and sessions",
-      "Responsive design"
+      "Number systems and codes",
+      "Logic gates",
+      "Boolean algebra and K-maps",
+      "Combinational circuits",
+      "Flip-flops",
+      "Counters and registers"
     ]
   },
   {
     "id": "discrete",
     "name": "Discrete Mathematics",
+    "category": "Theory and hardware",
     "topics": [
       "Sets and relations",
       "Propositional logic",
@@ -182,15 +145,68 @@
     ]
   },
   {
-    "id": "digital",
-    "name": "Digital Electronics",
+    "id": "system-design",
+    "name": "System Design",
+    "category": "Software and applied",
     "topics": [
-      "Number systems and codes",
-      "Logic gates",
-      "Boolean algebra and K-maps",
-      "Combinational circuits",
-      "Flip-flops",
-      "Counters and registers"
+      "Requirements and estimation",
+      "Load balancing",
+      "Caching",
+      "Databases and sharding",
+      "Message queues",
+      "Designing a URL shortener"
+    ]
+  },
+  {
+    "id": "se",
+    "name": "Software Engineering",
+    "category": "Software and applied",
+    "topics": [
+      "Software development life cycle",
+      "Agile and Scrum",
+      "Requirements engineering",
+      "Design patterns",
+      "Testing",
+      "Version control"
+    ]
+  },
+  {
+    "id": "web",
+    "name": "Web Technologies",
+    "category": "Software and applied",
+    "topics": [
+      "HTML and CSS",
+      "JavaScript basics",
+      "The DOM and events",
+      "HTTP and REST",
+      "Cookies and sessions",
+      "Responsive design"
+    ]
+  },
+  {
+    "id": "ml",
+    "name": "Machine Learning",
+    "category": "Software and applied",
+    "topics": [
+      "Supervised and unsupervised learning",
+      "Linear regression",
+      "Logistic regression",
+      "Overfitting and regularisation",
+      "Decision trees",
+      "Evaluation metrics"
+    ]
+  },
+  {
+    "id": "ai",
+    "name": "Artificial Intelligence",
+    "category": "Software and applied",
+    "topics": [
+      "Uninformed search",
+      "Heuristic search and A*",
+      "Adversarial search and minimax",
+      "Propositional and predicate logic",
+      "Constraint satisfaction",
+      "Bayesian reasoning"
     ]
   }
 ]
