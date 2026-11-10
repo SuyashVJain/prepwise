@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import { DEFAULTS_KEY, capFirst } from '@/lib/stats'
 import PageShell from '@/components/PageShell'
-import { optionStyle, cardBase } from '@/lib/ui'
+import { optionStyle, cardBase, fieldStyle } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import MicHelp from '@/components/MicHelp'
@@ -78,6 +78,9 @@ async function okJson(res: Response) {
 }
 
 const SESSION_KEY = 'pw_interview_session'
+// Dropdown value for a subject the student types themselves.
+const OTHER = '__other__'
+const MAX_SUBJECT = 60
 const SHORT_ANSWER_WORDS = 15
 
 function countWords(text: string) {
@@ -135,6 +138,7 @@ export default function InterviewPage() {
   const [presetTopic, setPresetTopic] = useState('')
   // For the Subject-Specific type: keep every question on one subject from the shared list ('' = the whole syllabus).
   const [subjectPick, setSubjectPick] = useState('')
+  const [otherSubject, setOtherSubject] = useState('')
 
 const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const questionStartRef = useRef(0)
@@ -358,7 +362,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   }, [waiting, startingSession])
 
   // A practise topic wins; otherwise the chosen subject when the type is Subject-Specific.
-  const focusTopic = presetTopic || (interviewType === 'subject' ? subjectPick : '')
+  const focusTopic = presetTopic || (interviewType === 'subject' ? (subjectPick === OTHER ? otherSubject.trim() : subjectPick) : '')
+  const needsOtherText = interviewType === 'subject' && !presetTopic && subjectPick === OTHER && !otherSubject.trim()
 
   async function startSession() {
     if (!syllabus) { router.push('/onboarding'); return }
@@ -681,7 +686,12 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             <div style={{ marginBottom: '28px' }}>
               <Dropdown label="Subject" value={subjectPick}
                 onChange={setSubjectPick}
-                options={[{ value: '', label: 'All my syllabus topics' }, ...subjectList.map(s => ({ value: s.name, label: s.name }))]} />
+                options={[{ value: '', label: 'All my syllabus topics' }, ...subjectList.map(s => ({ value: s.name, label: s.name })), { value: OTHER, label: 'Other (type a subject)' }]} />
+              {subjectPick === OTHER && (
+                <input value={otherSubject} onChange={e => setOtherSubject(e.target.value.slice(0, MAX_SUBJECT))} maxLength={MAX_SUBJECT}
+                  placeholder="Type a subject, e.g. Digital Logic" aria-label="Subject"
+                  style={{ ...fieldStyle, width: '100%', marginTop: '12px' }} />
+              )}
             </div>
           )}
 
@@ -714,8 +724,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           {errorBar}
           {slow && startingSession && <p role="status" style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: '12px' }}>Waking the server, this can take up to a minute.</p>}
           <div>
-            <button onClick={startSession} disabled={startingSession || !syllabus}
-              style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: (startingSession || !syllabus) ? 'not-allowed' : 'pointer', opacity: (startingSession || !syllabus) ? 0.5 : 1 }}>
+            <button onClick={startSession} disabled={startingSession || !syllabus || needsOtherText}
+              style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: (startingSession || !syllabus || needsOtherText) ? 'not-allowed' : 'pointer', opacity: (startingSession || !syllabus || needsOtherText) ? 0.5 : 1 }}>
               {startingSession ? 'LOADING SESSION...' : 'START SESSION →'}
             </button>
           </div>

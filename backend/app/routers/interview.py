@@ -8,6 +8,7 @@ from app.services.followup import decide_follow_up
 from app.services.gemini import generate_question
 from app.services.rag import select_topic_for_question, build_rag, get_cached_rag, CS_SUBJECTS
 from app.services.scorer import evaluate_answer, generate_session_debrief
+from app.subjects import clean_subject
 
 router = APIRouter(prefix="/interview", tags=["interview"], dependencies=[Depends(get_current_user)])
 
@@ -67,6 +68,7 @@ class DebriefRequest(BaseModel):
 @router.post("/start")
 @llm_limit
 async def start_session(request: Request, req: StartSessionRequest):
+    req.topics = [t for t in (clean_subject(t, 200) for t in req.topics) if t]
     rag = build_rag(
         topics=req.topics,
         raw_chunks=req.raw_chunks,
@@ -104,6 +106,7 @@ async def start_session(request: Request, req: StartSessionRequest):
 @router.post("/next-question")
 @llm_limit
 async def next_question(request: Request, req: NextQuestionRequest):
+    req.topics = [t for t in (clean_subject(t, 200) for t in req.topics) if t]
     rag = build_rag(
         topics=req.topics,
         raw_chunks=req.raw_chunks,

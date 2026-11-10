@@ -8,7 +8,6 @@ import numpy as np
 import faiss
 from fastembed import TextEmbedding
 from collections import OrderedDict
-from pathlib import Path
 from typing import Optional
 import random
 
@@ -24,9 +23,7 @@ EMBEDDING_KEY = "embedding"
 
 RAG_CACHE_MAX = 20
 
-# The one subject list. frontend/data/subjects.json is an identical copy (a test keeps them in sync).
-SUBJECTS: list[dict] = json.loads((Path(__file__).resolve().parent.parent / "subjects.json").read_text(encoding="utf-8"))
-CS_SUBJECTS = [s["name"] for s in SUBJECTS]
+from app.subjects import SUBJECTS, CS_SUBJECTS  # noqa: F401  (re-exported for the routers)
 
 
 class SyllabusRAG:

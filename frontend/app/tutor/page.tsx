@@ -19,6 +19,9 @@ import type { SessionNotes } from '@/components/tutor/NotesPanel'
 import { disabled, eyebrow, ghostButton, label, mono, panel, primaryButton, tile } from '@/components/tutor/ui'
 import subjects from '@/data/subjects.json'
 
+// Longest subject a student can type; the backend cleans and caps it again.
+const MAX_SUBJECT = 60
+
 type Mode = 'standalone' | 'documents'
 type Phase = 'setup' | 'connecting' | 'session' | 'notes'
 type NotesStatus = 'loading' | 'ready' | 'error' | 'empty'
@@ -65,7 +68,9 @@ export default function TutorPage() {
   const transcriptEnd = useRef<HTMLDivElement>(null)
 
   const [phase, setPhase] = useState<Phase>('setup')
+  // The subject sent to the tutor: a name from the shared list, or the text the student typed under Other.
   const [subject, setSubject] = useState(subjects[0].name)
+  const [isOther, setIsOther] = useState(false)
   const [topic, setTopic] = useState('')
   const [mode, setMode] = useState<Mode>('standalone')
   const [hinglish, setHinglish] = useState(false)
@@ -130,8 +135,9 @@ export default function TutorPage() {
     transcriptEnd.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, [messages])
 
-  const subjectId = subjects.find(s => s.name === subject)?.id ?? ''
-  const subjectTopics = subjects.find(s => s.name === subject)?.topics ?? []
+  // A typed subject has no id, so it gets no roadmap, walkthroughs or code-along, only suggested topics from the student.
+  const subjectId = isOther ? '' : subjects.find(s => s.name === subject)?.id ?? ''
+  const subjectTopics = isOther ? [] : subjects.find(s => s.name === subject)?.topics ?? []
   const sideTabs = SIDE_TABS.filter(tab => (!tab.only || tab.only.includes(subjectId)) && (tab.id !== 'roadmap' || hasRoadmap(subjectId)))
   const activeTab: SideTab = sideTabs.some(tab => tab.id === sideTab) ? sideTab : sideTabs[0].id
 
@@ -325,11 +331,19 @@ export default function TutorPage() {
           <div style={{ ...label, marginBottom: '12px' }}>SUBJECT</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 'var(--space-2)', marginBottom: '28px' }}>
             {subjects.map(s => (
-              <button key={s.id} type="button" onClick={() => { setSubject(s.name); setTopic('') }} aria-pressed={subject === s.name} style={tile(subject === s.name)}>
+              <button key={s.id} type="button" onClick={() => { setIsOther(false); setSubject(s.name); setTopic('') }} aria-pressed={!isOther && subject === s.name} style={tile(!isOther && subject === s.name)}>
                 {s.name}
               </button>
             ))}
+            <button type="button" onClick={() => { setIsOther(true); setSubject(''); setTopic('') }} aria-pressed={isOther} style={tile(isOther)}>
+              Other
+            </button>
           </div>
+          {isOther && (
+            <input value={subject} onChange={e => setSubject(e.target.value.slice(0, MAX_SUBJECT))} placeholder="Type a subject, e.g. Digital Logic" maxLength={MAX_SUBJECT}
+              aria-label="Subject"
+              style={{ ...fieldStyle, width: '100%', marginTop: '-12px', marginBottom: '28px' }} />
+          )}
 
           <div style={{ ...label, marginBottom: '12px' }}>TOPIC (OPTIONAL)</div>
           <input value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. recursion, joins, deadlocks" maxLength={120}
@@ -374,7 +388,7 @@ export default function TutorPage() {
           </div>
 
           {error && <div role="alert" style={{ ...mono, fontSize: '12px', color: '#ef4444', letterSpacing: '.06em', marginBottom: '12px' }}>{error}</div>}
-          <button type="button" onClick={() => { void startSession() }} disabled={phase === 'connecting'} style={disabled(primaryButton, phase === 'connecting')}>
+          <button type="button" onClick={() => { void startSession() }} disabled={phase === 'connecting' || !subject.trim()} style={disabled(primaryButton, phase === 'connecting' || !subject.trim())}>
             {phase === 'connecting' ? 'CONNECTING...' : 'START SESSION →'}
           </button>
           <p style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: 'var(--space-3)' }}>

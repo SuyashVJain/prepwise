@@ -10,6 +10,7 @@ from app.auth import get_current_user, verify_access_token
 from app.limits import default_limit, llm_limit, tutor_turn_allowed
 from app.services.rag import build_rag, get_cached_rag
 from app.services.videos import search_videos
+from app.subjects import clean_subject
 from app.voice import factory
 from app.voice.code_review import MAX_CODE_CHARS, review_code
 from app.voice.conversation import NOT_IN_DOCUMENTS, NOTHING_TO_REEXPLAIN, REFUSAL_TEXT, Conversation, is_doubt_trigger
@@ -42,7 +43,7 @@ async def tutor_config(request: Request):
 async def tutor_videos(request: Request, subject: str = "", topic: str = "", exclude: str = ""):
     """More videos for a topic. `exclude` is a comma-separated list of video ids already shown as hand-picked."""
     exclude_ids = [v for v in exclude.split(",") if v][:50]
-    return await asyncio.to_thread(search_videos, subject[:80], topic[:120], exclude_ids)
+    return await asyncio.to_thread(search_videos, clean_subject(subject), topic[:120], exclude_ids)
 
 
 class NotesMessage(BaseModel):
@@ -62,7 +63,7 @@ async def tutor_notes(request: Request, req: NotesRequest):
     """A short summary and flashcards for a finished session. One LLM call."""
     transcript = [m.model_dump() for m in req.transcript]
     try:
-        return await asyncio.to_thread(make_notes, transcript, req.subject[:80], req.topic[:120])
+        return await asyncio.to_thread(make_notes, transcript, clean_subject(req.subject), req.topic[:120])
     except NotEnoughToSummarise as e:
         raise HTTPException(status_code=400, detail=str(e))
     except ValueError:
@@ -232,7 +233,7 @@ class TutorSession:
         mode = "documents" if msg.get("mode") == "documents" else "standalone"
         self.conversation = Conversation(
             mode=mode,
-            subject=str(msg.get("subject") or "")[:80],
+            subject=clean_subject(msg.get("subject")),
             topic=str(msg.get("topic") or "")[:120],
             hinglish=bool(msg.get("hinglish")),
         )
