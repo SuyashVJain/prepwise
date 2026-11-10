@@ -10,6 +10,7 @@ import EmptyState from '@/components/EmptyState'
 import ScoreChart from '@/components/ScoreChart'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
+import { warmBackend } from '@/lib/api'
 import { weakTopicStats, typeName, companyName, capFirst, longestStreak } from '@/lib/stats'
 import { useRouter } from 'next/navigation'
 
@@ -50,6 +51,7 @@ export default function DashboardPage() {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push('/login'); return }
+      warmBackend()
 
       const done = () => supabase.from('sessions').select('created_at', { count: 'exact' }).eq('user_id', user.id).eq('completed', true)
       const [latest, all, prof] = await Promise.all([

@@ -18,6 +18,16 @@ export async function signOutToLogin(): Promise<void> {
   window.location.href = '/login'
 }
 
+let warmed = false
+
+// Wakes a sleeping backend before the student needs it: one cheap request to the public health route, once per page
+// load. It is silent (the wake tracker does not watch it) and errors are ignored.
+export function warmBackend(): void {
+  if (warmed) return
+  warmed = true
+  fetch(`${API}/health`, { cache: 'no-store' }).catch(() => {})
+}
+
 // WebSocket address for a backend path, e.g. wsUrl('/tutor/ws').
 export function wsUrl(path: string): string {
   return API.replace(/^http/, 'ws') + path
