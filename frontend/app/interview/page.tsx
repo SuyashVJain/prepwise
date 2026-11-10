@@ -571,7 +571,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           )}
 
           <details open style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '16px 20px', marginBottom: '28px' }}>
-            <summary style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--lime)', cursor: 'pointer', minHeight: '32px', display: 'flex', alignItems: 'center' }}>HOW A SESSION WORKS</summary>
+            <summary style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--lime)', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}>HOW A SESSION WORKS</summary>
             <ul style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7, paddingLeft: '20px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <li><strong style={{ color: 'var(--text)' }}>Device and browser:</strong> a laptop or desktop with Chrome or Edge. Voice answers need one of those and microphone access. Typing works in any browser.</li>
               <li><strong style={{ color: 'var(--text)' }}>Timer:</strong> the clock at the top is a 15 minute session clock. Under it, each answer shows your time against a 3 minute target. Neither one cuts you off.</li>
