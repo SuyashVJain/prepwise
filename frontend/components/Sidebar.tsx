@@ -23,15 +23,18 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [university, setUniversity] = useState('')
+  // Until the profile answers, a neutral placeholder is shown so the name never changes text.
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then(async ({ data: { user } }) => {
-      if (!user) return
+      if (!user) { setLoaded(true); return }
       const { data } = await supabase.from('profiles').select('full_name, university').eq('id', user.id).single()
       setName(data?.full_name || '')
       setUniversity(data?.university || '')
-    })
+      setLoaded(true)
+    }).catch(() => setLoaded(true))
   }, [])
 
   async function signOut() {
@@ -68,11 +71,20 @@ export default function Sidebar() {
         <div style={{ padding: '16px 24px', borderTop: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
             <div aria-hidden="true" style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg3)', border: '1px solid var(--border-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', ...mono, fontSize: '12px', color: 'var(--lime)', fontWeight: 700, flexShrink: 0 }}>
-              {name?.[0]?.toUpperCase() || 'U'}
+              {loaded ? (name?.[0]?.toUpperCase() || 'U') : ''}
             </div>
             <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text)', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name || 'Student'}</div>
-              <div style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', color: 'var(--text-3)', marginTop: '2px' }}>{university || '-'}</div>
+              {loaded ? (
+                <>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text)', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name || 'Student'}</div>
+                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.06em', color: 'var(--text-3)', marginTop: '2px' }}>{university || '-'}</div>
+                </>
+              ) : (
+                <div aria-hidden="true">
+                  <div className="skeleton" style={{ width: '96px', height: '14px', marginBottom: '6px' }} />
+                  <div className="skeleton" style={{ width: '56px', height: '11px' }} />
+                </div>
+              )}
             </div>
           </div>
           <button type="button" onClick={signOut}
