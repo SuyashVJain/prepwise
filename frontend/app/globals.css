@@ -311,7 +311,7 @@ button[aria-pressed]:hover, button[role="radio"]:hover, div[role="button"][aria-
 select:hover, input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):hover, textarea:hover { border-color: var(--border-2); }
 
 /* Subject pills: each category is an equal-width grid, 2 columns on phones, 3 up to 1279px and 4 from 1280px. */
-.pill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.pill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 8px; }
 @media (min-width: 520px) { .pill-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (min-width: 1280px) { .pill-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
