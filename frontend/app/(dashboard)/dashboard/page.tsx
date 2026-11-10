@@ -186,11 +186,14 @@ export default function DashboardPage() {
                       {scores.map((v, i) => {
                         const x = (i / (scores.length - 1)) * (chartW - 40) + 20
                         const y = chartH - 20 - ((v - minS) / (maxS - minS || 1)) * (chartH - 40)
-                        return <circle key={i} cx={x} cy={y} r="4" fill="var(--lime)" />
+                        return <circle key={i} cx={x} cy={y} r="4" fill="var(--lime)"><title>{`${v}/10 on ${new Date(chartSessions[i].created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })}`}</title></circle>
                       })}
                       {chartSessions.map((s, i) => {
                         const x = (i / (scores.length - 1)) * (chartW - 40) + 20
-                        const date = new Date(s.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
+                        const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
+                        const date = fmt(s.created_at)
+                        // Each day is labelled once, at its first point; the full time is in the hover title.
+                        if (i > 0 && fmt(chartSessions[i - 1].created_at) === date) return null
                         return <text key={i} x={x} y={chartH + 4} textAnchor="middle" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', fill: 'var(--text-3)' }}>{date}</text>
                       })}
                     </svg>

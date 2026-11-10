@@ -99,9 +99,9 @@ export default function ProgressPage() {
                         )
                       })}
                       <polyline fill="none" stroke="var(--lime)" strokeWidth="2.5" strokeLinejoin="round" points={scores.map((v, i) => point(v, i).join(',')).join(' ')} />
-                      {scores.map((v, i) => <circle key={i} cx={point(v, i)[0]} cy={point(v, i)[1]} r="4" fill="var(--lime)" />)}
+                      {scores.map((v, i) => <circle key={i} cx={point(v, i)[0]} cy={point(v, i)[1]} r="4" fill="var(--lime)"><title>{`${v}/10 on ${new Date(ordered[i].created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })}`}</title></circle>)}
                       <text x="24" y={H + 12} style={{ ...mono, fontSize: '11px', fill: 'var(--text-3)' }}>{formatDate(ordered[0].created_at)}</text>
-                      <text x={W - 24} y={H + 12} textAnchor="end" style={{ ...mono, fontSize: '11px', fill: 'var(--text-3)' }}>{formatDate(ordered[ordered.length - 1].created_at)}</text>
+                      {formatDate(ordered[0].created_at) !== formatDate(ordered[ordered.length - 1].created_at) && <text x={W - 24} y={H + 12} textAnchor="end" style={{ ...mono, fontSize: '11px', fill: 'var(--text-3)' }}>{formatDate(ordered[ordered.length - 1].created_at)}</text>}
                     </svg>
                   ) : (
                     <p style={{ fontSize: '14px', color: 'var(--text-2)' }}>Complete 2 or more sessions to see your score over time.</p>
