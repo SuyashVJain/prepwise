@@ -27,7 +27,7 @@ type Props = {
 }
 
 const pill = (on: boolean, dashed = false): React.CSSProperties => ({
-  ...optionStyle(on), minHeight: '44px', maxWidth: '100%', ...(dashed ? { borderStyle: 'dashed' } : {}),
+  ...optionStyle(on), minHeight: '44px', maxWidth: '100%', padding: '8px 28px 8px 14px', ...(dashed ? { borderStyle: 'dashed' } : {}),
 })
 
 // Every subject at once as compact pills in a wrapping flow. A single-choice picker is a radio group
@@ -59,7 +59,7 @@ export default function SubjectPicker({ options, label, value, onChange, other, 
 
   return (
     <div>
-      <div role={multi ? 'group' : 'radiogroup'} aria-label={label} onKeyDown={onKeyDown} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      <div role={multi ? 'group' : 'radiogroup'} aria-label={label} className="pills" onKeyDown={onKeyDown} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
         {options.map((o, i) => {
           const on = multi ? !!values?.includes(o.value) : !other?.selected && value === o.value
           return (
