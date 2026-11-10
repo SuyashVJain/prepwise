@@ -157,7 +157,7 @@ export default function SettingsPage() {
               <h2 className="sec-title" style={{ marginBottom: '4px' }}>Session defaults</h2>
               <p style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text-2)', marginBottom: '20px' }}>Used to pre-fill the new session screen. Saved in this browser only.</p>
               <span style={label}>Interview type</span>
-              <div className="opt-box" style={{ marginBottom: '20px' }}><div role="group" aria-label="Interview type" className="opt-grid opt-grid-type">
+              <div style={{ marginBottom: '20px' }}><div role="group" aria-label="Interview type" className="opt-grid opt-grid-type">
                 {Object.entries(TYPES).map(([id, name]) => (
                   <button key={id} type="button" aria-pressed={type === id} onClick={() => setType(id)} style={{ ...tile(type === id), width: '100%' }}>{name}</button>
                 ))}
