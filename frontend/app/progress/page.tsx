@@ -7,6 +7,7 @@ import PageShell from '@/components/PageShell'
 import { cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import EmptyState from '@/components/EmptyState'
+import ScoreChart from '@/components/ScoreChart'
 import { PageSkeleton } from '@/components/Skeleton'
 import { type SessionRow, scoreColor, formatDate, formatTime, sessionsPerWeek, topicTrends } from '@/lib/stats'
 
@@ -50,12 +51,7 @@ export default function ProgressPage() {
   const weeks = sessionsPerWeek(sessions)
   const maxWeek = Math.max(1, ...weeks.map(w => w.count))
   const trends = topicTrends(sessions)
-  const W = 560, H = 160
 
-  const point = (v: number, i: number) => [
-    scores.length > 1 ? 24 + (i / (scores.length - 1)) * (W - 48) : W / 2,
-    H - 24 - (v / 10) * (H - 48),
-  ]
 
   return (
     <PageShell>
@@ -85,21 +81,7 @@ export default function ProgressPage() {
                 <section style={card} aria-label="Score over time">
                   <h2 style={cardTitle}>Score over time</h2>
                   {scores.length >= 2 ? (
-                    <svg width="100%" viewBox={`0 0 ${W} ${H + 16}`} role="img" aria-label={`Scores for the last ${scores.length} sessions, from ${scores[0]} to ${scores[scores.length - 1]}`}>
-                      {[0, 5, 10].map(v => {
-                        const y = H - 24 - (v / 10) * (H - 48)
-                        return (
-                          <g key={v}>
-                            <line x1="24" x2={W - 24} y1={y} y2={y} stroke="var(--border-2)" />
-                            <text x="0" y={y + 4} style={{ ...mono, fontSize: '12px', fill: 'var(--text-2)' }}>{v}</text>
-                          </g>
-                        )
-                      })}
-                      <polyline fill="none" stroke="var(--lime)" strokeWidth="2.5" strokeLinejoin="round" points={scores.map((v, i) => point(v, i).join(',')).join(' ')} />
-                      {scores.map((v, i) => <circle key={i} cx={point(v, i)[0]} cy={point(v, i)[1]} r="4" fill="var(--lime)"><title>{`${v}/10 on ${new Date(ordered[i].created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })}`}</title></circle>)}
-                      <text x="24" y={H + 12} style={{ ...mono, fontSize: '12px', fill: 'var(--text-2)' }}>{formatDate(ordered[0].created_at)}</text>
-                      {formatDate(ordered[0].created_at) !== formatDate(ordered[ordered.length - 1].created_at) && <text x={W - 24} y={H + 12} textAnchor="end" style={{ ...mono, fontSize: '12px', fill: 'var(--text-2)' }}>{formatDate(ordered[ordered.length - 1].created_at)}</text>}
-                    </svg>
+                    <ScoreChart points={ordered.map(s => ({ score: s.score_avg || 0, at: s.created_at }))} label={`Scores for the last ${scores.length} sessions, from ${scores[0]} to ${scores[scores.length - 1]}`} />
                   ) : (
                     <p style={{ fontSize: '14px', color: 'var(--text-2)' }}>Complete 2 or more sessions to see your score over time.</p>
                   )}
@@ -108,15 +90,19 @@ export default function ProgressPage() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
                   <section style={card} aria-label="Sessions per week">
                     <h2 style={cardTitle}>Sessions per week</h2>
-                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '120px' }}>
-                      {weeks.map(w => (
-                        <div key={w.start} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', height: '100%' }}>
-                          <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginBottom: '4px' }}>{w.count}</span>
-                          <div style={{ width: '100%', height: `${(w.count / maxWeek) * 80}px`, minHeight: '2px', background: w.count ? 'var(--lime)' : 'var(--bg4)' }} />
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', marginTop: '8px' }}>LAST 8 WEEKS, OLDEST FIRST</div>
+                    {weeks.every(w => w.count === 0) ? (
+                      <p style={{ fontSize: '14px', color: 'var(--text-2)' }}>No sessions in the last 8 weeks.</p>
+                    ) : (
+                      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '150px' }}>
+                        {weeks.map(w => (
+                          <div key={w.start} style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', height: '100%' }}>
+                            <span style={{ fontSize: '12px', color: 'var(--text-2)', marginBottom: '4px', minHeight: '16px' }}>{w.count > 0 ? w.count : ''}</span>
+                            <div style={{ width: '100%', height: `${(w.count / maxWeek) * 90}px`, minHeight: '2px', background: w.count ? 'var(--lime)' : 'var(--bg4)' }} />
+                            <span style={{ fontSize: '12px', color: 'var(--text-2)', marginTop: '6px', whiteSpace: 'nowrap' }}>{new Date(w.start).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </section>
 
                   <section style={card} aria-label="Weak topic trend">

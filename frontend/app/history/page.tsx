@@ -6,6 +6,7 @@ import PageShell from '@/components/PageShell'
 import { fieldStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import EmptyState from '@/components/EmptyState'
+import ScoreChart from '@/components/ScoreChart'
 import Skeleton, { PageSkeleton } from '@/components/Skeleton'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
 import { typeName } from '@/lib/stats'
@@ -106,7 +107,9 @@ export default function HistoryPage() {
     .filter(s => (typeFilter === 'all' || s.interview_type === typeFilter) && (s.score_avg || 0) >= minScore && (s.score_avg || 0) <= maxScore)
     .sort((a, b) => sortBy === 'score' ? (b.score_avg || 0) - (a.score_avg || 0) : (a.created_at < b.created_at ? 1 : -1))
   // Oldest first so the line reads left to right in time.
-  const trend = [...visible].sort((a, b) => (a.created_at < b.created_at ? -1 : 1)).map(s => s.score_avg || 0)
+  const trendRows = [...visible].sort((a, b) => (a.created_at < b.created_at ? -1 : 1))
+  const trend = trendRows.map(s => s.score_avg || 0)
+  const trendPoints = trendRows.map(s => ({ score: s.score_avg || 0, at: s.created_at }))
 
   const control: React.CSSProperties = fieldStyle
   const controlLabel: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--text-2)', display: 'flex', flexDirection: 'column', gap: '4px' }
@@ -135,12 +138,7 @@ export default function HistoryPage() {
             {trend.length >= 2 && (
               <section aria-label="Score trend" style={{ ...cardBase, padding: '16px 24px', marginBottom: '8px' }}>
                 <h2 className="sec-title" style={{ marginBottom: '8px' }}>Score trend</h2>
-                <svg width="100%" viewBox="0 0 460 90" role="img" aria-label={`Score trend across ${trend.length} sessions, from ${trend[0]} to ${trend[trend.length - 1]}`}>
-                  {[0, 5, 10].map(v => <line key={v} x1="0" x2="460" y1={80 - (v / 10) * 70} y2={80 - (v / 10) * 70} stroke="var(--border-2)" />)}
-                  <polyline fill="none" stroke="var(--lime)" strokeWidth="2.5" strokeLinejoin="round"
-                    points={trend.map((v, i) => `${8 + (i / (trend.length - 1)) * 444},${80 - (v / 10) * 70}`).join(' ')} />
-                  {trend.map((v, i) => <circle key={i} cx={8 + (i / (trend.length - 1)) * 444} cy={80 - (v / 10) * 70} r="3.5" fill="var(--lime)" />)}
-                </svg>
+                <ScoreChart points={trendPoints} label={`Score trend across ${trend.length} sessions, from ${trend[0]} to ${trend[trend.length - 1]}`} />
               </section>
             )}
             <div role="group" aria-label="Filter and sort sessions" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'flex-end', marginBottom: '8px' }}>

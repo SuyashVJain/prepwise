@@ -7,6 +7,7 @@ import PageShell from '@/components/PageShell'
 import { cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import EmptyState from '@/components/EmptyState'
+import ScoreChart from '@/components/ScoreChart'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
 import { weakTopicStats } from '@/lib/stats'
@@ -86,15 +87,7 @@ export default function DashboardPage() {
   const nextTopic = weakTopics[0]?.topic
 
   const chartSessions = [...sessions].reverse().slice(-8)
-  const chartW = 460, chartH = 140
   const scores = chartSessions.map(s => s.score_avg || 0)
-  const minS = scores.length ? Math.max(0, Math.min(...scores) - 1) : 0
-  const maxS = scores.length ? Math.min(10, Math.max(...scores) + 1) : 10
-  const pts = scores.map((v, i) => {
-    const x = scores.length > 1 ? (i / (scores.length - 1)) * (chartW - 40) + 20 : chartW / 2
-    const y = chartH - 20 - ((v - minS) / (maxS - minS || 1)) * (chartH - 40)
-    return `${x},${y}`
-  }).join(' ')
 
   if (loading) {
     return (
@@ -164,25 +157,7 @@ export default function DashboardPage() {
                 <div style={{ ...cardBase, padding: '24px' }}>
                   <h2 className="sec-title">Performance over time</h2>
                   {scores.length >= 2 ? (
-                    <svg width="100%" viewBox={`0 0 ${chartW} ${chartH}`} style={{ overflow: 'visible' }}>
-                      {[0, 0.25, 0.5, 0.75, 1].map((t, i) => (
-                        <line key={i} x1="20" y1={20 + t * (chartH - 40)} x2={chartW - 20} y2={20 + t * (chartH - 40)} stroke="var(--border)" strokeWidth="1" />
-                      ))}
-                      <polyline points={pts} fill="none" stroke="var(--lime)" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-                      {scores.map((v, i) => {
-                        const x = (i / (scores.length - 1)) * (chartW - 40) + 20
-                        const y = chartH - 20 - ((v - minS) / (maxS - minS || 1)) * (chartH - 40)
-                        return <circle key={i} cx={x} cy={y} r="4" fill="var(--lime)"><title>{`${v}/10 on ${new Date(chartSessions[i].created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' })}`}</title></circle>
-                      })}
-                      {chartSessions.map((s, i) => {
-                        const x = (i / (scores.length - 1)) * (chartW - 40) + 20
-                        const fmt = (d: string) => new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })
-                        const date = fmt(s.created_at)
-                        // Each day is labelled once, at its first point; the full time is in the hover title.
-                        if (i > 0 && fmt(chartSessions[i - 1].created_at) === date) return null
-                        return <text key={i} x={x} y={chartH + 4} textAnchor="middle" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '12px', fill: 'var(--text-2)' }}>{date}</text>
-                      })}
-                    </svg>
+                    <ScoreChart points={chartSessions.map(s => ({ score: s.score_avg || 0, at: s.created_at }))} label={`Scores for the last ${scores.length} sessions`} />
                   ) : (
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', fontSize: '14px', color: 'var(--text-2)' }}>
                       Complete 2 or more sessions to see the chart
