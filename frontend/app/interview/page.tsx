@@ -175,9 +175,12 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           setSessionQuestions(saved.sessionQuestions || [])
           setTopicsPool(saved.topicsPool || [])
           setAskedTopics(saved.askedTopics || [])
-          setTimeLeft(saved.timeLeft ?? 900)
-          questionStartRef.current = Date.now()
-          setNow(questionStartRef.current)
+          // Time away counts: both clocks are wall-clock, so a refresh does not reset them.
+          const away = typeof saved.savedAt === 'number' ? Math.max(0, Math.round((Date.now() - saved.savedAt) / 1000)) : 0
+          setTimeLeft(Math.max(0, (saved.timeLeft ?? 900) - away))
+          questionStartRef.current = typeof saved.questionStart === 'number' ? saved.questionStart : Date.now()
+          setTakenSeconds(typeof saved.takenSeconds === 'number' ? saved.takenSeconds : null)
+          setNow(Date.now())
           setPhase('interview')
         }
       } catch { /* nothing saved, or storage is blocked */ }
@@ -230,9 +233,10 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
       sessionStorage.setItem(SESSION_KEY, JSON.stringify({
         phase, interviewType, targetCompany, totalQuestions, currentQ, qNumber, answer, result,
         sessionQuestions, topicsPool, askedTopics, timeLeft,
+        questionStart: questionStartRef.current, takenSeconds, savedAt: Date.now(),
       }))
     } catch { /* storage full or blocked: the session just will not survive a refresh */ }
-  }, [phase, interviewType, targetCompany, totalQuestions, currentQ, qNumber, answer, result, sessionQuestions, topicsPool, askedTopics, timeLeft])
+  }, [phase, interviewType, targetCompany, totalQuestions, currentQ, qNumber, answer, result, sessionQuestions, topicsPool, askedTopics, timeLeft, takenSeconds])
 
   // After scoring, bring the score card into view so it is never below the fold.
   useEffect(() => {
@@ -281,6 +285,30 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   // Asks before leaving a debrief whose save failed, because the answers would be lost.
   function leaveUnsaved() {
     return !saveError || window.confirm('This session has not been saved. Leave anyway?')
+  }
+
+  // Back to a clean setup screen: no stored practise topic, question number or leftovers.
+  function newSession() {
+    try { sessionStorage.removeItem(SESSION_KEY) } catch { /* ignore */ }
+    savedIdRef.current = null
+    baseAnswerRef.current = ''
+    setPresetTopic('')
+    try { window.history.replaceState(null, '', '/interview') } catch { /* ignore */ }
+    setPhase('setup')
+    setSessionQuestions([])
+    setDebrief(null)
+    setCurrentQ(null)
+    setQNumber(1)
+    setAskedTopics([])
+    setTopicsPool([])
+    setTimeLeft(900)
+    setResult(null)
+    setAnswer('')
+    setTakenSeconds(null)
+    setSavedSessionId(null)
+    setSaveError('')
+    setApiError('')
+    setFailedStep(null)
   }
 
   function startQuestionClock() {
@@ -976,7 +1004,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                 style={{ flex: 1, background: 'transparent', color: 'var(--lime)', border: '1px solid var(--lime-border)', padding: '16px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                 EXPORT PDF
               </button>
-              <button onClick={() => { if (leaveUnsaved()) { setPhase('setup'); setSessionQuestions([]); setDebrief(null); setTimeLeft(900); setResult(null); setAnswer(''); setSavedSessionId(null); setSaveError('') } }}
+              <button onClick={() => { if (leaveUnsaved()) newSession() }}
                 style={{ flex: 1, background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '16px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
                 NEW SESSION →
               </button>
