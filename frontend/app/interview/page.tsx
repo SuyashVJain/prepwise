@@ -98,6 +98,8 @@ export default function InterviewPage() {
   const [syllabus, setSyllabus] = useState<Syllabus | null>(null)
   const [loadingProfile, setLoadingProfile] = useState(true)
 
+  // The help panel starts open on wide screens and closed on phones.
+  const [helpOpen, setHelpOpen] = useState(() => typeof window === 'undefined' || window.innerWidth >= 900)
   const [interviewType, setInterviewType] = useState('technical')
   const [targetCompany, setTargetCompany] = useState('faang')
   const [totalQuestions, setTotalQuestions] = useState(5)
@@ -616,14 +618,14 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           </div>
           </div>
           <aside className="page-aside">
-          <details open style={{ ...cardBase, padding: '16px 24px', marginBottom: '28px' }}>
-            <summary style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--lime)', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}>HOW A SESSION WORKS</summary>
-            <ul style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7, paddingLeft: '20px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <li><strong style={{ color: 'var(--text)' }}>Device and browser:</strong> a laptop or desktop with Chrome or Edge. Voice answers need one of those and microphone access. Typing works in any browser.</li>
-              <li><strong style={{ color: 'var(--text)' }}>Timer:</strong> the clock at the top is a 15 minute session clock. Under it, each answer shows your time against a 3 minute target. Neither one cuts you off.</li>
-              <li><strong style={{ color: 'var(--text)' }}>Follow-ups:</strong> if an answer is weak or has a doubtful claim, the next question may dig into that point once. At most a third of a session is follow-ups.</li>
-              <li><strong style={{ color: 'var(--text)' }}>Ending early:</strong> press END SESSION at any time. Only the questions you answered are saved and scored.</li>
-              <li><strong style={{ color: 'var(--text)' }}>Shortcut:</strong> Ctrl+Enter (Cmd+Enter on Mac) submits your answer.</li>
+          <details open={helpOpen} onToggle={e => setHelpOpen((e.currentTarget as HTMLDetailsElement).open)} style={{ ...cardBase, padding: '8px 24px 16px' }}>
+            <summary style={{ cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center', fontSize: '20px', fontWeight: 600 }}>How a session works</summary>
+            <ul style={{ listStyle: 'none', display: 'grid', gap: '14px', fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.6, marginTop: '8px' }}>
+              <li><strong style={{ color: 'var(--text)' }}>Device.</strong> Chrome or Edge on a laptop or desktop for voice answers. Typing works anywhere.</li>
+              <li><strong style={{ color: 'var(--text)' }}>Timer.</strong> A 15 minute session clock and a 3 minute target per answer. Neither cuts you off.</li>
+              <li><strong style={{ color: 'var(--text)' }}>Follow-ups.</strong> A weak or doubtful answer may get one follow-up, at most a third of the session.</li>
+              <li><strong style={{ color: 'var(--text)' }}>Ending early.</strong> Press End session at any time. Only answered questions are saved and scored.</li>
+              <li><strong style={{ color: 'var(--text)' }}>Shortcut.</strong> Ctrl+Enter (Cmd+Enter on Mac) submits your answer.</li>
             </ul>
           </details>
           </aside>
