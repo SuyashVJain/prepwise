@@ -7,6 +7,7 @@ import { fieldStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import EmptyState from '@/components/EmptyState'
 import ScoreChart from '@/components/ScoreChart'
+import Dropdown from '@/components/Dropdown'
 import Skeleton, { PageSkeleton } from '@/components/Skeleton'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
 import { typeName } from '@/lib/stats'
@@ -142,24 +143,14 @@ export default function HistoryPage() {
               </section>
             )}
             <div role="group" aria-label="Filter and sort sessions" className="filters">
-              <label style={controlLabel}>TYPE
-                <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} style={control}>
-                  <option value="all">All types</option>
-                  {types.map(t => <option key={t} value={t}>{typeName(t)}</option>)}
-                </select>
-              </label>
+              <Dropdown label="Type" value={typeFilter} onChange={setTypeFilter} options={[{ value: 'all', label: 'All types' }, ...types.map(t => ({ value: t, label: typeName(t) }))]} />
               <label style={controlLabel}>MIN SCORE
-                <input type="number" min={0} max={10} step={0.5} value={minScore} onChange={e => setMinScore(Math.min(10, Math.max(0, Number(e.target.value) || 0)))} style={{ ...control, width: '90px' }} />
+                <input type="number" min={0} max={10} step={0.5} value={minScore} onChange={e => setMinScore(Math.min(10, Math.max(0, Number(e.target.value) || 0)))} className="num-field" style={{ ...control, width: '96px' }} />
               </label>
               <label style={controlLabel}>MAX SCORE
-                <input type="number" min={0} max={10} step={0.5} value={maxScore} onChange={e => setMaxScore(Math.min(10, Math.max(0, Number(e.target.value) || 0)))} style={{ ...control, width: '90px' }} />
+                <input type="number" min={0} max={10} step={0.5} value={maxScore} onChange={e => setMaxScore(Math.min(10, Math.max(0, Number(e.target.value) || 0)))} className="num-field" style={{ ...control, width: '96px' }} />
               </label>
-              <label style={controlLabel}>SORT BY
-                <select value={sortBy} onChange={e => setSortBy(e.target.value as 'date' | 'score')} style={control}>
-                  <option value="date">Newest first</option>
-                  <option value="score">Highest score</option>
-                </select>
-              </label>
+              <Dropdown label="Sort by" value={sortBy} onChange={v => setSortBy(v as 'date' | 'score')} options={[{ value: 'date', label: 'Newest first' }, { value: 'score', label: 'Highest score' }]} />
               <button type="button" className="reset-link" onClick={() => { setTypeFilter('all'); setMinScore(0); setMaxScore(10); setSortBy('date') }}>Reset</button>
             </div>
             {visible.length === 0 && (
