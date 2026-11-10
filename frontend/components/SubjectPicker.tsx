@@ -47,7 +47,7 @@ const pill = (on: boolean): React.CSSProperties => {
 
 const ellipsis: React.CSSProperties = { minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }
 
-type Row = { id: string; option: SubjectOption; isOther?: boolean }
+type Row = { id: string; option: SubjectOption; isOther?: boolean; isLeading?: boolean }
 
 // A single line of the user's own subjects, as many as fit (at most six), then a More pill that opens a searchable
 // panel with every other subject grouped by category and a + Other row.
@@ -111,7 +111,9 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
   })
   groups.sort((a, b) => (a.name === '' ? 1 : 0) - (b.name === '' ? 1 : 0))
   const otherRow: Row | null = other ? { id: '', option: { value: OTHER_VALUE, label: '+ Other' }, isOther: true } : null
-  const rows: Row[] = [...groups.flatMap(g => g.items), ...(otherRow ? [otherRow] : [])]
+  // The leading choice (All my syllabus topics) stays reachable when the row has no room for it.
+  const leadingRow: Row | null = leading && !visible.some(v => v.value === leading.value) && (!q || leading.label.toLowerCase().includes(q)) ? { id: '', option: leading, isLeading: true } : null
+  const rows: Row[] = [...(leadingRow ? [leadingRow] : []), ...groups.flatMap(g => g.items), ...(otherRow ? [otherRow] : [])]
   rows.forEach((r, i) => { r.id = `${uid}-row-${i}` })
   const activeId = open && rows[active] ? rows[active].id : undefined
 
@@ -128,6 +130,7 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
 
   function pickRow(r: Row) {
     if (r.isOther) other?.onSelect()
+    else if (r.isLeading) onChange(r.option.value)
     else { onChange(r.option.value); onPickMore?.(r.option.value) }
     closePanel()
   }
@@ -222,11 +225,11 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
         </div>
 
         {/* Hidden copy used only to measure how wide each pill is. */}
-        <div ref={measurer} aria-hidden="true" style={{ position: 'absolute', left: 0, top: 0, visibility: 'hidden', pointerEvents: 'none', height: 0, overflow: 'hidden', display: 'flex', gap: `${GAP}px` }}>
+        <div ref={measurer} aria-hidden="true" style={{ position: 'absolute', left: 0, top: 0, width: '100%', visibility: 'hidden', pointerEvents: 'none', height: 0, overflow: 'hidden', display: 'flex', gap: `${GAP}px` }}>
           {candidates.map(o => (
-            <span key={o.value} data-m="pill" style={{ ...pill(false), display: 'inline-flex' }}><span style={ellipsis}>{o.label}</span></span>
+            <span key={o.value} data-m="pill" style={{ ...pill(false), display: 'inline-flex', flexShrink: 0 }}><span style={ellipsis}>{o.label}</span></span>
           ))}
-          <span data-m="more" style={{ ...pill(false), padding: '8px 14px', gap: '6px', display: 'inline-flex' }}>More…<svg width="14" height="14" /></span>
+          <span data-m="more" style={{ ...pill(false), padding: '8px 14px', gap: '6px', display: 'inline-flex', flexShrink: 0 }}>More…<svg width="14" height="14" /></span>
         </div>
 
         {open && (
@@ -236,6 +239,7 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
               placeholder="Search subjects" value={query} autoComplete="off"
               onChange={e => { setQuery(e.target.value); setActive(0) }} onKeyDown={onSearchKey} />
             <div id={listId} role="listbox" aria-label="More subjects" className="sp-list">
+              {leadingRow && renderRow(leadingRow)}
               {groups.map(g => {
                 const gid = `${uid}-g-${g.name || 'other'}`
                 return (
@@ -245,7 +249,7 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
                   </div>
                 )
               })}
-              {groups.length === 0 && <div className="sp-empty" role="status">No match. Choose + Other to type your own.</div>}
+              {groups.length === 0 && !leadingRow && <div className="sp-empty" role="status">No match. Choose + Other to type your own.</div>}
               {otherRow && renderRow(otherRow)}
             </div>
           </div>
