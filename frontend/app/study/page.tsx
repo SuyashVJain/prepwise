@@ -32,6 +32,8 @@ export default function StudyPage() {
     const [messages, setMessages] = useState<Message[]>([])
     const [input, setInput] = useState('')
     const [chatLoading, setChatLoading] = useState(false)
+    const [chatError, setChatError] = useState('')
+    const [quizError, setQuizError] = useState('')
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([])
@@ -43,6 +45,14 @@ export default function StudyPage() {
     const [score, setScore] = useState(0)
 
     const mono = { fontFamily: "'JetBrains Mono', monospace" } as React.CSSProperties
+
+    // Documents live only in this tab, so closing or reloading it would lose them.
+    useEffect(() => {
+        if (docs.length === 0) return
+        const warn = (e: BeforeUnloadEvent) => { e.preventDefault() }
+        window.addEventListener('beforeunload', warn)
+        return () => window.removeEventListener('beforeunload', warn)
+    }, [docs.length])
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -128,27 +138,42 @@ export default function StudyPage() {
         setTimeout(() => setUploadProgress([]), 4000)
     }
 
-    async function sendMessage() {
-        if (!input.trim() || !docText || chatLoading) return
-        const userMsg: Message = { role: 'user', content: input.trim() }
-        setMessages(prev => [...prev, userMsg])
-        setInput('')
+    // Plain words for a failed request, by status.
+    async function failureText(res: Response, what: string) {
+        if (res.status === 429) return RATE_LIMIT_MESSAGE
+        if (res.status === 503) return `${what} is not available right now. Try again in a few minutes.`
+        let detail = ''
+        try { detail = String((await res.json()).detail || '') } catch { /* no body */ }
+        return detail && detail.length < 140 ? detail : `${what} could not answer. Try again.`
+    }
+
+    function networkText(err: unknown, what: string) {
+        return err instanceof Error && err.message === RATE_LIMIT_MESSAGE ? RATE_LIMIT_MESSAGE : `We could not reach the server, so ${what.toLowerCase()} did not run. Check your connection and try again.`
+    }
+
+    // With `retry` the question is already in the conversation, so it is only sent again.
+    async function sendMessage(retry = false) {
+        const text = retry ? [...messages].reverse().find(m => m.role === 'user')?.content ?? '' : input.trim()
+        if (!text || !docText || chatLoading) return
+        const history = (retry ? messages.slice(0, -1) : messages).slice(-6)
+        if (!retry) {
+            setMessages(prev => [...prev, { role: 'user', content: text }])
+            setInput('')
+        }
+        setChatError('')
         setChatLoading(true)
         try {
             const res = await apiFetch('/study/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chunks: allChunks,
-                    history: messages.slice(-6),
-                    message: userMsg.content,
-                }),
+                body: JSON.stringify({ chunks: allChunks, history, message: text }),
             })
+            if (!res.ok) { setChatError(await failureText(res, 'The study chat')); setChatLoading(false); return }
             const data = await res.json()
+            if (typeof data.response !== 'string' || !data.response.trim()) { setChatError('The study chat sent back an empty reply. Try again.'); setChatLoading(false); return }
             setMessages(prev => [...prev, { role: 'assistant', content: data.response }])
         } catch (err) {
-            const limited = err instanceof Error && err.message === RATE_LIMIT_MESSAGE
-            setMessages(prev => [...prev, { role: 'assistant', content: limited ? RATE_LIMIT_MESSAGE : 'Something went wrong. Try again.' }])
+            setChatError(networkText(err, 'The study chat'))
         }
         setChatLoading(false)
     }
@@ -156,6 +181,7 @@ export default function StudyPage() {
     async function generateQuiz() {
         if (!docText) return
         setQuizLoading(true)
+        setQuizError('')
         setQuizQuestions([])
         setAnswers({})
         setSubmitted(false)
@@ -165,11 +191,13 @@ export default function StudyPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ chunks: allChunks, num_questions: numQuestions, difficulty }),
             })
+            if (!res.ok) { setQuizError(await failureText(res, 'The quiz maker')); setQuizLoading(false); return }
             const data = await res.json()
-            setQuizQuestions(data.questions || [])
+            if (!Array.isArray(data.questions) || data.questions.length === 0) { setQuizError('No quiz questions came back. Try again.'); setQuizLoading(false); return }
+            setQuizQuestions(data.questions)
         } catch (err) {
             console.error('Quiz failed')
-            if (err instanceof Error && err.message === RATE_LIMIT_MESSAGE) setUploadError(RATE_LIMIT_MESSAGE)
+            setQuizError(networkText(err, 'The quiz maker'))
         }
         setQuizLoading(false)
     }
@@ -190,6 +218,8 @@ export default function StudyPage() {
 
     function clearAll() {
         setDocs([])
+        setChatError('')
+        setQuizError('')
         setMessages([])
         setQuizQuestions([])
         setAnswers({})
@@ -371,6 +401,15 @@ function renderMarkdown(text: string): string {
                                     </div>
                                 </div>
                             )}
+                            {chatError && (
+                                <div role="alert" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                                    <span style={{ fontSize: '14px', color: '#ef4444' }}>{chatError}</span>
+                                    <button type="button" onClick={() => sendMessage(true)} disabled={chatLoading}
+                                        style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--text)', background: 'transparent', border: '1px solid var(--border-2)', padding: '8px 16px', minHeight: '40px' }}>
+                                        RETRY
+                                    </button>
+                                </div>
+                            )}
                             <div ref={messagesEndRef} />
                         </div>
 
@@ -394,7 +433,7 @@ function renderMarkdown(text: string): string {
                                 }}
                                 onFocus={(e: React.FocusEvent<HTMLTextAreaElement>) => e.currentTarget.style.borderColor = 'var(--lime)'}
                                 onBlur={(e: React.FocusEvent<HTMLTextAreaElement>) => e.currentTarget.style.borderColor = 'var(--border)'} />
-                            <button onClick={sendMessage} disabled={chatLoading || !input.trim()} style={{
+                            <button onClick={() => sendMessage()} disabled={chatLoading || !input.trim()} style={{
                                 background: chatLoading || !input.trim() ? 'var(--bg3)' : 'var(--lime)',
                                 color: chatLoading || !input.trim() ? 'var(--text-3)' : '#0e0e0e',
                                 border: 'none', padding: '12px 20px', ...mono, fontSize: '12px', fontWeight: 700,
@@ -427,8 +466,11 @@ function renderMarkdown(text: string): string {
                                         ))}
                                     </div>
                                 </div>
+                                {quizError && (
+                                    <p role="alert" style={{ fontSize: '14px', color: '#ef4444', marginBottom: '16px' }}>{quizError}</p>
+                                )}
                                 <button onClick={generateQuiz} style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
-                                    GENERATE QUIZ →
+                                    {quizError ? 'RETRY →' : 'GENERATE QUIZ →'}
                                 </button>
                             </div>
                         )}
