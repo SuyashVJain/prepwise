@@ -3,25 +3,11 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
+import subjects from '@/data/subjects.json'
 
 
-const CS_SUBJECTS = [
-  'Data Structures and Algorithms',
-  'Operating Systems',
-  'Database Management Systems',
-  'Computer Networks',
-  'Object Oriented Programming',
-  'System Design',
-  'Compiler Design',
-  'Theory of Computation',
-  'Computer Organization and Architecture',
-  'Software Engineering',
-  'Artificial Intelligence',
-  'Machine Learning',
-  'Web Technologies',
-  'Discrete Mathematics',
-  'Digital Electronics',
-]
+// The shared subject list; saved syllabi store these names as plain topics, so older saves are unaffected.
+const CS_SUBJECTS = subjects.map(s => s.name)
 
 const TARGETS = [
   { id: 'faang', num: '01', name: 'FAANG / BIG TECH', desc: 'LeetCode-style DSA, system design at scale, behavioral STAR format.', companies: ['Google', 'Meta', 'Amazon', 'Microsoft'] },
