@@ -30,7 +30,7 @@ type Props = {
 }
 
 const MAX_VISIBLE = 6
-const PILL_MAX = 180
+const PILL_MAX = 240
 const GAP = 8
 const OTHER_VALUE = '\u0000other'
 
