@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
@@ -44,11 +44,22 @@ export default function OnboardingPage() {
   const [syllabusData, setSyllabusData] = useState<{ topics: string[]; raw_chunks: string[]; metadata: Record<string, unknown>[] } | null>(null)
   const [loading, setLoading] = useState(false)
   const [syllabusError, setSyllabusError] = useState('')
+  const [saveError, setSaveError] = useState('')
+  const [slow, setSlow] = useState(false)
+  // Set once the syllabus row is written, so a retry after a later failure does not insert it twice.
+  const syllabusSaved = useRef(false)
   const router = useRouter()
   const supabase = createClient()
 
   const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
   const grotesk: React.CSSProperties = { fontFamily: "'Space Grotesk', sans-serif" }
+
+  // Free-tier servers sleep; say so instead of leaving a silent spinner.
+  useEffect(() => {
+    if (!uploading) return
+    const t = setTimeout(() => setSlow(true), 5000)
+    return () => { clearTimeout(t); setSlow(false) }
+  }, [uploading])
 
   function toggleTarget(id: string) {
     setTargets(prev => prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id])
@@ -66,6 +77,22 @@ export default function OnboardingPage() {
     }
   }
 
+  // Turns a failed upload into plain words, using the server's reason when it gives one.
+  async function failureMessage(res: Response) {
+    let detail = ''
+    try { detail = String((await res.json()).detail || '') } catch { /* no body */ }
+    const d = detail.toLowerCase()
+    if (d.includes('could not extract')) return 'This PDF has no selectable text. Try a text-based PDF or pick your topics instead.'
+    if (d.includes('too large')) return 'This file is too large. The limit is 10 MB.'
+    if (d.includes('only pdf')) return 'Only PDF files are supported. Choose a PDF or pick your topics instead.'
+    if (res.status >= 500) return 'The server had a problem. Try again in a moment.'
+    return detail || 'We could not read that. Try again.'
+  }
+
+  function catchMessage(err: unknown) {
+    return err instanceof Error && err.message === RATE_LIMIT_MESSAGE ? RATE_LIMIT_MESSAGE : 'We could not reach the server. Check your connection and try again.'
+  }
+
   async function handlePdfUpload(file: File) {
     setPdfFile(file)
     setUploading(true)
@@ -77,12 +104,12 @@ export default function OnboardingPage() {
     formData.append('semester', semester.toString())
     try {
       const res = await apiFetch('/syllabus/upload', { method: 'POST', body: formData })
-      if (!res.ok) throw new Error('Upload failed')
+      if (!res.ok) { setSyllabusError(await failureMessage(res)); setUploading(false); return }
       const data = await res.json()
       setSyllabusData({ topics: data.topics, raw_chunks: data.raw_chunks, metadata: data.metadata })
     } catch (err) {
       console.error('PDF upload error:', err)
-      setSyllabusError(err instanceof Error && err.message === RATE_LIMIT_MESSAGE ? RATE_LIMIT_MESSAGE : 'Something went wrong. Try again.')
+      setSyllabusError(catchMessage(err))
     }
     setUploading(false)
   }
@@ -97,51 +124,69 @@ export default function OnboardingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topics: selectedSubjects, university: university || customUni, semester }),
       })
-      if (!res.ok) throw new Error('Indexing failed')
+      if (!res.ok) { setSyllabusError(await failureMessage(res)); setUploading(false); return }
       const data = await res.json()
       setSyllabusData({ topics: data.topics, raw_chunks: data.raw_chunks, metadata: data.metadata })
     } catch (err) {
       console.error('Manual topics error:', err)
-      setSyllabusError(err instanceof Error && err.message === RATE_LIMIT_MESSAGE ? RATE_LIMIT_MESSAGE : 'Something went wrong. Try again.')
+      setSyllabusError(catchMessage(err))
     }
     setUploading(false)
   }
 
   async function handleFinish() {
     setLoading(true)
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) { router.push('/login'); return }
+    setSaveError('')
+    const failed = () => { setSaveError('We could not save that. Check your connection and try again.'); setLoading(false) }
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { router.push('/login'); return }
 
-    const finalUni = university || customUni || 'Custom'
-    const topics = syllabusData?.topics || selectedSubjects || []
-    const rawChunks = syllabusData?.raw_chunks || []
-    const metadata = syllabusData?.metadata || []
+      const finalUni = university || customUni || 'Custom'
+      const topics = syllabusData?.topics || selectedSubjects || []
+      const rawChunks = syllabusData?.raw_chunks || []
+      const metadata = syllabusData?.metadata || []
 
-    await supabase.from('profiles').upsert({
-      id: user.id,
-      university: finalUni,
-      semester,
-      target_role: targets.join(','),
-      onboarding_complete: true,
-    })
+      // The syllabus goes first: the profile is only marked complete once there is a syllabus to use.
+      if (!syllabusSaved.current) {
+        const { error } = await supabase.from('syllabi').insert({
+          user_id: user.id,
+          name: `${finalUni} - Sem ${semester}`,
+          university: finalUni,
+          semester,
+          source: syllabusMode as 'pdf' | 'manual',
+          topics,
+          raw_chunks: rawChunks,
+          vectors: metadata,
+        })
+        if (error) { console.error('Syllabus save error:', error.message); failed(); return }
+        syllabusSaved.current = true
+      }
 
-    await supabase.from('syllabi').insert({
-      user_id: user.id,
-      name: `${finalUni} - Sem ${semester}`,
-      university: finalUni,
-      semester,
-      source: syllabusMode as 'pdf' | 'manual',
-      topics,
-      raw_chunks: rawChunks,
-      vectors: metadata,
-    })
+      const { error: profileError } = await supabase.from('profiles').upsert({
+        id: user.id,
+        university: finalUni,
+        semester,
+        target_role: targets.join(','),
+        onboarding_complete: true,
+      })
+      if (profileError) { console.error('Profile save error:', profileError.message); failed(); return }
+    } catch (err) {
+      console.error('Onboarding save error:', err)
+      failed()
+      return
+    }
 
     router.push('/dashboard')
   }
 
   const canContinueStep1 = university || customUni.trim().length > 0
   const canContinueStep2 = targets.length > 0
-  const canFinish = syllabusData !== null || (syllabusMode === 'manual' && selectedSubjects.length > 0)
+  // Both paths need a built index; for manual topics that is the BUILD INDEX step.
+  const canFinish = syllabusData !== null
+  const finishHint = step === 3 && !canFinish && !uploading
+    ? (syllabusMode === 'manual' ? (selectedSubjects.length ? 'Press BUILD INDEX to finish.' : 'Pick at least one topic and press BUILD INDEX.') : 'Choose a syllabus PDF to finish.')
+    : ''
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', ...grotesk, display: 'flex', flexDirection: 'column' }}>
@@ -230,7 +275,7 @@ export default function OnboardingPage() {
               {/* mode selector */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-2)', marginBottom: '28px' }}>
                 {[
-                  { id: 'pdf', icon: '[PDF]', name: 'UPLOAD PDF', desc: 'Upload your syllabus PDF. We parse, chunk, and embed it into a vector store.' },
+                  { id: 'pdf', icon: '[PDF]', name: 'UPLOAD PDF', desc: 'Upload your syllabus PDF. We read it and prepare your questions from it.' },
                   { id: 'manual', icon: '[MAN]', name: 'PICK TOPICS', desc: 'Select from our curated CS subject list and add your own topics.' },
                 ].map(s => (
                   <div key={s.id} onClick={() => setSyllabusMode(s.id)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setSyllabusMode(s.id))() } }}
@@ -250,12 +295,13 @@ export default function OnboardingPage() {
                   <label htmlFor="pdf-upload" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '14px var(--space-4)', border: '1px dashed var(--border-2)', cursor: 'pointer', ...mono, fontSize: '11px', letterSpacing: '.08em', textTransform: 'uppercase', color: uploading ? 'var(--lime)' : 'var(--text-3)', transition: 'all .1s' }}>
                     {uploading ? 'PROCESSING PDF...' : pdfFile ? `✓ ${pdfFile.name}` : 'CHOOSE SYLLABUS PDF'}
                   </label>
+                  {slow && <div role="status" style={{ marginTop: '12px', fontSize: '14px', color: 'var(--text-2)' }}>Waking the server, this can take up to a minute.</div>}
                   {syllabusError && (
-                    <div style={{ marginTop: '12px', ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em' }}>{syllabusError}</div>
+                    <div role="alert" style={{ marginTop: '12px', fontSize: '14px', color: '#ef4444' }}>{syllabusError}</div>
                   )}
                   {syllabusData && (
                     <div style={{ marginTop: '12px', ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.06em' }}>
-                      ✓ {syllabusData.topics.length} TOPICS EXTRACTED · {syllabusData.raw_chunks.length} CHUNKS INDEXED INTO VECTOR STORE
+                      ✓ {syllabusData.topics.length} TOPICS EXTRACTED · {syllabusData.raw_chunks.length} SECTIONS READY
                     </div>
                   )}
                   {syllabusData && syllabusData.topics.length > 0 && (
@@ -297,13 +343,14 @@ export default function OnboardingPage() {
                       {!syllabusData && (
                         <button onClick={handleManualSubmit} disabled={uploading}
                           style={{ marginLeft: '12px', ...mono, fontSize: '11px', letterSpacing: '.08em', textTransform: 'uppercase', background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '6px 14px', cursor: uploading ? 'not-allowed' : 'pointer', opacity: uploading ? 0.7 : 1 }}>
-                          {uploading ? 'INDEXING...' : 'BUILD INDEX →'}
+                          {uploading ? 'PREPARING...' : 'BUILD INDEX →'}
                         </button>
                       )}
-                      {syllabusData && <span style={{ ...mono, fontSize: '11px', color: 'var(--lime)', marginLeft: 'var(--space-2)' }}>✓ {syllabusData.raw_chunks.length} CHUNKS INDEXED</span>}
-                      {syllabusError && <span style={{ ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em', marginLeft: 'var(--space-2)' }}>{syllabusError}</span>}
+                      {syllabusData && <span style={{ ...mono, fontSize: '11px', color: 'var(--lime)', marginLeft: 'var(--space-2)' }}>✓ TOPICS READY</span>}
                     </div>
                   )}
+                  {slow && <div role="status" style={{ marginTop: '12px', fontSize: '14px', color: 'var(--text-2)' }}>Waking the server, this can take up to a minute.</div>}
+                  {syllabusError && <div role="alert" style={{ marginTop: '12px', fontSize: '14px', color: '#ef4444' }}>{syllabusError}</div>}
                 </div>
               )}
 
@@ -324,17 +371,21 @@ export default function OnboardingPage() {
 
           {/* BOTTOM NAV */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '32px', marginTop: 'var(--space-5)', borderTop: '1px solid var(--border)' }}>
-            <button onClick={() => step > 1 ? setStep(s => s - 1) : router.push('/')}
-              style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-3)', background: 'transparent', border: 'none', cursor: 'pointer' }}>
-              ← BACK
-            </button>
+            {step > 1 ? (
+              <button onClick={() => setStep(s => s - 1)}
+                style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-3)', background: 'transparent', border: 'none', cursor: 'pointer' }}>
+                ← BACK
+              </button>
+            ) : <span />}
             <button
               onClick={() => step < 3 ? setStep(s => s + 1) : handleFinish()}
               disabled={loading || (step === 1 && !canContinueStep1) || (step === 2 && !canContinueStep2) || (step === 3 && !canFinish)}
               style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', opacity: (loading || (step === 1 && !canContinueStep1) || (step === 2 && !canContinueStep2) || (step === 3 && !canFinish)) ? 0.4 : 1, transition: 'opacity .1s' }}>
-              {loading ? 'LAUNCHING...' : step === 3 ? 'LAUNCH PREPWISE →' : 'CONTINUE →'}
+              {loading ? 'LAUNCHING...' : step === 3 ? (saveError ? 'RETRY →' : 'LAUNCH PREPWISE →') : 'CONTINUE →'}
             </button>
           </div>
+          {finishHint && <p style={{ fontSize: '14px', color: 'var(--text-2)', marginTop: '12px', textAlign: 'right' }}>{finishHint}</p>}
+          {saveError && <p role="alert" style={{ fontSize: '14px', color: '#ef4444', marginTop: '12px', textAlign: 'right' }}>{saveError}</p>}
         </div>
 
         <div style={{ width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
