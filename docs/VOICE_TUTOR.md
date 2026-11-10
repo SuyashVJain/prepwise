@@ -1,6 +1,6 @@
 # Prepwise — Voice Tutor
 
-A tutor that teaches by talking. It lives at `/tutor`, linked from the sidebar and from Study Mode. The student picks a subject and topic, speaks or types, and can interrupt at any time.
+A tutor that teaches by talking. It lives at `/tutor`, linked from the sidebar and from Study Mode. The student picks a subject and topic, speaks or types, and can interrupt at any time. Subjects come from one shared list (`frontend/data/subjects.json`, copied to `backend/app/subjects.json`); the student can also choose Other and type any subject.
 
 Two sources:
 
@@ -51,7 +51,7 @@ browser (/tutor)                         backend (FastAPI)
 | `frontend/app/tutor/page.tsx` | The page |
 | `frontend/lib/tutor/voiceClient.ts` | Socket, microphone, voice detector, gapless playback, barge-in |
 | `frontend/components/tutor/` | Roadmap, videos, walkthrough, code and notes panels |
-| `frontend/data/` | Subjects, roadmaps, curated videos, walkthrough steps, Python exercises |
+| `frontend/data/` | Subjects (the shared list), roadmaps, curated videos, walkthrough steps, Python exercises |
 
 ### Session socket
 
@@ -227,3 +227,10 @@ For a spoken question, add the transcription time to the first-audio time: about
 - **Curated videos are placeholders.** Fill the `TODO` entries in `frontend/data/curated-videos.json`.
 - **Counters and caches are in memory.** Rate limits, the video cache and the per-user index cache reset on restart and are not shared between instances.
 - **The layout is desktop only**, like the rest of the app. Tested in Edge; Chrome uses the same engine. Other browsers fall back to typing if they cannot record.
+
+## Subjects
+
+- The shared list has Python, DSA, DBMS, Operating Systems, Computer Networks, OOP, System Design, Theory of Computation, Compilers, Machine Learning and Software Engineering. The ids `python`, `dsa`, `dbms`, `os` and `cn` are unchanged.
+- Every subject has suggested topic chips. A roadmap exists for each one (`frontend/data/tutor-roadmaps.json`, keyed by subject id). If a subject has no roadmap, the roadmap block and tab are hidden and only the topic chips show.
+- Walkthroughs (Python and DSA) and the Python code-along stay limited to those subjects. Curated videos are keyed by subject id; the YouTube search uses the subject name.
+- **Other.** The student types a subject (up to 60 characters). It is sent as the session's `subject`, so the tutor, notes and video search work without a roadmap. The backend removes control characters and markup characters and caps the length (`clean_subject` in `backend/app/subjects.py`). The same typed subject can be used for a Subject-Specific interview. Existing rate limits apply.

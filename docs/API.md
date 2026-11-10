@@ -73,7 +73,7 @@ Multipart form with `file` (PDF). Response: `success`, `topics`, `topic_count`, 
 Request: `topics` (list, required), `university`, `semester`. Response: same shape as upload.
 
 ### `GET /syllabus/subjects` (default limit)
-Response: `{"subjects": [...]}` the built-in list of computer science subjects.
+Response: `{"subjects": [...], "items": [...]}`. `subjects` is the list of subject names. `items` is the same list with each subject's `id` and suggested `topics`. This is the one shared subject list, also used by the Voice tutor and the Subject-Specific session type (`backend/app/subjects.json`, with an identical copy in `frontend/data/subjects.json` that a test keeps in sync).
 
 ## Study mode
 
@@ -95,7 +95,7 @@ Which speech providers are active: `{"stt": {...}, "tts": {...}}`, each with `ac
 Query: `subject`, `topic`, `exclude` (comma-separated video ids). Response: suggested videos, or an empty list when no key is configured.
 
 ### `POST /tutor/notes` (llm limit)
-Request: `subject`, `topic`, `transcript` (list of `{role, text}`). Response: a summary and flashcards. Returns `400` when the conversation is too short.
+Request: `subject` (free text, cleaned and capped at 60 characters; a student can type their own), `topic`, `transcript` (list of `{role, text}`). Response: a summary and flashcards. Returns `400` when the conversation is too short.
 
 ### `POST /tutor/code-check` (llm limit)
 Request: `exercise`, `code`. Response: a short review of the student's Python code.
