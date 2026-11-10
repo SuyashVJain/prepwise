@@ -11,6 +11,7 @@ import PageHeader from '@/components/PageHeader'
 import { fieldStyle, cardBase, optionStyle } from '@/lib/ui'
 import MicHelp from '@/components/MicHelp'
 import VideoPanel from '@/components/tutor/VideoPanel'
+import SubjectPicker from '@/components/SubjectPicker'
 import RoadmapPanel, { hasRoadmap } from '@/components/tutor/RoadmapPanel'
 import CodePanel from '@/components/tutor/CodePanel'
 import WalkthroughPanel, { WALKTHROUGH_SUBJECTS } from '@/components/tutor/WalkthroughPanel'
@@ -21,12 +22,6 @@ import subjects from '@/data/subjects.json'
 
 // Longest subject a student can type; the backend cleans and caps it again.
 const MAX_SUBJECT = 60
-// Subjects shown before the Show more control.
-const SUBJECTS_SHOWN = 8
-
-// Same look as the other option tiles, with one fixed height so the grid stays even.
-const subjectTile = (on: boolean): React.CSSProperties => ({ ...tile(on), display: 'flex', alignItems: 'center', width: '100%', height: '64px', overflowWrap: 'anywhere' })
-
 type Mode = 'standalone' | 'documents'
 type Phase = 'setup' | 'connecting' | 'session' | 'notes'
 type NotesStatus = 'loading' | 'ready' | 'error' | 'empty'
@@ -76,7 +71,6 @@ export default function TutorPage() {
   // The subject sent to the tutor: a name from the shared list, or the text the student typed under Other.
   const [subject, setSubject] = useState(subjects[0].name)
   const [isOther, setIsOther] = useState(false)
-  const [showAllSubjects, setShowAllSubjects] = useState(false)
   const [topic, setTopic] = useState('')
   const [mode, setMode] = useState<Mode>('standalone')
   const [hinglish, setHinglish] = useState(false)
@@ -335,28 +329,12 @@ export default function TutorPage() {
           <div className="page-cols">
           <div>
           <div style={{ ...label, marginBottom: '12px' }}>SUBJECT</div>
-          {/* Equal-size tiles that wrap; more than 8 subjects fold behind Show more, but a selected one is never hidden. */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 'var(--space-2)', marginBottom: subjects.length > SUBJECTS_SHOWN ? '12px' : '28px' }}>
-            {subjects.filter((s, i) => showAllSubjects || i < SUBJECTS_SHOWN || (!isOther && subject === s.name)).map(s => (
-              <button key={s.id} type="button" onClick={() => { setIsOther(false); setSubject(s.name); setTopic('') }} aria-pressed={!isOther && subject === s.name} style={subjectTile(!isOther && subject === s.name)}>
-                {s.name}
-              </button>
-            ))}
-            <button type="button" onClick={() => { setIsOther(true); setSubject(''); setTopic('') }} aria-pressed={isOther} style={subjectTile(isOther)}>
-              Other
-            </button>
+          <div style={{ marginBottom: '28px' }}>
+            <SubjectPicker label="Subject" options={subjects.map(s => ({ value: s.name, label: s.name }))}
+              value={isOther ? '' : subject}
+              onChange={name => { setIsOther(false); setSubject(name); setTopic('') }}
+              other={{ selected: isOther, onSelect: () => { setIsOther(true); setSubject(''); setTopic('') }, text: subject, onText: setSubject, max: MAX_SUBJECT }} />
           </div>
-          {subjects.length > SUBJECTS_SHOWN && (
-            <button type="button" onClick={() => setShowAllSubjects(v => !v)} aria-expanded={showAllSubjects}
-              style={{ marginBottom: '28px', minHeight: '44px', background: 'transparent', color: 'var(--text)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-card)', padding: '0 16px', fontSize: '14px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Space Grotesk', sans-serif" }}>
-              {showAllSubjects ? 'Show fewer' : `Show all ${subjects.length}`}
-            </button>
-          )}
-          {isOther && (
-            <input value={subject} onChange={e => setSubject(e.target.value.slice(0, MAX_SUBJECT))} placeholder="Type a subject, e.g. Digital Logic" maxLength={MAX_SUBJECT}
-              aria-label="Subject"
-              style={{ ...fieldStyle, width: '100%', marginTop: '-12px', marginBottom: '28px' }} />
-          )}
 
           <div style={{ ...label, marginBottom: '12px' }}>TOPIC (OPTIONAL)</div>
           <input value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. recursion, joins, deadlocks" maxLength={120}

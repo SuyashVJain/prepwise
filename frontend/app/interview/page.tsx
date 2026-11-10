@@ -7,14 +7,14 @@ import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import { DEFAULTS_KEY, capFirst } from '@/lib/stats'
 import PageShell from '@/components/PageShell'
-import { optionStyle, cardBase, fieldStyle } from '@/lib/ui'
+import { optionStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import MicHelp from '@/components/MicHelp'
 import { useToast } from '@/components/Toast'
 import ScoreRing from '@/components/ScoreRing'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
-import Dropdown from '@/components/Dropdown'
+import SubjectPicker from '@/components/SubjectPicker'
 import subjectList from '@/data/subjects.json'
 
 
@@ -684,14 +684,11 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
           {interviewType === 'subject' && !presetTopic && (
             <div style={{ marginBottom: '28px' }}>
-              <Dropdown label="Subject" value={subjectPick}
+              <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '12px' }}>SUBJECT</div>
+              <SubjectPicker label="Subject" options={[{ value: '', label: 'All my syllabus topics' }, ...subjectList.map(s => ({ value: s.name, label: s.name }))]}
+                value={subjectPick === OTHER ? '__none__' : subjectPick}
                 onChange={setSubjectPick}
-                options={[{ value: '', label: 'All my syllabus topics' }, ...subjectList.map(s => ({ value: s.name, label: s.name })), { value: OTHER, label: 'Other (type a subject)' }]} />
-              {subjectPick === OTHER && (
-                <input value={otherSubject} onChange={e => setOtherSubject(e.target.value.slice(0, MAX_SUBJECT))} maxLength={MAX_SUBJECT}
-                  placeholder="Type a subject, e.g. Digital Logic" aria-label="Subject"
-                  style={{ ...fieldStyle, width: '100%', marginTop: '12px' }} />
-              )}
+                other={{ selected: subjectPick === OTHER, onSelect: () => setSubjectPick(OTHER), text: otherSubject, onText: setOtherSubject, max: MAX_SUBJECT }} />
             </div>
           )}
 

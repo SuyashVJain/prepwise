@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import subjects from '@/data/subjects.json'
+import SubjectPicker from '@/components/SubjectPicker'
 
 
 // The shared subject list; saved syllabi store these names as plain topics, so older saves are unaffected.
@@ -311,14 +312,8 @@ export default function OnboardingPage() {
               {syllabusMode === 'manual' && (
                 <div style={{ marginBottom: 'var(--space-4)' }}>
                   <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>SELECT SUBJECTS</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '6px', marginBottom: 'var(--space-3)' }}>
-                    {CS_SUBJECTS.map(s => (
-                      <div key={s} onClick={() => toggleSubject(s)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => toggleSubject(s))() } }}
-                        style={{ background: selectedSubjects.includes(s) ? 'var(--lime-dim)' : 'var(--bg3)', border: `1px solid ${selectedSubjects.includes(s) ? 'var(--lime)' : 'var(--border)'}`, padding: '10px 12px', cursor: 'pointer', transition: 'all .1s', display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: selectedSubjects.includes(s) ? 'var(--lime)' : 'var(--border-2)', flexShrink: 0 }} />
-                        <span style={{ fontSize: '11px', fontWeight: 500, color: selectedSubjects.includes(s) ? 'var(--lime)' : 'var(--text-2)', lineHeight: 1.3 }}>{s}</span>
-                      </div>
-                    ))}
+                  <div style={{ marginBottom: 'var(--space-3)' }}>
+                    <SubjectPicker multi label="Subjects" options={CS_SUBJECTS.map(n => ({ value: n, label: n }))} values={selectedSubjects} onToggle={toggleSubject} />
                   </div>
                   <div style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: '12px' }}>
                     <input type="text" value={customTopic} onChange={e => setCustomTopic(e.target.value)}
