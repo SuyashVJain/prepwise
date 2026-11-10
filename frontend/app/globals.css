@@ -352,3 +352,13 @@ button[aria-pressed="true"]::after, div[role="button"][aria-pressed="true"]::aft
 .chart-grid span { position: absolute; left: -32px; top: -9px; width: 24px; text-align: right; font-size: 12px; line-height: 18px; color: var(--text-2); font-family: 'Space Grotesk', sans-serif; }
 .chart-dot { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--lime); }
 .chart-x { position: absolute; left: 32px; right: 10px; bottom: 0; display: flex; justify-content: space-between; font-size: 12px; color: var(--text-2); font-family: 'Space Grotesk', sans-serif; }
+
+/* History list: column labels once above the rows; filters in one row. */
+.filters { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; margin-bottom: 8px; }
+.reset-link { min-height: 44px; padding: 0 8px; background: transparent; border: none; color: var(--text-2); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.reset-link:hover { color: var(--text); }
+.hrow-head, .hrow { display: grid; grid-template-columns: 160px minmax(0, 1.4fr) 120px 90px; gap: 16px; align-items: center; }
+.hrow-head { padding: 0 24px; font-size: 13px; color: var(--text-2); }
+.hrow { width: 100%; padding: 14px 24px !important; text-align: left; color: inherit; cursor: pointer; min-height: 56px; transition: border-color .15s, background-color .15s; }
+.hrow:hover { border-color: var(--border-2); background: var(--bg3); }
+@media (max-width: 639px) { .hrow-head { display: none; } .hrow { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "date score" "type type"; row-gap: 4px; } .hrow > :nth-child(1) { grid-area: date; } .hrow > :nth-child(2) { grid-area: type; } .hrow > :nth-child(3) { display: none; } .hrow > :nth-child(4) { grid-area: score; } }

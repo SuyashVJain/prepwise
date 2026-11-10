@@ -141,7 +141,7 @@ export default function HistoryPage() {
                 <ScoreChart points={trendPoints} label={`Score trend across ${trend.length} sessions, from ${trend[0]} to ${trend[trend.length - 1]}`} />
               </section>
             )}
-            <div role="group" aria-label="Filter and sort sessions" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'flex-end', marginBottom: '8px' }}>
+            <div role="group" aria-label="Filter and sort sessions" className="filters">
               <label style={controlLabel}>TYPE
                 <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} style={control}>
                   <option value="all">All types</option>
@@ -160,21 +160,22 @@ export default function HistoryPage() {
                   <option value="score">Highest score</option>
                 </select>
               </label>
+              <button type="button" className="reset-link" onClick={() => { setTypeFilter('all'); setMinScore(0); setMaxScore(10); setSortBy('date') }}>Reset</button>
             </div>
             {visible.length === 0 && (
               <p style={{ fontSize: '14px', color: 'var(--text-2)', padding: '24px 0' }}>No sessions match these filters.</p>
             )}
+            {visible.length > 0 && (
+              <div className="hrow-head" aria-hidden="true"><span>Date</span><span>Type</span><span>Questions</span><span>Score</span></div>
+            )}
             {visible.map(s => (
-              <button key={s.id} onClick={() => openSession(s)}
-                style={{ textAlign: 'left', color: 'inherit', ...cardBase, padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', cursor: 'pointer' }}>
-                <div style={{ display: 'flex', gap: '32px', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <div><div style={label}>DATE</div><div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>{formatDate(s.created_at)}</div></div>
-                  <div><div style={label}>TYPE</div><div style={{ fontSize: '13px', fontWeight: 600, textTransform: 'capitalize' }}>{typeName(s.interview_type)}</div></div>
-                  <div><div style={label}>QUESTIONS ANSWERED</div><div style={{ ...mono, fontSize: '13px', color: 'var(--text-2)' }}>{s.total_questions || 0}</div></div>
-                </div>
-                <div style={{ ...mono, fontSize: '28px', fontWeight: 700, color: scoreColor(s.score_avg || 0), lineHeight: 1 }}>
-                  {s.score_avg || 0}<span style={{ fontSize: '12px', color: 'var(--text-2)' }}>/10</span>
-                </div>
+              <button key={s.id} onClick={() => openSession(s)} className="hrow" style={{ ...cardBase }}>
+                <span style={{ color: 'var(--text-2)', fontSize: '15px' }}>{formatDate(s.created_at)}</span>
+                <span style={{ fontSize: '15px', fontWeight: 600, textTransform: 'capitalize' }}>{typeName(s.interview_type)}</span>
+                <span style={{ color: 'var(--text-2)', fontSize: '15px' }}>{s.total_questions || 0}</span>
+                <span style={{ fontSize: '24px', fontWeight: 700, color: scoreColor(s.score_avg || 0), lineHeight: 1 }}>
+                  {s.score_avg || 0}<span style={{ fontSize: '13px', color: 'var(--text-2)', fontWeight: 400 }}>/10</span>
+                </span>
               </button>
             ))}
           </div>
