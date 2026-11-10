@@ -284,3 +284,4 @@ html.snap { scroll-padding-top: var(--hdr); }
   summary { display: flex; align-items: center; }
 }
 @media (max-width: 639px) { p a[href] { padding-block: 14px; } }
+@media (max-width: 639px) { table td, table th { white-space: nowrap; } }
