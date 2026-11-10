@@ -9,6 +9,11 @@ type RoadmapTopic = { id: string; title: string; summary: string }
 
 const roadmapBySubject = roadmaps as Record<string, RoadmapTopic[]>
 
+// A subject without a roadmap (for example one the student typed) simply has no roadmap block.
+export function hasRoadmap(subjectId: string): boolean {
+  return (roadmapBySubject[subjectId] ?? []).length > 0
+}
+
 type Props = {
   subjectId: string
   currentTopic: string
@@ -24,9 +29,7 @@ export default function RoadmapPanel({ subjectId, currentTopic, startLabel, onSt
   const [showAll, setShowAll] = useState(false)
   const shown = showAll ? topics : topics.slice(0, 6)
 
-  if (topics.length === 0) {
-    return <p style={{ fontSize: '13px', color: 'var(--text-2)', letterSpacing: '.04em' }}>No roadmap for this subject yet.</p>
-  }
+  if (topics.length === 0) return null
 
   return (
     <div>

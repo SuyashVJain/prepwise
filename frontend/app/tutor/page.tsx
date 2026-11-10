@@ -11,7 +11,7 @@ import PageHeader from '@/components/PageHeader'
 import { fieldStyle, cardBase, optionStyle } from '@/lib/ui'
 import MicHelp from '@/components/MicHelp'
 import VideoPanel from '@/components/tutor/VideoPanel'
-import RoadmapPanel from '@/components/tutor/RoadmapPanel'
+import RoadmapPanel, { hasRoadmap } from '@/components/tutor/RoadmapPanel'
 import CodePanel from '@/components/tutor/CodePanel'
 import WalkthroughPanel, { WALKTHROUGH_SUBJECTS } from '@/components/tutor/WalkthroughPanel'
 import NotesPanel from '@/components/tutor/NotesPanel'
@@ -132,8 +132,8 @@ export default function TutorPage() {
 
   const subjectId = subjects.find(s => s.name === subject)?.id ?? ''
   const subjectTopics = subjects.find(s => s.name === subject)?.topics ?? []
-  const sideTabs = SIDE_TABS.filter(tab => !tab.only || tab.only.includes(subjectId))
-  const activeTab: SideTab = sideTabs.some(tab => tab.id === sideTab) ? sideTab : 'roadmap'
+  const sideTabs = SIDE_TABS.filter(tab => (!tab.only || tab.only.includes(subjectId)) && (tab.id !== 'roadmap' || hasRoadmap(subjectId)))
+  const activeTab: SideTab = sideTabs.some(tab => tab.id === sideTab) ? sideTab : sideTabs[0].id
 
   async function startSession(topicOverride?: string) {
     const sessionTopic = (topicOverride ?? topic).trim()
@@ -343,9 +343,9 @@ export default function TutorPage() {
             ))}
           </div>
 
-          <div style={{ marginBottom: '28px' }}>
+          {hasRoadmap(subjectId) && <div style={{ marginBottom: '28px' }}>
             <RoadmapPanel subjectId={subjectId} currentTopic={topic} startLabel="START" onStart={title => { void startSession(title) }} />
-          </div>
+          </div>}
 
           <div style={{ ...label, marginBottom: '12px' }}>SOURCE</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-2)', marginBottom: '12px' }}>

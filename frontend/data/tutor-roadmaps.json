@@ -1,66 +1,609 @@
 {
   "python": [
-    { "id": "py-01", "title": "Variables and types", "summary": "Names, numbers, strings, booleans and how Python decides a value's type." },
-    { "id": "py-02", "title": "Conditions and loops", "summary": "if, elif, else, for, while, break and continue." },
-    { "id": "py-03", "title": "Lists and slicing", "summary": "Indexing, negative indexes, slices, and the common list methods." },
-    { "id": "py-04", "title": "Strings", "summary": "Immutability, formatting with f-strings, split, join and searching." },
-    { "id": "py-05", "title": "Functions", "summary": "Parameters, return values, default arguments and scope." },
-    { "id": "py-06", "title": "Dictionaries and sets", "summary": "Key-value lookups, iteration, set operations and when to use each." },
-    { "id": "py-07", "title": "Tuples and unpacking", "summary": "Immutable sequences, multiple return values and swapping." },
-    { "id": "py-08", "title": "List comprehensions", "summary": "Building lists, dicts and sets in one readable line." },
-    { "id": "py-09", "title": "Recursion", "summary": "Base case, recursive case, and reading the call stack." },
-    { "id": "py-10", "title": "Classes and objects", "summary": "Attributes, methods, __init__, inheritance and self." },
-    { "id": "py-11", "title": "Errors and exceptions", "summary": "try, except, finally, raising errors and reading a traceback." },
-    { "id": "py-12", "title": "Files and modules", "summary": "Reading and writing files with with, and splitting code into modules." }
+    {
+      "id": "py-01",
+      "title": "Variables and types",
+      "summary": "Names, numbers, strings, booleans and how Python decides a value's type."
+    },
+    {
+      "id": "py-02",
+      "title": "Conditions and loops",
+      "summary": "if, elif, else, for, while, break and continue."
+    },
+    {
+      "id": "py-03",
+      "title": "Lists and slicing",
+      "summary": "Indexing, negative indexes, slices, and the common list methods."
+    },
+    {
+      "id": "py-04",
+      "title": "Strings",
+      "summary": "Immutability, formatting with f-strings, split, join and searching."
+    },
+    {
+      "id": "py-05",
+      "title": "Functions",
+      "summary": "Parameters, return values, default arguments and scope."
+    },
+    {
+      "id": "py-06",
+      "title": "Dictionaries and sets",
+      "summary": "Key-value lookups, iteration, set operations and when to use each."
+    },
+    {
+      "id": "py-07",
+      "title": "Tuples and unpacking",
+      "summary": "Immutable sequences, multiple return values and swapping."
+    },
+    {
+      "id": "py-08",
+      "title": "List comprehensions",
+      "summary": "Building lists, dicts and sets in one readable line."
+    },
+    {
+      "id": "py-09",
+      "title": "Recursion",
+      "summary": "Base case, recursive case, and reading the call stack."
+    },
+    {
+      "id": "py-10",
+      "title": "Classes and objects",
+      "summary": "Attributes, methods, __init__, inheritance and self."
+    },
+    {
+      "id": "py-11",
+      "title": "Errors and exceptions",
+      "summary": "try, except, finally, raising errors and reading a traceback."
+    },
+    {
+      "id": "py-12",
+      "title": "Files and modules",
+      "summary": "Reading and writing files with with, and splitting code into modules."
+    }
   ],
   "dsa": [
-    { "id": "dsa-01", "title": "Big-O notation", "summary": "Measuring how time and space grow with input size." },
-    { "id": "dsa-02", "title": "Arrays", "summary": "Contiguous storage, indexing cost, insertion and deletion cost." },
-    { "id": "dsa-03", "title": "Two pointers and sliding window", "summary": "Scanning an array with two indexes to avoid nested loops." },
-    { "id": "dsa-04", "title": "Linked lists", "summary": "Nodes and pointers, insertion, deletion, reversing a list." },
-    { "id": "dsa-05", "title": "Stacks and queues", "summary": "LIFO and FIFO, their operations, and where each is used." },
-    { "id": "dsa-06", "title": "Hashing", "summary": "Hash functions, collisions, and constant-time lookups on average." },
-    { "id": "dsa-07", "title": "Binary search", "summary": "Halving a sorted range, and searching on the answer." },
-    { "id": "dsa-08", "title": "Sorting", "summary": "Bubble, insertion, merge and quick sort, with their trade-offs." },
-    { "id": "dsa-09", "title": "Trees", "summary": "Binary trees, traversals, binary search trees and height." },
-    { "id": "dsa-10", "title": "Heaps and priority queues", "summary": "The heap property, insert, extract, and top-k problems." },
-    { "id": "dsa-11", "title": "Graphs", "summary": "Representations, BFS, DFS and shortest paths." },
-    { "id": "dsa-12", "title": "Dynamic programming", "summary": "Overlapping subproblems, memoisation and tabulation." }
+    {
+      "id": "dsa-01",
+      "title": "Big-O notation",
+      "summary": "Measuring how time and space grow with input size."
+    },
+    {
+      "id": "dsa-02",
+      "title": "Arrays",
+      "summary": "Contiguous storage, indexing cost, insertion and deletion cost."
+    },
+    {
+      "id": "dsa-03",
+      "title": "Two pointers and sliding window",
+      "summary": "Scanning an array with two indexes to avoid nested loops."
+    },
+    {
+      "id": "dsa-04",
+      "title": "Linked lists",
+      "summary": "Nodes and pointers, insertion, deletion, reversing a list."
+    },
+    {
+      "id": "dsa-05",
+      "title": "Stacks and queues",
+      "summary": "LIFO and FIFO, their operations, and where each is used."
+    },
+    {
+      "id": "dsa-06",
+      "title": "Hashing",
+      "summary": "Hash functions, collisions, and constant-time lookups on average."
+    },
+    {
+      "id": "dsa-07",
+      "title": "Binary search",
+      "summary": "Halving a sorted range, and searching on the answer."
+    },
+    {
+      "id": "dsa-08",
+      "title": "Sorting",
+      "summary": "Bubble, insertion, merge and quick sort, with their trade-offs."
+    },
+    {
+      "id": "dsa-09",
+      "title": "Trees",
+      "summary": "Binary trees, traversals, binary search trees and height."
+    },
+    {
+      "id": "dsa-10",
+      "title": "Heaps and priority queues",
+      "summary": "The heap property, insert, extract, and top-k problems."
+    },
+    {
+      "id": "dsa-11",
+      "title": "Graphs",
+      "summary": "Representations, BFS, DFS and shortest paths."
+    },
+    {
+      "id": "dsa-12",
+      "title": "Dynamic programming",
+      "summary": "Overlapping subproblems, memoisation and tabulation."
+    }
   ],
   "dbms": [
-    { "id": "db-01", "title": "Relational model", "summary": "Tables, rows, columns, schemas and why relations are used." },
-    { "id": "db-02", "title": "Keys", "summary": "Super, candidate, primary and foreign keys, and referential integrity." },
-    { "id": "db-03", "title": "ER modelling", "summary": "Entities, relationships, cardinality and converting a diagram to tables." },
-    { "id": "db-04", "title": "SQL basics", "summary": "SELECT, WHERE, ORDER BY, INSERT, UPDATE and DELETE." },
-    { "id": "db-05", "title": "SQL joins", "summary": "Inner, left, right and full joins, and when rows disappear." },
-    { "id": "db-06", "title": "Aggregation and grouping", "summary": "COUNT, SUM, AVG, GROUP BY and HAVING." },
-    { "id": "db-07", "title": "Normalization", "summary": "Functional dependencies and 1NF, 2NF, 3NF and BCNF." },
-    { "id": "db-08", "title": "Transactions and ACID", "summary": "Atomicity, consistency, isolation and durability." },
-    { "id": "db-09", "title": "Concurrency control", "summary": "Locks, two-phase locking, isolation levels and deadlocks." },
-    { "id": "db-10", "title": "Indexing", "summary": "B+ trees, hash indexes, and when an index helps or hurts." }
+    {
+      "id": "db-01",
+      "title": "Relational model",
+      "summary": "Tables, rows, columns, schemas and why relations are used."
+    },
+    {
+      "id": "db-02",
+      "title": "Keys",
+      "summary": "Super, candidate, primary and foreign keys, and referential integrity."
+    },
+    {
+      "id": "db-03",
+      "title": "ER modelling",
+      "summary": "Entities, relationships, cardinality and converting a diagram to tables."
+    },
+    {
+      "id": "db-04",
+      "title": "SQL basics",
+      "summary": "SELECT, WHERE, ORDER BY, INSERT, UPDATE and DELETE."
+    },
+    {
+      "id": "db-05",
+      "title": "SQL joins",
+      "summary": "Inner, left, right and full joins, and when rows disappear."
+    },
+    {
+      "id": "db-06",
+      "title": "Aggregation and grouping",
+      "summary": "COUNT, SUM, AVG, GROUP BY and HAVING."
+    },
+    {
+      "id": "db-07",
+      "title": "Normalization",
+      "summary": "Functional dependencies and 1NF, 2NF, 3NF and BCNF."
+    },
+    {
+      "id": "db-08",
+      "title": "Transactions and ACID",
+      "summary": "Atomicity, consistency, isolation and durability."
+    },
+    {
+      "id": "db-09",
+      "title": "Concurrency control",
+      "summary": "Locks, two-phase locking, isolation levels and deadlocks."
+    },
+    {
+      "id": "db-10",
+      "title": "Indexing",
+      "summary": "B+ trees, hash indexes, and when an index helps or hurts."
+    }
   ],
   "os": [
-    { "id": "os-01", "title": "What an operating system does", "summary": "Kernel, user mode, system calls and the main services." },
-    { "id": "os-02", "title": "Processes and threads", "summary": "Address space, process states, context switches and threads." },
-    { "id": "os-03", "title": "CPU scheduling", "summary": "FCFS, SJF, round robin, priority, and the metrics they trade off." },
-    { "id": "os-04", "title": "Synchronization", "summary": "Race conditions, critical sections, mutexes and semaphores." },
-    { "id": "os-05", "title": "Deadlocks", "summary": "The four conditions, prevention, avoidance and detection." },
-    { "id": "os-06", "title": "Memory management", "summary": "Logical and physical addresses, fragmentation and allocation." },
-    { "id": "os-07", "title": "Paging", "summary": "Pages, frames, page tables and the translation lookaside buffer." },
-    { "id": "os-08", "title": "Virtual memory", "summary": "Demand paging, page faults and page replacement algorithms." },
-    { "id": "os-09", "title": "File systems", "summary": "Files, directories, inodes and allocation methods." },
-    { "id": "os-10", "title": "Disk scheduling", "summary": "FCFS, SSTF, SCAN and C-SCAN for moving the disk head." }
+    {
+      "id": "os-01",
+      "title": "What an operating system does",
+      "summary": "Kernel, user mode, system calls and the main services."
+    },
+    {
+      "id": "os-02",
+      "title": "Processes and threads",
+      "summary": "Address space, process states, context switches and threads."
+    },
+    {
+      "id": "os-03",
+      "title": "CPU scheduling",
+      "summary": "FCFS, SJF, round robin, priority, and the metrics they trade off."
+    },
+    {
+      "id": "os-04",
+      "title": "Synchronization",
+      "summary": "Race conditions, critical sections, mutexes and semaphores."
+    },
+    {
+      "id": "os-05",
+      "title": "Deadlocks",
+      "summary": "The four conditions, prevention, avoidance and detection."
+    },
+    {
+      "id": "os-06",
+      "title": "Memory management",
+      "summary": "Logical and physical addresses, fragmentation and allocation."
+    },
+    {
+      "id": "os-07",
+      "title": "Paging",
+      "summary": "Pages, frames, page tables and the translation lookaside buffer."
+    },
+    {
+      "id": "os-08",
+      "title": "Virtual memory",
+      "summary": "Demand paging, page faults and page replacement algorithms."
+    },
+    {
+      "id": "os-09",
+      "title": "File systems",
+      "summary": "Files, directories, inodes and allocation methods."
+    },
+    {
+      "id": "os-10",
+      "title": "Disk scheduling",
+      "summary": "FCFS, SSTF, SCAN and C-SCAN for moving the disk head."
+    }
   ],
   "cn": [
-    { "id": "cn-01", "title": "OSI and TCP/IP layers", "summary": "What each layer is responsible for, and how they stack." },
-    { "id": "cn-02", "title": "Physical and data link layer", "summary": "Framing, MAC addresses, switches and error detection." },
-    { "id": "cn-03", "title": "IP addressing", "summary": "IPv4, subnet masks, CIDR and private address ranges." },
-    { "id": "cn-04", "title": "Routing", "summary": "Routing tables, distance vector and link state ideas." },
-    { "id": "cn-05", "title": "TCP vs UDP", "summary": "Reliable ordered streams against fast connectionless datagrams." },
-    { "id": "cn-06", "title": "TCP in detail", "summary": "Three-way handshake, flow control, congestion control and closing." },
-    { "id": "cn-07", "title": "DNS", "summary": "Resolving a name to an address, records and caching." },
-    { "id": "cn-08", "title": "HTTP and HTTPS", "summary": "Requests, responses, status codes, and what TLS adds." },
-    { "id": "cn-09", "title": "What happens when you open a URL", "summary": "DNS, TCP, TLS, HTTP and rendering, end to end." },
-    { "id": "cn-10", "title": "Network security basics", "summary": "Encryption, certificates, firewalls and common attacks." }
+    {
+      "id": "cn-01",
+      "title": "OSI and TCP/IP layers",
+      "summary": "What each layer is responsible for, and how they stack."
+    },
+    {
+      "id": "cn-02",
+      "title": "Physical and data link layer",
+      "summary": "Framing, MAC addresses, switches and error detection."
+    },
+    {
+      "id": "cn-03",
+      "title": "IP addressing",
+      "summary": "IPv4, subnet masks, CIDR and private address ranges."
+    },
+    {
+      "id": "cn-04",
+      "title": "Routing",
+      "summary": "Routing tables, distance vector and link state ideas."
+    },
+    {
+      "id": "cn-05",
+      "title": "TCP vs UDP",
+      "summary": "Reliable ordered streams against fast connectionless datagrams."
+    },
+    {
+      "id": "cn-06",
+      "title": "TCP in detail",
+      "summary": "Three-way handshake, flow control, congestion control and closing."
+    },
+    {
+      "id": "cn-07",
+      "title": "DNS",
+      "summary": "Resolving a name to an address, records and caching."
+    },
+    {
+      "id": "cn-08",
+      "title": "HTTP and HTTPS",
+      "summary": "Requests, responses, status codes, and what TLS adds."
+    },
+    {
+      "id": "cn-09",
+      "title": "What happens when you open a URL",
+      "summary": "DNS, TCP, TLS, HTTP and rendering, end to end."
+    },
+    {
+      "id": "cn-10",
+      "title": "Network security basics",
+      "summary": "Encryption, certificates, firewalls and common attacks."
+    }
+  ],
+  "oop": [
+    {
+      "id": "oop-01",
+      "title": "Classes and objects",
+      "summary": "Blueprints and instances, fields, methods and constructors."
+    },
+    {
+      "id": "oop-02",
+      "title": "Encapsulation",
+      "summary": "Hiding data behind methods and access modifiers."
+    },
+    {
+      "id": "oop-03",
+      "title": "Abstraction",
+      "summary": "Showing what something does, not how, with abstract classes."
+    },
+    {
+      "id": "oop-04",
+      "title": "Inheritance",
+      "summary": "Reusing a parent class, overriding methods and the super keyword."
+    },
+    {
+      "id": "oop-05",
+      "title": "Polymorphism",
+      "summary": "Compile-time overloading and run-time overriding."
+    },
+    {
+      "id": "oop-06",
+      "title": "Interfaces and abstract classes",
+      "summary": "What each is for and how to choose between them."
+    },
+    {
+      "id": "oop-07",
+      "title": "Constructors and destructors",
+      "summary": "Initialisation order, copy constructors and cleanup."
+    },
+    {
+      "id": "oop-08",
+      "title": "Static members and this",
+      "summary": "Class-level data versus per-object data."
+    },
+    {
+      "id": "oop-09",
+      "title": "Composition over inheritance",
+      "summary": "Has-a versus is-a, and why composition is often safer."
+    },
+    {
+      "id": "oop-10",
+      "title": "Exception handling",
+      "summary": "try, catch, finally and designing your own exceptions."
+    },
+    {
+      "id": "oop-11",
+      "title": "SOLID principles",
+      "summary": "Five guidelines for classes that are easy to change."
+    },
+    {
+      "id": "oop-12",
+      "title": "Common design patterns",
+      "summary": "Singleton, factory, observer and strategy at a glance."
+    }
+  ],
+  "system-design": [
+    {
+      "id": "sd-01",
+      "title": "Requirements and constraints",
+      "summary": "Functional versus non-functional needs, and what to ask first."
+    },
+    {
+      "id": "sd-02",
+      "title": "Back-of-the-envelope estimation",
+      "summary": "Users, requests per second, storage and bandwidth."
+    },
+    {
+      "id": "sd-03",
+      "title": "APIs and data models",
+      "summary": "Choosing endpoints, entities and relationships."
+    },
+    {
+      "id": "sd-04",
+      "title": "Load balancing",
+      "summary": "Spreading traffic and the common algorithms."
+    },
+    {
+      "id": "sd-05",
+      "title": "Caching",
+      "summary": "Where to cache, eviction policies and stale data."
+    },
+    {
+      "id": "sd-06",
+      "title": "SQL and NoSQL databases",
+      "summary": "How to choose between them, and replication basics."
+    },
+    {
+      "id": "sd-07",
+      "title": "Sharding and partitioning",
+      "summary": "Splitting data and picking a shard key."
+    },
+    {
+      "id": "sd-08",
+      "title": "Message queues",
+      "summary": "Decoupling services and absorbing traffic spikes."
+    },
+    {
+      "id": "sd-09",
+      "title": "CAP theorem and consistency",
+      "summary": "Consistency, availability and partitions in plain terms."
+    },
+    {
+      "id": "sd-10",
+      "title": "Scaling and reliability",
+      "summary": "Horizontal scaling, failures, retries and monitoring."
+    },
+    {
+      "id": "sd-11",
+      "title": "Designing a URL shortener",
+      "summary": "Putting the pieces together in one worked example."
+    }
+  ],
+  "toc": [
+    {
+      "id": "toc-01",
+      "title": "Alphabets, strings and languages",
+      "summary": "The basic vocabulary used in every proof."
+    },
+    {
+      "id": "toc-02",
+      "title": "Deterministic finite automata",
+      "summary": "States, transitions and accepting strings."
+    },
+    {
+      "id": "toc-03",
+      "title": "Nondeterministic finite automata",
+      "summary": "Choices, epsilon moves and conversion to a DFA."
+    },
+    {
+      "id": "toc-04",
+      "title": "Regular expressions",
+      "summary": "Writing them and converting them to automata."
+    },
+    {
+      "id": "toc-05",
+      "title": "Pumping lemma",
+      "summary": "Showing that a language is not regular."
+    },
+    {
+      "id": "toc-06",
+      "title": "Context-free grammars",
+      "summary": "Productions, derivations and parse trees."
+    },
+    {
+      "id": "toc-07",
+      "title": "Pushdown automata",
+      "summary": "A finite automaton with a stack."
+    },
+    {
+      "id": "toc-08",
+      "title": "Turing machines",
+      "summary": "The tape model and what it can compute."
+    },
+    {
+      "id": "toc-09",
+      "title": "Decidability",
+      "summary": "Decidable and undecidable problems, and the halting problem."
+    },
+    {
+      "id": "toc-10",
+      "title": "Complexity classes",
+      "summary": "P, NP and NP-complete in plain terms."
+    }
+  ],
+  "compilers": [
+    {
+      "id": "cmp-01",
+      "title": "Phases of a compiler",
+      "summary": "From source code to machine code, step by step."
+    },
+    {
+      "id": "cmp-02",
+      "title": "Lexical analysis",
+      "summary": "Tokens, lexemes and how regular expressions describe them."
+    },
+    {
+      "id": "cmp-03",
+      "title": "Grammars for parsing",
+      "summary": "Context-free grammars, derivations and ambiguity."
+    },
+    {
+      "id": "cmp-04",
+      "title": "Top-down parsing",
+      "summary": "Recursive descent, FIRST and FOLLOW sets and LL(1)."
+    },
+    {
+      "id": "cmp-05",
+      "title": "Bottom-up parsing",
+      "summary": "Shift-reduce parsing and LR parsers."
+    },
+    {
+      "id": "cmp-06",
+      "title": "Syntax-directed translation",
+      "summary": "Attaching rules and attributes to grammar productions."
+    },
+    {
+      "id": "cmp-07",
+      "title": "Symbol tables and semantic analysis",
+      "summary": "Scopes, declarations and type checking."
+    },
+    {
+      "id": "cmp-08",
+      "title": "Intermediate code",
+      "summary": "Syntax trees and three-address code."
+    },
+    {
+      "id": "cmp-09",
+      "title": "Code optimisation",
+      "summary": "Constant folding, dead code and basic blocks."
+    },
+    {
+      "id": "cmp-10",
+      "title": "Code generation",
+      "summary": "Registers, instruction selection and simple allocation."
+    }
+  ],
+  "ml": [
+    {
+      "id": "ml-01",
+      "title": "What machine learning is",
+      "summary": "Learning from data, and the supervised, unsupervised and reinforcement settings."
+    },
+    {
+      "id": "ml-02",
+      "title": "Training, validation and test data",
+      "summary": "Why data is split and what leakage means."
+    },
+    {
+      "id": "ml-03",
+      "title": "Linear regression",
+      "summary": "Fitting a line, the cost function and gradient descent."
+    },
+    {
+      "id": "ml-04",
+      "title": "Logistic regression",
+      "summary": "Predicting a class with probabilities."
+    },
+    {
+      "id": "ml-05",
+      "title": "Overfitting and regularisation",
+      "summary": "Bias, variance and how L1 and L2 penalties help."
+    },
+    {
+      "id": "ml-06",
+      "title": "Decision trees and random forests",
+      "summary": "Splits, impurity and combining many trees."
+    },
+    {
+      "id": "ml-07",
+      "title": "k-nearest neighbours and SVMs",
+      "summary": "Distance-based and margin-based classifiers."
+    },
+    {
+      "id": "ml-08",
+      "title": "Clustering",
+      "summary": "k-means and how to judge the groups it finds."
+    },
+    {
+      "id": "ml-09",
+      "title": "Evaluation metrics",
+      "summary": "Accuracy, precision, recall, F1 and the confusion matrix."
+    },
+    {
+      "id": "ml-10",
+      "title": "Neural network basics",
+      "summary": "Neurons, layers, activation functions and backpropagation."
+    }
+  ],
+  "se": [
+    {
+      "id": "se-01",
+      "title": "Software development life cycle",
+      "summary": "The stages from requirements to maintenance."
+    },
+    {
+      "id": "se-02",
+      "title": "Process models",
+      "summary": "Waterfall, iterative and spiral models, and when each fits."
+    },
+    {
+      "id": "se-03",
+      "title": "Agile and Scrum",
+      "summary": "Sprints, roles, ceremonies and the backlog."
+    },
+    {
+      "id": "se-04",
+      "title": "Requirements engineering",
+      "summary": "Gathering, writing and validating requirements."
+    },
+    {
+      "id": "se-05",
+      "title": "Design principles and UML",
+      "summary": "Modularity, coupling, cohesion and basic diagrams."
+    },
+    {
+      "id": "se-06",
+      "title": "Design patterns",
+      "summary": "Common reusable solutions such as factory and observer."
+    },
+    {
+      "id": "se-07",
+      "title": "Software testing",
+      "summary": "Unit, integration and system tests, black-box and white-box."
+    },
+    {
+      "id": "se-08",
+      "title": "Version control with Git",
+      "summary": "Commits, branches, merges and pull requests."
+    },
+    {
+      "id": "se-09",
+      "title": "Metrics and estimation",
+      "summary": "Lines of code, function points and COCOMO."
+    },
+    {
+      "id": "se-10",
+      "title": "Maintenance and DevOps",
+      "summary": "Kinds of maintenance, CI/CD and releases."
+    }
   ]
 }
