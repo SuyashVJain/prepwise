@@ -17,7 +17,7 @@ import WalkthroughPanel, { WALKTHROUGH_SUBJECTS } from '@/components/tutor/Walkt
 import NotesPanel from '@/components/tutor/NotesPanel'
 import type { SessionNotes } from '@/components/tutor/NotesPanel'
 import { disabled, eyebrow, ghostButton, label, mono, panel, primaryButton, tile } from '@/components/tutor/ui'
-import subjects from '@/data/tutor-subjects.json'
+import subjects from '@/data/subjects.json'
 
 type Mode = 'standalone' | 'documents'
 type Phase = 'setup' | 'connecting' | 'session' | 'notes'

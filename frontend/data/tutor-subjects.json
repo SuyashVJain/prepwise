@@ -1,7 +1,0 @@
-[
-  { "id": "python", "name": "Python", "topics": ["Variables and types", "Lists and slicing", "Functions", "Dictionaries", "Classes and objects", "Recursion"] },
-  { "id": "dsa", "name": "DSA", "topics": ["Big-O notation", "Arrays", "Linked lists", "Stacks and queues", "Binary search", "Trees", "Hashing", "Sorting"] },
-  { "id": "dbms", "name": "DBMS", "topics": ["Relational model", "Keys", "SQL joins", "Normalization", "Transactions and ACID", "Indexing"] },
-  { "id": "os", "name": "OS", "topics": ["Processes and threads", "CPU scheduling", "Deadlocks", "Memory management", "Paging", "File systems"] },
-  { "id": "cn", "name": "Computer Networks", "topics": ["OSI and TCP/IP layers", "IP addressing", "TCP vs UDP", "DNS", "HTTP and HTTPS", "Routing"] }
-]

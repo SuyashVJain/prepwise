@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, Request, UploadFile, File, HTTPException
 from pydantic import BaseModel
 from app.auth import get_current_user
 from app.limits import upload_limit, default_limit
-from app.services.rag import SyllabusRAG, CS_SUBJECTS
+from app.services.rag import SyllabusRAG, CS_SUBJECTS, SUBJECTS
 import tempfile
 import os
 
@@ -81,5 +81,5 @@ async def manual_topics(request: Request, req: ManualTopicsRequest):
 @router.get("/subjects")
 @default_limit
 async def get_cs_subjects(request: Request):
-    """Return the built-in CS subject list for manual selection."""
-    return {"subjects": CS_SUBJECTS}
+    """The shared subject list: names for manual selection, plus ids and suggested topics."""
+    return {"subjects": CS_SUBJECTS, "items": SUBJECTS}

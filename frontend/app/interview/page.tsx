@@ -14,6 +14,8 @@ import MicHelp from '@/components/MicHelp'
 import { useToast } from '@/components/Toast'
 import ScoreRing from '@/components/ScoreRing'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
+import Dropdown from '@/components/Dropdown'
+import subjectList from '@/data/subjects.json'
 
 
 const COMPANY_MAP: Record<string, string> = {
@@ -131,6 +133,8 @@ export default function InterviewPage() {
   const [saveError, setSaveError] = useState('')
   // Set when the page is opened as /interview?topic=..., e.g. from the voice tutor.
   const [presetTopic, setPresetTopic] = useState('')
+  // For the Subject-Specific type: keep every question on one subject from the shared list ('' = the whole syllabus).
+  const [subjectPick, setSubjectPick] = useState('')
 
 const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const questionStartRef = useRef(0)
@@ -353,6 +357,9 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     return () => { clearTimeout(t); setSlow(false) }
   }, [waiting, startingSession])
 
+  // A practise topic wins; otherwise the chosen subject when the type is Subject-Specific.
+  const focusTopic = presetTopic || (interviewType === 'subject' ? subjectPick : '')
+
   async function startSession() {
     if (!syllabus) { router.push('/onboarding'); return }
     setStartingSession(true)
@@ -365,9 +372,9 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
       target_company: targetCompany,
       total_questions: totalQuestions,
       // A preset topic is sent alone, so every question stays on it.
-      topics: presetTopic ? [presetTopic] : syllabus.topics || [],
-      raw_chunks: presetTopic ? [] : syllabus.raw_chunks || [],
-      chunks_metadata: presetTopic ? [] : syllabus.vectors || [],
+      topics: focusTopic ? [focusTopic] : syllabus.topics || [],
+      raw_chunks: focusTopic ? [] : syllabus.raw_chunks || [],
+      chunks_metadata: focusTopic ? [] : syllabus.vectors || [],
     }
 
     let data
@@ -461,8 +468,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           previous_questions: sessionQuestions.map(q => q.question),
           question_number: nextNum,
           topics: topicsPool,
-          raw_chunks: presetTopic ? [] : syllabus?.raw_chunks || [],
-          chunks_metadata: presetTopic ? [] : syllabus?.vectors || [],
+          raw_chunks: focusTopic ? [] : syllabus?.raw_chunks || [],
+          chunks_metadata: focusTopic ? [] : syllabus?.vectors || [],
         }),
       })
       data = await okJson(res)
@@ -669,6 +676,14 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
               ))}
             </div>
           </div>
+
+          {interviewType === 'subject' && !presetTopic && (
+            <div style={{ marginBottom: '28px' }}>
+              <Dropdown label="Subject" value={subjectPick}
+                onChange={setSubjectPick}
+                options={[{ value: '', label: 'All my syllabus topics' }, ...subjectList.map(s => ({ value: s.name, label: s.name }))]} />
+            </div>
+          )}
 
           {/* target */}
           <div style={{ marginBottom: '28px' }}>

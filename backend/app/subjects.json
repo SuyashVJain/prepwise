@@ -1,0 +1,136 @@
+[
+  {
+    "id": "python",
+    "name": "Python",
+    "topics": [
+      "Variables and types",
+      "Lists and slicing",
+      "Functions",
+      "Dictionaries",
+      "Classes and objects",
+      "Recursion"
+    ]
+  },
+  {
+    "id": "dsa",
+    "name": "DSA",
+    "topics": [
+      "Big-O notation",
+      "Arrays",
+      "Linked lists",
+      "Stacks and queues",
+      "Binary search",
+      "Trees",
+      "Hashing",
+      "Sorting"
+    ]
+  },
+  {
+    "id": "dbms",
+    "name": "DBMS",
+    "topics": [
+      "Relational model",
+      "Keys",
+      "SQL joins",
+      "Normalization",
+      "Transactions and ACID",
+      "Indexing"
+    ]
+  },
+  {
+    "id": "os",
+    "name": "Operating Systems",
+    "topics": [
+      "Processes and threads",
+      "CPU scheduling",
+      "Deadlocks",
+      "Memory management",
+      "Paging",
+      "File systems"
+    ]
+  },
+  {
+    "id": "cn",
+    "name": "Computer Networks",
+    "topics": [
+      "OSI and TCP/IP layers",
+      "IP addressing",
+      "TCP vs UDP",
+      "DNS",
+      "HTTP and HTTPS",
+      "Routing"
+    ]
+  },
+  {
+    "id": "oop",
+    "name": "OOP",
+    "topics": [
+      "Classes and objects",
+      "Encapsulation",
+      "Inheritance",
+      "Polymorphism",
+      "Abstraction",
+      "Interfaces and abstract classes"
+    ]
+  },
+  {
+    "id": "system-design",
+    "name": "System Design",
+    "topics": [
+      "Requirements and estimation",
+      "Load balancing",
+      "Caching",
+      "Databases and sharding",
+      "Message queues",
+      "Designing a URL shortener"
+    ]
+  },
+  {
+    "id": "toc",
+    "name": "Theory of Computation",
+    "topics": [
+      "Finite automata",
+      "Regular expressions",
+      "Context-free grammars",
+      "Pushdown automata",
+      "Turing machines",
+      "Decidability"
+    ]
+  },
+  {
+    "id": "compilers",
+    "name": "Compilers",
+    "topics": [
+      "Lexical analysis",
+      "Parsing",
+      "Syntax-directed translation",
+      "Intermediate code",
+      "Code optimisation",
+      "Code generation"
+    ]
+  },
+  {
+    "id": "ml",
+    "name": "Machine Learning",
+    "topics": [
+      "Supervised and unsupervised learning",
+      "Linear regression",
+      "Logistic regression",
+      "Overfitting and regularisation",
+      "Decision trees",
+      "Evaluation metrics"
+    ]
+  },
+  {
+    "id": "se",
+    "name": "Software Engineering",
+    "topics": [
+      "Software development life cycle",
+      "Agile and Scrum",
+      "Requirements engineering",
+      "Design patterns",
+      "Testing",
+      "Version control"
+    ]
+  }
+]
