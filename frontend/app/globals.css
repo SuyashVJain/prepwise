@@ -387,3 +387,13 @@ input[type="number"].num-field::-webkit-inner-spin-button, input[type="number"].
 /* Dashboard chart card: the chart takes the height left by the card beside it. */
 .chart-card { display: flex; flex-direction: column; }
 .chart-card .chart { flex: 1 1 auto; height: auto; min-height: 190px; }
+
+/* Auth pages: the same boxed fields and labels as the app. */
+.auth-label { display: block; margin-bottom: 8px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: var(--text-2); }
+.auth-field { width: 100%; min-height: 44px; padding: 10px 12px; background: var(--bg3); color: var(--text); border: 1px solid #3d3c3c; border-radius: var(--radius-card); font: inherit; font-size: 16px; }
+.auth-field:focus { border-color: var(--lime); }
+.auth-field::placeholder { color: #8a8787; opacity: 1; }
+.auth-btn { width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--lime); color: #0e0e0e; border: none; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.auth-btn:disabled { cursor: not-allowed; opacity: .7; }
+.auth-small { font-size: 14px; color: var(--text-2); }
+.auth-small a { color: var(--lime); }

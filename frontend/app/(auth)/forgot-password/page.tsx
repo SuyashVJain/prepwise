@@ -33,7 +33,7 @@ export default function ForgotPasswordPage() {
       ) : (
         <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
           <div>
-            <label htmlFor="email" style={fieldLabel}>EMAIL ADDRESS</label>
+            <label htmlFor="email" style={fieldLabel}>Email address</label>
             <input id="email" type="email" required autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} style={fieldInput} />
           </div>
           {error && <p role="alert" style={{ fontSize: '14px', color: '#ef4444' }}>{error}</p>}

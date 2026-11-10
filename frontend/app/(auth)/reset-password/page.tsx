@@ -46,11 +46,11 @@ export default function ResetPasswordPage() {
       ) : (
         <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
           <div>
-            <label htmlFor="password" style={fieldLabel}>NEW PASSWORD</label>
+            <label htmlFor="password" style={fieldLabel}>New password</label>
             <input id="password" type="password" required minLength={8} autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} style={fieldInput} />
           </div>
           <div>
-            <label htmlFor="confirm" style={fieldLabel}>CONFIRM PASSWORD</label>
+            <label htmlFor="confirm" style={fieldLabel}>Confirm password</label>
             <input id="confirm" type="password" required minLength={8} autoComplete="new-password" value={confirm} onChange={e => setConfirm(e.target.value)} style={fieldInput} />
           </div>
           {error && <p role="alert" style={{ fontSize: '14px', color: '#ef4444' }}>{error}</p>}

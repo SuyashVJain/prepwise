@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Logo from '@/components/Logo'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 
@@ -7,15 +8,15 @@ export default function AuthShell({ eyebrow, title, children }: { eyebrow: strin
   return (
     <main style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 16px' }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
-        <Link href="/" className="tap" style={{ ...mono, fontSize: '13px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)', display: 'inline-block', marginBottom: 'var(--space-5)' }}>PREPWISE</Link>
+        <Link href="/" aria-label="Prepwise home" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', marginBottom: 'var(--space-5)' }}><Logo size="md" /></Link>
         <div style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', color: 'var(--lime)', marginBottom: 'var(--space-2)' }}>{eyebrow}</div>
-        <h1 style={{ fontSize: '36px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1.05, marginBottom: 'var(--space-4)' }}>{title}</h1>
+        <h1 style={{ fontSize: '32px', fontWeight: 700, letterSpacing: '-.02em', lineHeight: 1.1, marginBottom: 'var(--space-4)' }}>{title}</h1>
         {children}
       </div>
     </main>
   )
 }
 
-export const fieldLabel: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', display: 'block', marginBottom: '8px' }
-export const fieldInput: React.CSSProperties = { width: '100%', background: 'var(--bg2)', border: 'none', borderBottom: '2px solid var(--border-2)', padding: '14px 12px', fontSize: '16px', color: 'var(--text)' }
+export const fieldLabel: React.CSSProperties = { fontFamily: "'Space Grotesk', sans-serif", fontSize: '14px', color: 'var(--text-2)', display: 'block', marginBottom: '8px' }
+export const fieldInput: React.CSSProperties = { width: '100%', minHeight: '44px', padding: '10px 12px', background: 'var(--bg3)', color: 'var(--text)', border: '1px solid #3d3c3c', borderRadius: 'var(--radius-card)', fontSize: '16px' }
 export const submitButton: React.CSSProperties = { width: '100%', background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '16px', fontSize: '13px', fontWeight: 700, letterSpacing: '.08em', minHeight: '48px' }
