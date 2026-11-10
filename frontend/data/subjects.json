@@ -132,5 +132,65 @@
       "Testing",
       "Version control"
     ]
+  },
+  {
+    "id": "coa",
+    "name": "Computer Organization and Architecture",
+    "topics": [
+      "Number systems and data representation",
+      "Instruction cycle",
+      "Addressing modes",
+      "Pipelining",
+      "Memory hierarchy and cache",
+      "Input and output"
+    ]
+  },
+  {
+    "id": "ai",
+    "name": "Artificial Intelligence",
+    "topics": [
+      "Uninformed search",
+      "Heuristic search and A*",
+      "Adversarial search and minimax",
+      "Propositional and predicate logic",
+      "Constraint satisfaction",
+      "Bayesian reasoning"
+    ]
+  },
+  {
+    "id": "web",
+    "name": "Web Technologies",
+    "topics": [
+      "HTML and CSS",
+      "JavaScript basics",
+      "The DOM and events",
+      "HTTP and REST",
+      "Cookies and sessions",
+      "Responsive design"
+    ]
+  },
+  {
+    "id": "discrete",
+    "name": "Discrete Mathematics",
+    "topics": [
+      "Sets and relations",
+      "Propositional logic",
+      "Proof techniques",
+      "Counting and combinatorics",
+      "Graph theory",
+      "Recurrence relations"
+    ]
+  },
+  {
+    "id": "digital",
+    "name": "Digital Electronics",
+    "topics": [
+      "Number systems and codes",
+      "Logic gates",
+      "Boolean algebra and K-maps",
+      "Combinational circuits",
+      "Flip-flops",
+      "Counters and registers"
+    ]
   }
 ]

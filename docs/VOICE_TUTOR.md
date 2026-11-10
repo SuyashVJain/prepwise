@@ -230,7 +230,7 @@ For a spoken question, add the transcription time to the first-audio time: about
 
 ## Subjects
 
-- The shared list has Python, DSA, DBMS, Operating Systems, Computer Networks, OOP, System Design, Theory of Computation, Compilers, Machine Learning and Software Engineering. The ids `python`, `dsa`, `dbms`, `os` and `cn` are unchanged.
-- Every subject has suggested topic chips. A roadmap exists for each one (`frontend/data/tutor-roadmaps.json`, keyed by subject id). If a subject has no roadmap, the roadmap block and tab are hidden and only the topic chips show.
+- The shared list has 16 subjects: Python, DSA, DBMS, Operating Systems, Computer Networks, OOP, System Design, Theory of Computation, Compilers, Machine Learning, Software Engineering, Computer Organization and Architecture, Artificial Intelligence, Web Technologies, Discrete Mathematics and Digital Electronics. The ids `python`, `dsa`, `dbms`, `os` and `cn` are unchanged.
+- Every subject has suggested topic chips. A roadmap exists for the first eleven (`frontend/data/tutor-roadmaps.json`, keyed by subject id). If a subject has no roadmap, the roadmap block and tab are hidden and only the topic chips show.
 - Walkthroughs (Python and DSA) and the Python code-along stay limited to those subjects. Curated videos are keyed by subject id; the YouTube search uses the subject name.
 - **Other.** The student types a subject (up to 60 characters). It is sent as the session's `subject`, so the tutor, notes and video search work without a roadmap. The backend removes control characters and markup characters and caps the length (`clean_subject` in `backend/app/subjects.py`). The same typed subject can be used for a Subject-Specific interview. Existing rate limits apply.

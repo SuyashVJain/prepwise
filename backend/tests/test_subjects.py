@@ -36,7 +36,9 @@ class SubjectListTests(unittest.TestCase):
     def test_required_subjects_exist(self):
         names = {s["name"] for s in SUBJECTS}
         for name in ("Python", "DSA", "DBMS", "Operating Systems", "Computer Networks", "OOP", "System Design",
-                     "Theory of Computation", "Compilers", "Machine Learning", "Software Engineering"):
+                     "Theory of Computation", "Compilers", "Machine Learning", "Software Engineering",
+                     "Computer Organization and Architecture", "Artificial Intelligence", "Web Technologies",
+                     "Discrete Mathematics", "Digital Electronics"):
             self.assertIn(name, names)
 
     def test_ids_and_names_are_unique_and_topics_present(self):
