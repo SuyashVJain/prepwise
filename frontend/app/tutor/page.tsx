@@ -14,7 +14,7 @@ import VideoPanel from '@/components/tutor/VideoPanel'
 import RoadmapPanel from '@/components/tutor/RoadmapPanel'
 import CodePanel from '@/components/tutor/CodePanel'
 import WalkthroughPanel, { WALKTHROUGH_SUBJECTS } from '@/components/tutor/WalkthroughPanel'
-import NotesPanel, { rememberNotes } from '@/components/tutor/NotesPanel'
+import NotesPanel from '@/components/tutor/NotesPanel'
 import type { SessionNotes } from '@/components/tutor/NotesPanel'
 import { disabled, eyebrow, ghostButton, label, mono, panel, primaryButton, tile } from '@/components/tutor/ui'
 import subjects from '@/data/tutor-subjects.json'
@@ -218,7 +218,6 @@ export default function TutorPage() {
       const data = await res.json() as SessionNotes
       setNotes(data)
       setNotesStatus('ready')
-      rememberNotes(data, sessionTitle)
       // Saved to the account only if the tutor_notes table has been created; otherwise this fails quietly.
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()

@@ -7,17 +7,6 @@ import { eyebrow, ghostButton, label, mono, panel, primaryButton } from './ui'
 export type Flashcard = { front: string; back: string }
 export type SessionNotes = { summary: string; flashcards: Flashcard[] }
 
-const STORAGE_KEY = 'prepwise_tutor_notes'
-
-// Keep the latest notes for this browser tab, so a refresh does not lose them.
-export function rememberNotes(notes: SessionNotes, title: string): void {
-  try {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ title, notes }))
-  } catch {
-    // Storage can be blocked or full; the notes are still on screen.
-  }
-}
-
 export function notesAsText(notes: SessionNotes, title: string): string {
   const cards = notes.flashcards.map((card, i) => `${i + 1}. Q: ${card.front}\n   A: ${card.back}`).join('\n')
   return `${title}\n\nSUMMARY\n${notes.summary}\n\nFLASHCARDS\n${cards}\n`
