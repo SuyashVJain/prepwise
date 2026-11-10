@@ -7,7 +7,7 @@ export default function PageShell({ children, full = false }: { children: React.
     <div className="app-shell">
       <Sidebar />
       <main className="app-main" data-full={full || undefined}>
-        {full ? children : <div className="page-wrap">{children}</div>}
+        {full ? <div className="page-wrap-full">{children}</div> : <div className="page-wrap">{children}</div>}
       </main>
     </div>
   )

@@ -102,8 +102,10 @@ export default function SettingsPage() {
   return (
     <PageShell>
         {loading ? <PageSkeleton rows={2} /> : (
-          <div className="page-narrow">
+          <div>
             <PageHeader label="SETTINGS" title="Settings" />
+            <div className="page-cols">
+            <div>
 
             <section aria-label="Account" style={{ ...cardBase, padding: '24px', marginBottom: '16px' }}>
               <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '20px' }}>ACCOUNT</div>
@@ -151,6 +153,16 @@ export default function SettingsPage() {
               style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border-2)', padding: '12px 24px', cursor: 'pointer' }}>
               SIGN OUT →
             </button>
+            </div>
+          <aside className="page-aside">
+            <section style={{ ...cardBase, padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '12px' }}>Your defaults now</h2>
+              <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7 }}>
+                New sessions start as <strong style={{ color: 'var(--text)' }}>{TYPES[type] || type}</strong> with <strong style={{ color: 'var(--text)' }}>{count} questions</strong>. Change them here and press Save.
+              </p>
+            </section>
+          </aside>
+            </div>
           </div>
         )}
     </PageShell>

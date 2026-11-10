@@ -298,29 +298,30 @@ function renderMarkdown(text: string): string {
 
                 {/* UPLOAD ZONE - no docs yet */}
                 {docs.length === 0 && !uploading && (
-                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'var(--page-gutter)' }}>
-                        <div style={{ width: '100%', maxWidth: '560px', textAlign: 'center' }}>
-                            <div style={{ ...mono, fontSize: '32px', color: 'var(--lime)', marginBottom: 'var(--space-3)' }}>[DOC]</div>
-                            <h2 style={{ fontSize: '24px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.01em', marginBottom: 'var(--space-2)' }}>Upload your study material</h2>
-                            <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '6px' }}>Select one or multiple files at once</p>
-                            <p style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '32px' }}>PDF · DOCX · TXT · PNG · JPG</p>
-                            <input type="file" id="doc-upload" multiple style={{ display: 'none' }}
-                                accept=".pdf,.docx,.txt,.png,.jpg,.jpeg"
-                                onChange={e => handleFiles(e.target.files)} />
-                            <label htmlFor="doc-upload" style={{
-                                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                                gap: 'var(--space-2)', padding: 'var(--page-gutter)', border: '1px dashed var(--border-2)', cursor: 'pointer',
-                                ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)',
-                            }}>
-                                <span style={{ fontSize: '24px' }}>↑</span>
-                                CHOOSE FILES
-                                <span style={{ fontSize: '12px', color: 'var(--text-2)', marginTop: 'var(--space-1)' }}>Hold Ctrl / Cmd to select multiple</span>
-                            </label>
-                            <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)', justifyContent: 'center' }}>
-                                {['Lecture notes', 'Textbook chapter', 'Research paper', 'Study guide', 'Past paper'].map(ex => (
-                                    <span key={ex} style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: 'var(--space-1) 10px', border: '1px solid var(--border)', color: 'var(--text-2)' }}>{ex}</span>
-                                ))}
+                    <div style={{ padding: '24px var(--page-gutter) 48px' }}>
+                        <div className="page-cols">
+                            <div>
+                                <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '8px' }}>Upload your study material</h2>
+                                <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.6, marginBottom: '20px' }}>Select one or several files at once. PDF, DOCX, TXT, PNG or JPG.</p>
+                                <input type="file" id="doc-upload" multiple style={{ display: 'none' }}
+                                    accept=".pdf,.docx,.txt,.png,.jpg,.jpeg"
+                                    onChange={e => handleFiles(e.target.files)} />
+                                <label htmlFor="doc-upload" style={{
+                                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                                    gap: 'var(--space-2)', padding: '40px 24px', border: '1px dashed var(--border-2)', borderRadius: 'var(--radius-card)', cursor: 'pointer',
+                                    fontSize: '15px', fontWeight: 600, color: 'var(--text)',
+                                }}>
+                                    <span style={{ fontSize: '24px' }}>↑</span>
+                                    Choose files
+                                    <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--text-2)' }}>Hold Ctrl or Cmd to select several</span>
+                                </label>
                             </div>
+                            <aside className="page-aside">
+                                <section style={{ ...cardBase, padding: '24px' }}>
+                                    <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '12px' }}>What you can upload</h2>
+                                    <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7 }}>Lecture notes, a textbook chapter, a research paper, a study guide or a past paper. Then chat about it with citations, or turn it into a quiz.</p>
+                                </section>
+                            </aside>
                         </div>
                     </div>
                 )}

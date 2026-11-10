@@ -545,7 +545,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   if (phase === 'setup') {
     return (
       <PageShell>
-        <div className="page-narrow">
+        <div>
           <PageHeader label="NEW SESSION" title="Configure your session" />
 
           {syllabus ? (
@@ -564,17 +564,9 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             </p>
           )}
 
-          <details open style={{ ...cardBase, padding: '16px 24px', marginBottom: '28px' }}>
-            <summary style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--lime)', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}>HOW A SESSION WORKS</summary>
-            <ul style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7, paddingLeft: '20px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <li><strong style={{ color: 'var(--text)' }}>Device and browser:</strong> a laptop or desktop with Chrome or Edge. Voice answers need one of those and microphone access. Typing works in any browser.</li>
-              <li><strong style={{ color: 'var(--text)' }}>Timer:</strong> the clock at the top is a 15 minute session clock. Under it, each answer shows your time against a 3 minute target. Neither one cuts you off.</li>
-              <li><strong style={{ color: 'var(--text)' }}>Follow-ups:</strong> if an answer is weak or has a doubtful claim, the next question may dig into that point once. At most a third of a session is follow-ups.</li>
-              <li><strong style={{ color: 'var(--text)' }}>Ending early:</strong> press END SESSION at any time. Only the questions you answered are saved and scored.</li>
-              <li><strong style={{ color: 'var(--text)' }}>Shortcut:</strong> Ctrl+Enter (Cmd+Enter on Mac) submits your answer.</li>
-            </ul>
-          </details>
 
+          <div className="page-cols">
+          <div>
           {/* interview type */}
           <div style={{ marginBottom: '28px' }}>
             <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '12px' }}>INTERVIEW TYPE</div>
@@ -625,6 +617,20 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
               style={{ flex: 1, background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: (startingSession || !syllabus) ? 'not-allowed' : 'pointer', opacity: (startingSession || !syllabus) ? 0.5 : 1 }}>
               {startingSession ? 'LOADING SESSION...' : 'START SESSION →'}
             </button>
+          </div>
+          </div>
+          <aside className="page-aside">
+          <details open style={{ ...cardBase, padding: '16px 24px', marginBottom: '28px' }}>
+            <summary style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--lime)', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}>HOW A SESSION WORKS</summary>
+            <ul style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7, paddingLeft: '20px', marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <li><strong style={{ color: 'var(--text)' }}>Device and browser:</strong> a laptop or desktop with Chrome or Edge. Voice answers need one of those and microphone access. Typing works in any browser.</li>
+              <li><strong style={{ color: 'var(--text)' }}>Timer:</strong> the clock at the top is a 15 minute session clock. Under it, each answer shows your time against a 3 minute target. Neither one cuts you off.</li>
+              <li><strong style={{ color: 'var(--text)' }}>Follow-ups:</strong> if an answer is weak or has a doubtful claim, the next question may dig into that point once. At most a third of a session is follow-ups.</li>
+              <li><strong style={{ color: 'var(--text)' }}>Ending early:</strong> press END SESSION at any time. Only the questions you answered are saved and scored.</li>
+              <li><strong style={{ color: 'var(--text)' }}>Shortcut:</strong> Ctrl+Enter (Cmd+Enter on Mac) submits your answer.</li>
+            </ul>
+          </details>
+          </aside>
           </div>
         </div>
       </PageShell>

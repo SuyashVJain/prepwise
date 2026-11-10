@@ -8,7 +8,7 @@ import type { Citation, ProviderInfo, SyllabusPayload, TutorState, TurnEnd } fro
 import Sidebar from '@/components/Sidebar'
 import PageShell from '@/components/PageShell'
 import PageHeader from '@/components/PageHeader'
-import { fieldStyle } from '@/lib/ui'
+import { fieldStyle, cardBase } from '@/lib/ui'
 import MicHelp from '@/components/MicHelp'
 import VideoPanel from '@/components/tutor/VideoPanel'
 import RoadmapPanel from '@/components/tutor/RoadmapPanel'
@@ -318,9 +318,11 @@ export default function TutorPage() {
     const docsUnavailable = syllabusChecked && !syllabus
     return (
       <PageShell>
-        <div className="page-narrow">
+        <div>
           <PageHeader label="VOICE TUTOR" title="Learn by talking" subtitle="Pick a subject, say what confuses you, and interrupt whenever you want." />
 
+          <div className="page-cols">
+          <div>
           <div style={{ ...label, marginBottom: '12px' }}>SUBJECT</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 'var(--space-2)', marginBottom: '28px' }}>
             {subjects.map(s => (
@@ -381,6 +383,19 @@ export default function TutorPage() {
           <p style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: 'var(--space-3)' }}>
             Works best in Chrome or Edge with headphones. No microphone? You can type instead.
           </p>
+          </div>
+          <aside className="page-aside">
+            <section style={{ ...cardBase, padding: '24px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '12px' }}>During a session</h2>
+              <ul style={{ listStyle: 'none', display: 'grid', gap: '12px', fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.6 }}>
+                <li><strong style={{ color: 'var(--text)' }}>Interrupt any time.</strong> Start talking and the tutor stops to listen.</li>
+                <li><strong style={{ color: 'var(--text)' }}>Ask again.</strong> Say what confuses you and get a different explanation.</li>
+                <li><strong style={{ color: 'var(--text)' }}>Switch to Hinglish.</strong> Hindi and English mixed, with code and terms in English.</li>
+                <li><strong style={{ color: 'var(--text)' }}>Keep your notes.</strong> You get session notes and flashcards at the end.</li>
+              </ul>
+            </section>
+          </aside>
+          </div>
         </div>
       </PageShell>
     )
