@@ -8,6 +8,7 @@ import type { Citation, ProviderInfo, SyllabusPayload, TutorState, TurnEnd } fro
 import Sidebar from '@/components/Sidebar'
 import PageShell from '@/components/PageShell'
 import PageHeader from '@/components/PageHeader'
+import { fieldStyle } from '@/lib/ui'
 import MicHelp from '@/components/MicHelp'
 import VideoPanel from '@/components/tutor/VideoPanel'
 import RoadmapPanel from '@/components/tutor/RoadmapPanel'
@@ -332,7 +333,7 @@ export default function TutorPage() {
           <div style={{ ...label, marginBottom: '12px' }}>TOPIC (OPTIONAL)</div>
           <input value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. recursion, joins, deadlocks" maxLength={120}
             aria-label="Topic"
-            style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: '2px solid var(--border-2)', padding: '12px 0', fontSize: '14px', color: 'var(--text)', outline: 'none', marginBottom: '12px' }} />
+            style={{ ...fieldStyle, width: '100%', marginBottom: '12px' }} />
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '28px' }}>
             {subjectTopics.map(t => (
               <button key={t} type="button" onClick={() => setTopic(t)}

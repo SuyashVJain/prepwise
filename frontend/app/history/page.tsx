@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
+import { fieldStyle } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import Skeleton, { PageSkeleton } from '@/components/Skeleton'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
@@ -106,7 +107,7 @@ export default function HistoryPage() {
   // Oldest first so the line reads left to right in time.
   const trend = [...visible].sort((a, b) => (a.created_at < b.created_at ? -1 : 1)).map(s => s.score_avg || 0)
 
-  const control: React.CSSProperties = { background: 'var(--bg3)', color: 'var(--text)', border: '1px solid var(--border-2)', padding: '8px 10px', fontSize: '14px' }
+  const control: React.CSSProperties = fieldStyle
   const controlLabel: React.CSSProperties = { ...mono, fontSize: '11px', letterSpacing: '.08em', color: 'var(--text-2)', display: 'flex', flexDirection: 'column', gap: '4px' }
 
   if (loading) {

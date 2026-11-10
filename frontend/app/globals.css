@@ -303,3 +303,7 @@ html.snap { scroll-padding-top: var(--hdr); }
 .page-action { flex-shrink: 0; }
 @media (max-width: 639px) { .page-title { font-size: 28px; } .page-head { align-items: flex-start; } }
 .study-bar .page-head { margin-bottom: 16px; }
+
+/* Selectable options and fields: hover state on top of the shared inline look (lib/ui.ts). */
+button[aria-pressed]:hover, div[role="button"][aria-pressed]:hover { border-color: var(--lime) !important; }
+select:hover, input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):hover, textarea:hover { border-color: var(--border-2); }

@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import { DEFAULTS_KEY } from '@/lib/stats'
 import PageShell from '@/components/PageShell'
+import { optionStyle } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import MicHelp from '@/components/MicHelp'
@@ -580,8 +581,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
               {Object.entries(TYPE_MAP).map(([id, label]) => (
                 <div key={id} onClick={() => setInterviewType(id)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setInterviewType(id))() } }}
-                  style={{ padding: '14px 16px', border: `1px solid ${interviewType === id ? 'var(--lime)' : 'var(--border)'}`, background: interviewType === id ? 'var(--lime-dim)' : 'var(--bg2)', cursor: 'pointer', transition: 'all .1s' }}>
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: interviewType === id ? 'var(--lime)' : 'var(--text)' }}>{label}</div>
+                  aria-pressed={interviewType === id} style={{ ...optionStyle(interviewType === id), display: 'flex' }}>
+                  {label}
                 </div>
               ))}
             </div>
@@ -593,8 +594,8 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
               {Object.entries(COMPANY_MAP).map(([id, label]) => (
                 <div key={id} onClick={() => setTargetCompany(id)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setTargetCompany(id))() } }}
-                  style={{ padding: '14px 16px', border: `1px solid ${targetCompany === id ? 'var(--lime)' : 'var(--border)'}`, background: targetCompany === id ? 'var(--lime-dim)' : 'var(--bg2)', cursor: 'pointer', transition: 'all .1s' }}>
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: targetCompany === id ? 'var(--lime)' : 'var(--text)' }}>{label}</div>
+                  aria-pressed={targetCompany === id} style={{ ...optionStyle(targetCompany === id), display: 'flex' }}>
+                  {label}
                 </div>
               ))}
             </div>
@@ -606,7 +607,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             <div style={{ display: 'flex', gap: '8px' }}>
               {[5, 10, 15].map(n => (
                 <div key={n} onClick={() => setTotalQuestions(n)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setTotalQuestions(n))() } }}
-                  style={{ padding: '12px 24px', border: `1px solid ${totalQuestions === n ? 'var(--lime)' : 'var(--border)'}`, background: totalQuestions === n ? 'var(--lime)' : 'var(--bg2)', cursor: 'pointer', ...mono, fontSize: '13px', fontWeight: 700, color: totalQuestions === n ? '#0e0e0e' : 'var(--text-2)', transition: 'all .1s' }}>
+                  aria-pressed={totalQuestions === n} style={{ ...optionStyle(totalQuestions === n), minWidth: '64px', justifyContent: 'center' }}>
                   {n}
                 </div>
               ))}

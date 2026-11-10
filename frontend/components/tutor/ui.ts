@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import { optionStyle } from '@/lib/ui'
 
 // Shared inline-style pieces for the tutor screens, matching the rest of the app.
 export const mono: CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
@@ -24,13 +25,7 @@ export const ghostButton: CSSProperties = {
 export const panel: CSSProperties = { background: 'var(--bg2)', border: '1px solid var(--border)' }
 
 export function tile(active: boolean): CSSProperties {
-  return {
-    padding: '14px 16px', cursor: 'pointer', textAlign: 'left',
-    border: `1px solid ${active ? 'var(--lime)' : 'var(--border-2)'}`,
-    background: active ? 'var(--lime-dim)' : 'var(--bg3)',
-    color: active ? 'var(--lime)' : 'var(--text-2)',
-    fontSize: '13px', fontWeight: 600,
-  }
+  return optionStyle(active)
 }
 
 export function disabled(style: CSSProperties, isDisabled: boolean): CSSProperties {

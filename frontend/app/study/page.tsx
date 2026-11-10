@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import PageShell from '@/components/PageShell'
 import PageHeader from '@/components/PageHeader'
+import { optionStyle } from '@/lib/ui'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 
 
@@ -375,11 +376,7 @@ function renderMarkdown(text: string): string {
                         {messages.length <= 1 && (
                             <div style={{ padding: '0 var(--page-gutter) 12px', display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
                                 {['Summarize the key points', 'Explain the main concepts', 'What are the most important topics?', 'Compare topics across documents'].map(q => (
-                                    <button key={q} onClick={() => setInput(q)} style={{
-                                        ...mono, fontSize: '11px', letterSpacing: '.06em', textTransform: 'uppercase',
-                                        padding: '6px 12px', border: '1px solid var(--border)', background: 'var(--bg2)',
-                                        color: 'var(--text-3)', cursor: 'pointer',
-                                    }}>{q}</button>
+                                    <button key={q} onClick={() => setInput(q)} style={optionStyle(false)}>{q}</button>
                                 ))}
                             </div>
                         )}
@@ -417,12 +414,7 @@ function renderMarkdown(text: string): string {
                                     <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>NUMBER OF QUESTIONS</div>
                                     <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
                                         {[5, 10, 15, 20].map(n => (
-                                            <div key={n} onClick={() => setNumQuestions(n)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setNumQuestions(n))() } }} style={{
-                                                padding: '10px 20px', cursor: 'pointer', ...mono, fontSize: '12px', fontWeight: 700,
-                                                border: `1px solid ${numQuestions === n ? 'var(--lime)' : 'var(--border)'}`,
-                                                background: numQuestions === n ? 'var(--lime)' : 'var(--bg2)',
-                                                color: numQuestions === n ? '#0e0e0e' : 'var(--text-2)',
-                                            }}>{n}</div>
+                                            <div key={n} onClick={() => setNumQuestions(n)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setNumQuestions(n))() } }} aria-pressed={numQuestions === n} style={{ ...optionStyle(numQuestions === n), minWidth: '64px', justifyContent: 'center' }}>{n}</div>
                                         ))}
                                     </div>
                                 </div>
@@ -430,13 +422,7 @@ function renderMarkdown(text: string): string {
                                     <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>DIFFICULTY</div>
                                     <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
                                         {(['easy', 'medium', 'hard'] as const).map(d => (
-                                            <div key={d} onClick={() => setDifficulty(d)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setDifficulty(d))() } }} style={{
-                                                padding: '10px 20px', cursor: 'pointer', ...mono, fontSize: '11px',
-                                                fontWeight: difficulty === d ? 700 : 400, textTransform: 'uppercase', letterSpacing: '.06em',
-                                                border: `1px solid ${difficulty === d ? 'var(--lime)' : 'var(--border)'}`,
-                                                background: difficulty === d ? 'var(--lime-dim)' : 'var(--bg2)',
-                                                color: difficulty === d ? 'var(--lime)' : 'var(--text-2)',
-                                            }}>{d}</div>
+                                            <div key={d} onClick={() => setDifficulty(d)} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); (() => setDifficulty(d))() } }} aria-pressed={difficulty === d} style={{ ...optionStyle(difficulty === d), textTransform: 'capitalize' }}>{d}</div>
                                         ))}
                                     </div>
                                 </div>

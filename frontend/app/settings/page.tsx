@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
+import { optionStyle, fieldStyle } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import { DEFAULTS_KEY } from '@/lib/stats'
@@ -96,10 +97,7 @@ export default function SettingsPage() {
     router.push('/')
   }
 
-  const tile = (on: boolean): React.CSSProperties => ({
-    padding: '12px 20px', border: `1px solid ${on ? 'var(--lime)' : 'var(--border-2)'}`, background: on ? 'var(--lime-dim)' : 'var(--bg3)',
-    color: on ? 'var(--lime)' : 'var(--text-2)', fontSize: '14px', fontWeight: 600, cursor: 'pointer',
-  })
+  const tile = optionStyle
 
   return (
     <PageShell>
@@ -141,7 +139,7 @@ export default function SettingsPage() {
               </p>
               <label htmlFor="confirm-delete" style={label}>TYPE DELETE TO CONFIRM</label>
               <input id="confirm-delete" value={confirmText} onChange={e => setConfirmText(e.target.value)} autoComplete="off"
-                style={{ width: '100%', maxWidth: '240px', background: 'var(--bg3)', border: '1px solid var(--border-2)', padding: '10px 12px', fontSize: '16px', color: 'var(--text)', marginBottom: '16px', display: 'block' }} />
+                style={{ ...fieldStyle, width: '100%', maxWidth: '240px', marginBottom: '16px', display: 'block' }} />
               <button type="button" onClick={deleteMyData} disabled={confirmText !== 'DELETE' || deleting}
                 style={{ background: '#ef4444', color: '#0e0e0e', border: 'none', padding: '12px 24px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', minHeight: '44px' }}>
                 {deleting ? 'DELETING...' : 'DELETE MY DATA'}
