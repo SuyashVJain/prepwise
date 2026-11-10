@@ -130,9 +130,9 @@ export default function SettingsPage() {
         {loading ? <PageSkeleton rows={2} /> : (
           <div>
             <PageHeader label="SETTINGS" title="Settings" />
-            <div style={{ maxWidth: '760px' }}>
+            <div className="settings-grid">
 
-            <section aria-label="Account" style={{ ...cardBase, padding: '24px', marginBottom: '24px' }}>
+            <section aria-label="Account" style={{ ...cardBase, padding: '24px' }}>
               <h2 className="sec-title">Account</h2>
               <Row k="Email" v={email} />
               <p style={{ fontSize: '13px', color: 'var(--text-2)', margin: '-12px 0 20px' }}>Email can&apos;t be changed here.</p>
@@ -151,7 +151,7 @@ export default function SettingsPage() {
               </form>
             </section>
 
-            <section aria-label="Session defaults" style={{ ...cardBase, padding: '24px', marginBottom: '24px' }}>
+            <section aria-label="Session defaults" style={{ ...cardBase, padding: '24px' }}>
               <h2 className="sec-title" style={{ marginBottom: '4px' }}>Session defaults</h2>
               <p style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text-2)', marginBottom: '20px' }}>Used to pre-fill the new session screen. Saved in this browser only.</p>
               <span style={label}>Interview type</span>
@@ -172,7 +172,7 @@ export default function SettingsPage() {
               </button>
             </section>
 
-            <section aria-label="Delete my data" style={{ ...cardBase, border: '1px solid rgba(239,68,68,0.5)', padding: '24px', marginBottom: '24px' }}>
+            <section aria-label="Delete my data" className="settings-wide" style={{ ...cardBase, border: '1px solid rgba(239,68,68,0.5)', padding: '24px' }}>
               <h2 className="sec-title" style={{ color: '#ef4444', marginBottom: '8px' }}>Delete my data</h2>
               <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7, marginBottom: '16px' }}>
                 This permanently deletes all of your sessions, answers, scores and voice tutor notes. It cannot be undone. Your account stays; to remove it too, use the contact link on the home page.
