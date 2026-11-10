@@ -291,7 +291,7 @@ export default function OnboardingPage() {
               {syllabusMode === 'pdf' && (
                 <div style={{ marginBottom: 'var(--space-4)' }}>
                   <input type="file" accept=".pdf" id="pdf-upload" style={{ display: 'none' }}
-                    onChange={e => { const f = e.target.files?.[0]; if (f) handlePdfUpload(f) }} />
+                    onChange={e => { const f = e.target.files?.[0]; e.target.value = ''; if (f) handlePdfUpload(f) }} />
                   <label htmlFor="pdf-upload" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '14px var(--space-4)', border: '1px dashed var(--border-2)', cursor: 'pointer', ...mono, fontSize: '11px', letterSpacing: '.08em', textTransform: 'uppercase', color: uploading ? 'var(--lime)' : 'var(--text-3)', transition: 'all .1s' }}>
                     {uploading ? 'PROCESSING PDF...' : pdfFile ? `✓ ${pdfFile.name}` : 'CHOOSE SYLLABUS PDF'}
                   </label>
