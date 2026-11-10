@@ -608,13 +608,9 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
           {errorBar}
           {slow && startingSession && <p style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: '12px' }}>Still working. The server is slower than usual.</p>}
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <button onClick={() => router.push('/dashboard')}
-              style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border)', padding: '14px 24px', cursor: 'pointer' }}>
-              ← BACK
-            </button>
+          <div>
             <button onClick={startSession} disabled={startingSession || !syllabus}
-              style={{ flex: 1, background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: (startingSession || !syllabus) ? 'not-allowed' : 'pointer', opacity: (startingSession || !syllabus) ? 0.5 : 1 }}>
+              style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: (startingSession || !syllabus) ? 'not-allowed' : 'pointer', opacity: (startingSession || !syllabus) ? 0.5 : 1 }}>
               {startingSession ? 'LOADING SESSION...' : 'START SESSION →'}
             </button>
           </div>

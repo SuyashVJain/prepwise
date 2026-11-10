@@ -108,7 +108,7 @@ export default function DashboardPage() {
         {(
           <>
             <PageHeader label="DASHBOARD" title="Dashboard" action={
-              <Link href="/interview" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', background: 'var(--lime)', color: '#0e0e0e', padding: '0 20px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase' }}>
+              <Link href="/interview" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', background: 'transparent', color: 'var(--text)', border: '1px solid var(--border-2)', padding: '0 20px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase' }}>
                 NEW SESSION →
               </Link>
             } />
@@ -135,14 +135,14 @@ export default function DashboardPage() {
               </div>
 
               {/* stat cards */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '24px', marginBottom: '24px' }}>
                 {[
                   { label: 'SESSIONS DONE', value: totalSessions.toString(), suffix: '', icon: totalSessions > 0 ? '↗' : '' },
                   { label: 'AVG SCORE', value: avgScore.toString(), suffix: '/10', icon: '' },
                   { label: 'BEST STREAK', value: streak.toString(), suffix: ' DAYS', icon: '' },
                   { label: 'WEAK TOPICS', value: weakTopics.length.toString(), suffix: '', icon: weakTopics.length > 0 ? '⚠' : '' },
                 ].map(stat => (
-                  <div key={stat.label} style={{ ...cardBase, padding: '16px' }}>
+                  <div key={stat.label} style={{ ...cardBase, padding: '24px' }}>
                     <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '10px' }}>{stat.label}</div>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                       <span style={{ fontSize: '40px', fontWeight: 700, color: 'var(--lime)', letterSpacing: '-.02em', lineHeight: 1 }}>{stat.value}</span>
@@ -154,7 +154,7 @@ export default function DashboardPage() {
               </div>
 
               {/* charts row */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginBottom: '24px' }}>
                 <div style={{ ...cardBase, padding: '24px' }}>
                   <h2 className="sec-title">Performance over time</h2>
                   {scores.length >= 2 ? (

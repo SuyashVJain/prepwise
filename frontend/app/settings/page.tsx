@@ -92,10 +92,6 @@ export default function SettingsPage() {
     toast('Your data was deleted.')
   }
 
-  async function signOut() {
-    await supabase.auth.signOut()
-    router.push('/')
-  }
 
   const tile = optionStyle
 
@@ -148,11 +144,6 @@ export default function SettingsPage() {
               </button>
               {deleteMsg && <p role="status" style={{ fontSize: '14px', color: 'var(--text)', marginTop: '12px' }}>{deleteMsg}</p>}
             </section>
-
-            <button type="button" onClick={signOut}
-              style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border-2)', padding: '12px 24px', cursor: 'pointer' }}>
-              SIGN OUT →
-            </button>
             </div>
           <aside className="page-aside">
             <section style={{ ...cardBase, padding: '24px' }}>
