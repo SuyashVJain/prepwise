@@ -47,7 +47,10 @@ const pill = (on: boolean): React.CSSProperties => {
 
 const ellipsis: React.CSSProperties = { minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }
 
-// A single line of the user's own subjects, as many as fit (at most six), then a More pill for everything else.
+type Row = { id: string; option: SubjectOption; isOther?: boolean }
+
+// A single line of the user's own subjects, as many as fit (at most six), then a More pill that opens a searchable
+// panel with every other subject grouped by category and a + Other row.
 export default function SubjectPicker({ options, mine, label, leading, value, onChange, onPickMore, other }: Props) {
   const uid = useId()
   const listId = `${uid}-more`
@@ -55,8 +58,13 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
   const measurer = useRef<HTMLDivElement>(null)
   const pills = useRef<(HTMLButtonElement | null)[]>([])
   const moreBtn = useRef<HTMLButtonElement>(null)
+  const search = useRef<HTMLInputElement>(null)
   const [fit, setFit] = useState(MAX_VISIBLE)
   const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const [active, setActive] = useState(0)
+  const [up, setUp] = useState(false)
+  const [maxH, setMaxH] = useState(320)
 
   const candidates: SubjectOption[] = [...(leading ? [leading] : []), ...mine.filter(m => m.value !== leading?.value)]
   const everything: SubjectOption[] = [...(leading ? [leading] : []), ...options]
@@ -68,7 +76,7 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
   if (selectedOption && !visible.some(o => o.value === selectedOption.value)) visible = [...visible.slice(0, Math.max(0, shown - 1)), selectedOption]
 
   // Measure the natural width of every candidate (and More) in a hidden copy, then keep as many as fit the row.
-  const keys = candidates.map(c => c.value).join('|') + '|' + (selectedOption?.value ?? '')
+  const keys = candidates.map(c => c.value).join('|')
   useLayoutEffect(() => {
     const measure = () => {
       const host = wrap.current
@@ -91,12 +99,70 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
     return () => ro.disconnect()
   }, [keys])
 
+  // More panel: subjects not already in the row, filtered by the search, grouped by category; + Other is always last.
+  const q = query.trim().toLowerCase()
+  const rest = options.filter(o => !visible.some(v => v.value === o.value) && (!q || o.label.toLowerCase().includes(q)))
+  const groups: { name: string; items: Row[] }[] = []
+  rest.forEach(option => {
+    const name = option.category ?? ''
+    let g = groups.find(x => x.name === name)
+    if (!g) { g = { name, items: [] }; groups.push(g) }
+    g.items.push({ id: '', option })
+  })
+  groups.sort((a, b) => (a.name === '' ? 1 : 0) - (b.name === '' ? 1 : 0))
+  const otherRow: Row | null = other ? { id: '', option: { value: OTHER_VALUE, label: '+ Other' }, isOther: true } : null
+  const rows: Row[] = [...groups.flatMap(g => g.items), ...(otherRow ? [otherRow] : [])]
+  rows.forEach((r, i) => { r.id = `${uid}-row-${i}` })
+  const activeId = open && rows[active] ? rows[active].id : undefined
+
+  function openPanel() {
+    setQuery('')
+    setActive(0)
+    setOpen(true)
+  }
+
+  function closePanel(refocus = true) {
+    setOpen(false)
+    if (refocus) moreBtn.current?.focus()
+  }
+
+  function pickRow(r: Row) {
+    if (r.isOther) other?.onSelect()
+    else { onChange(r.option.value); onPickMore?.(r.option.value) }
+    closePanel()
+  }
+
+  // Open under the row, or above it when there is more room there, and never taller than the room available.
+  useLayoutEffect(() => {
+    if (!open || !wrap.current) return
+    const r = wrap.current.getBoundingClientRect()
+    const below = window.innerHeight - r.bottom - 12
+    const above = r.top - 12
+    const flip = below < 260 && above > below
+    setUp(flip)
+    setMaxH(Math.max(180, Math.min(320, flip ? above : below)))
+  }, [open])
+
+  useEffect(() => { if (open) search.current?.focus() }, [open])
+
   useEffect(() => {
     if (!open) return
     const onDown = (e: MouseEvent) => { if (!wrap.current?.contains(e.target as Node)) setOpen(false) }
     document.addEventListener('mousedown', onDown)
     return () => document.removeEventListener('mousedown', onDown)
   }, [open])
+
+  useEffect(() => {
+    if (open) document.getElementById(`${uid}-row-${active}`)?.scrollIntoView({ block: 'nearest' })
+  }, [active, open, uid])
+
+  function onSearchKey(e: React.KeyboardEvent) {
+    if (e.key === 'Escape') { e.preventDefault(); closePanel(); return }
+    if (e.key === 'Tab') { setOpen(false); return }
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActive(i => Math.min(rows.length - 1, i + 1)); return }
+    if (e.key === 'ArrowUp') { e.preventDefault(); setActive(i => Math.max(0, i - 1)); return }
+    if (e.key === 'Enter') { e.preventDefault(); if (rows[active]) pickRow(rows[active]) }
+  }
 
   function choose(o: SubjectOption) {
     if (o.value === OTHER_VALUE) other?.onSelect()
@@ -120,7 +186,18 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
   }
 
   const selectedIndex = Math.max(0, visible.findIndex(o => o.value === selectedOption?.value))
-  const rest = options.filter(o => !visible.some(v => v.value === o.value))
+  let rowIndex = 0
+  const renderRow = (r: Row) => {
+    const i = rowIndex++
+    const on = r.isOther ? !!other?.selected : r.option.value === value
+    return (
+      <div key={r.id} id={r.id} role="option" aria-selected={on} className="sp-opt" data-active={i === active}
+        onMouseEnter={() => setActive(i)} onMouseDown={e => e.preventDefault()} onClick={() => pickRow(r)}>
+        <span>{r.option.label}</span>
+        {on && <span className="dd-check" aria-hidden="true">{'✓'}</span>}
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -137,7 +214,7 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
               )
             })}
           </div>
-          <button ref={moreBtn} type="button" aria-expanded={open} aria-controls={listId} aria-haspopup="listbox" onClick={() => setOpen(v => !v)}
+          <button ref={moreBtn} type="button" aria-expanded={open} aria-controls={listId} aria-haspopup="listbox" onClick={() => (open ? closePanel(false) : openPanel())}
             style={{ ...pill(false), padding: '8px 14px', gap: '6px', flex: '0 0 auto' }}>
             More…
             <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" style={{ transform: open ? 'rotate(180deg)' : undefined }}><path d="M3.5 6l4.5 4.5L12.5 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -153,21 +230,24 @@ export default function SubjectPicker({ options, mine, label, leading, value, on
         </div>
 
         {open && (
-          <div id={listId} role="listbox" aria-label="More subjects"
-            style={{ position: 'absolute', left: 0, right: 0, top: 'calc(100% + 4px)', zIndex: 30, maxHeight: '320px', overflowY: 'auto', padding: '4px', background: 'var(--bg2)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-card)' }}>
-            {rest.map(o => (
-              <div key={o.value} role="option" aria-selected={o.value === value} onMouseDown={e => e.preventDefault()}
-                onClick={() => { onChange(o.value); onPickMore?.(o.value); setOpen(false) }}
-                style={{ minHeight: '44px', display: 'flex', alignItems: 'center', padding: '0 12px', cursor: 'pointer', color: 'var(--text-2)', fontSize: '15px' }}>
-                {o.label}
-              </div>
-            ))}
-            {other && (
-              <div role="option" aria-selected={other.selected} onMouseDown={e => e.preventDefault()} onClick={() => { other.onSelect(); setOpen(false) }}
-                style={{ minHeight: '44px', display: 'flex', alignItems: 'center', padding: '0 12px', cursor: 'pointer', color: 'var(--text-2)', fontSize: '15px' }}>
-                + Other
-              </div>
-            )}
+          <div className="sp-panel" data-up={up} style={{ maxHeight: `${maxH}px` }}>
+            <input ref={search} className="sp-search" type="text" role="combobox" aria-label="Search subjects" aria-autocomplete="list"
+              aria-expanded="true" aria-controls={listId} aria-activedescendant={activeId}
+              placeholder="Search subjects" value={query} autoComplete="off"
+              onChange={e => { setQuery(e.target.value); setActive(0) }} onKeyDown={onSearchKey} />
+            <div id={listId} role="listbox" aria-label="More subjects" className="sp-list">
+              {groups.map(g => {
+                const gid = `${uid}-g-${g.name || 'other'}`
+                return (
+                  <div key={g.name || 'other-subjects'} role="group" aria-labelledby={g.name ? gid : undefined}>
+                    {g.name && <div id={gid} className="sp-group">{g.name}</div>}
+                    {g.items.map(r => renderRow(r))}
+                  </div>
+                )
+              })}
+              {groups.length === 0 && <div className="sp-empty" role="status">No match. Choose + Other to type your own.</div>}
+              {otherRow && renderRow(otherRow)}
+            </div>
           </div>
         )}
       </div>
