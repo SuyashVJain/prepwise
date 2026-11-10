@@ -113,11 +113,11 @@ export default function ProgressPage() {
                       <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         {trends.map(t => {
                           const delta = t.recent - t.earlier
-                          const text = sessions.length <= 5 ? 'new' : delta < 0 ? 'improving' : delta > 0 ? 'getting worse' : 'steady'
+                          const tag = t.earlier === 0 ? 'New this period' : delta > 0 ? `Up ${delta}` : delta < 0 ? `Down ${-delta}` : 'No change'
                           return (
-                            <li key={t.topic} style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', fontSize: '14px' }}>
-                              <span style={{ color: 'var(--text)' }}>{t.topic}</span>
-                              <span style={{ ...mono, fontSize: '12px', color: delta > 0 ? '#f59e0b' : 'var(--text-2)', whiteSpace: 'nowrap' }}>{t.recent} vs {t.earlier} · {text}</span>
+                            <li key={t.topic} style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', fontSize: '15px' }}>
+                              <span style={{ color: 'var(--text)' }}>{t.topic.charAt(0).toUpperCase() + t.topic.slice(1)}</span>
+                              <span style={{ fontSize: '13px', color: delta > 0 && t.earlier > 0 ? '#f59e0b' : delta < 0 ? 'var(--lime)' : 'var(--text-2)', whiteSpace: 'nowrap' }}>{tag}</span>
                             </li>
                           )
                         })}
