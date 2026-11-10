@@ -59,11 +59,6 @@ export default function SignupPage() {
             ))}
           </ul>
         </div>
-        <div style={{ position: 'absolute', right: '-1px', top: '50%', transform: 'translateY(-50%)', zIndex: 2 }}>
-          <span style={{ ...mono, fontSize: '11px', letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-3)', writingMode: 'vertical-rl', whiteSpace: 'nowrap', padding: '12px 0' }}>
-            SYSTEM.PROTOCOL // V.4.0.1
-          </span>
-        </div>
       </div>
 
       {/* RIGHT PANEL */}

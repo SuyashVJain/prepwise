@@ -163,11 +163,6 @@ export default function OnboardingPage() {
 
       {/* MAIN */}
       <div style={{ flex: 1, display: 'flex' }}>
-        <div style={{ width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-          <span style={{ ...mono, fontSize: '11px', letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-3)', writingMode: 'vertical-rl', whiteSpace: 'nowrap' }}>
-            ONBOARDING // SYSTEM.CONFIG // V.1
-          </span>
-        </div>
 
         <div style={{ flex: 1, padding: 'var(--space-5)', maxWidth: '900px', margin: '0 auto', width: '100%' }}>
 

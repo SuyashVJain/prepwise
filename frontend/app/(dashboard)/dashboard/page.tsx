@@ -106,7 +106,7 @@ export default function DashboardPage() {
         {/* ── DASHBOARD VIEW ── */}
         {(
           <>
-            <PageHeader label="DASHBOARD" title="Candidate dashboard" action={
+            <PageHeader label="DASHBOARD" title="Dashboard" action={
               <Link href="/interview" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', background: 'var(--lime)', color: '#0e0e0e', padding: '0 20px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase' }}>
                 NEW SESSION →
               </Link>
@@ -222,7 +222,7 @@ export default function DashboardPage() {
               {/* sessions table */}
               <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)' }}>
                 <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
-                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)' }}>RECENT DIAGNOSTIC SESSIONS</div>
+                  <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)' }}>RECENT SESSIONS</div>
                 </div>
                 {sessions.length === 0 ? (
                   <div style={{ padding: '60px 24px', textAlign: 'center' }}>

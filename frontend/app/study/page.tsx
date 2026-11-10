@@ -242,7 +242,7 @@ function renderMarkdown(text: string): string {
                                 borderBottom: `2px solid ${tab === t ? 'var(--lime)' : 'transparent'}`,
                                 color: tab === t ? 'var(--lime)' : 'var(--text-3)', cursor: 'pointer',
                             }}>
-                                {t === 'chat' ? 'CHAT WITH ARIA' : 'QUIZ MODE'}
+                                {t === 'chat' ? 'CHAT' : 'QUIZ'}
                             </button>
                         ))}
                     </div>

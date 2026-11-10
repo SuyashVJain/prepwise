@@ -41,11 +41,6 @@ export default function LoginPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column', ...grotesk }}>
-      <div className="deco-vertical" aria-hidden="true" style={{ position: 'fixed', left: '20px', top: '50%', transform: 'translateY(-50%)', zIndex: 10 }}>
-        <span style={{ ...mono, fontSize: '11px', letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-3)', writingMode: 'vertical-rl', whiteSpace: 'nowrap' }}>
-          AUTH.SYSTEM // V4.02 // STABLE.CONNECTION
-        </span>
-      </div>
 
       <div className="auth-main" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
         <div style={{ width: '100%', maxWidth: '420px' }}>

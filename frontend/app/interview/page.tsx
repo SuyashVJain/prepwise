@@ -802,8 +802,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   return (
     <div className="print-doc" style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', ...grotesk, padding: '40px' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '12px' }}>[SESSION COMPLETE]</div>
-        <h1 style={{ fontSize: '48px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: '40px' }}>TECHNICAL<br />AUTOPSY</h1>
+        <PageHeader label="SESSION COMPLETE" title="Session debrief" />
 
         {loadingDebrief ? (
           <div style={{ ...mono, fontSize: '12px', color: 'var(--text-3)', letterSpacing: '.08em' }}>ARIA IS ANALYSING YOUR SESSION...</div>
