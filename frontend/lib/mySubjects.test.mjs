@@ -12,10 +12,10 @@ const order = (o) => orderMySubjects({ subjects, onboarding: [], syllabus: [], r
 test('first-time fallback when nothing is known', () => assert.deepEqual(order({}), FIRST_TIME_IDS))
 test('fallback also when nothing matches a shared subject', () => assert.deepEqual(order({ onboarding: ['Quantum basket weaving'] }), FIRST_TIME_IDS))
 test('onboarding picks come first, then syllabus, then recent', () => {
-  assert.deepEqual(order({ onboarding: ['Compilers', 'Python'], syllabus: ['Operating Systems'], recent: ['Machine Learning'] }), ['compilers', 'python', 'os', 'ml'])
+  assert.deepEqual(order({ onboarding: ['Compilers', 'Python'], syllabus: ['Operating Systems'], recent: ['Machine Learning', 'OOP'] }), ['compilers', 'python', 'os', 'ml', 'oop'])
 })
 test('duplicates are removed and the first position wins', () => {
-  assert.deepEqual(order({ onboarding: ['Python', 'python'], syllabus: ['PYTHON', 'DSA'], recent: ['dsa', 'Python', 'OOP'] }), ['python', 'dsa', 'oop'])
+  assert.deepEqual(order({ onboarding: ['Python', 'python', 'OOP', 'ML', 'Compilers'], syllabus: ['PYTHON', 'DSA'], recent: ['dsa', 'Python', 'Machine Learning'] }), ['python', 'oop', 'ml', 'compilers', 'dsa'])
 })
 test('aliases and ids map to the shared subject', () => {
   assert.equal(matchSubjectId('Data Structures and Algorithms', subjects), 'dsa')
@@ -24,7 +24,12 @@ test('aliases and ids map to the shared subject', () => {
   assert.equal(matchSubjectId('Underwater Welding', subjects), null)
 })
 test('recent use keeps its own order (most recent first)', () => {
-  assert.deepEqual(order({ recent: ['Machine Learning', 'OOP', 'Compilers'] }), ['ml', 'oop', 'compilers'])
+  assert.deepEqual(order({ recent: ['Machine Learning', 'OOP', 'Compilers', 'Operating Systems', 'Computer Networks'] }), ['ml', 'oop', 'compilers', 'os', 'cn'])
+})
+
+test('a short list is topped up from the first-time list, own subjects first', () => {
+  assert.deepEqual(order({ recent: ['Machine Learning'] }), ['ml', 'python', 'dsa', 'dbms', 'os'])
+  assert.deepEqual(order({ onboarding: ['DSA', 'Python', 'DBMS', 'Operating Systems', 'Computer Networks', 'OOP'] }), ['dsa', 'python', 'dbms', 'os', 'cn', 'oop'])
 })
 
 function fakeStore() {

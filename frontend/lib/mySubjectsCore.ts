@@ -6,6 +6,9 @@ export type SubjectInfo = { id: string; name: string }
 // What a first-time user sees before the app knows anything about them.
 export const FIRST_TIME_IDS = ['python', 'dsa', 'dbms', 'os', 'cn']
 
+// A user's list is topped up from the first-time list until it has at least this many subjects.
+const MIN_ROW = 5
+
 // Other names students and syllabi use for a shared subject. Keys are lower case.
 const ALIASES: Record<string, string> = {
   'data structures and algorithms': 'dsa', 'data structures': 'dsa', 'algorithms': 'dsa',
@@ -39,14 +42,19 @@ type Sources = {
 }
 
 // Onboarding picks first, then syllabus subjects, then recent use; each id once, in that order. Text that is not a
-// shared subject is ignored. With nothing to go on, the first-time list.
+// shared subject is ignored. With nothing to go on this is the first-time list, and a short list is topped up from it
+// (up to MIN_ROW subjects) so a user who has picked only one or two still sees a useful row.
 export function orderMySubjects({ subjects, onboarding, syllabus, recent }: Sources): string[] {
   const out: string[] = []
   for (const text of [...onboarding, ...syllabus, ...recent]) {
     const id = matchSubjectId(text, subjects)
     if (id && !out.includes(id)) out.push(id)
   }
-  return out.length ? out : FIRST_TIME_IDS.filter(id => subjects.some(s => s.id === id))
+  for (const id of FIRST_TIME_IDS) {
+    if (out.length >= MIN_ROW) break
+    if (!out.includes(id) && subjects.some(s => s.id === id)) out.push(id)
+  }
+  return out
 }
 
 // Subjects the user picked from the More panel, kept in this browser only (one key per user).
