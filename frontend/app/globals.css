@@ -432,7 +432,8 @@ input[type="number"].num-field::-webkit-inner-spin-button, input[type="number"].
 .opt-grid-count { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 /* Sidebar navigation (components/Sidebar.tsx): icon and label rows, grouped under small mono labels. */
-.nav-main { flex: 1; padding: 16px 0; overflow-y: auto; }
+/* The nav stays compact at the top and the account area is pinned to the bottom; on a short window the nav scrolls. */
+.nav-main { flex: 0 1 auto; min-height: 0; padding: 16px 0; overflow-y: auto; }
 .nav-group + .nav-group { margin-top: 20px; }
 .nav-group-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; color: var(--text-3); padding: 0 24px; margin-bottom: 6px; }
 .nav-account { padding: 8px 0; border-top: 1px solid var(--border); }
@@ -446,7 +447,7 @@ input[type="number"].num-field::-webkit-inner-spin-button, input[type="number"].
 .nav-link[aria-current="page"]:hover { background: rgba(212, 254, 66, .12); }
 
 /* User block (one link to Settings) and the Sign out row, which looks and behaves like a nav item. */
-.nav-bottom { border-top: 1px solid var(--border); padding-bottom: 8px; }
+.nav-bottom { margin-top: auto; flex-shrink: 0; border-top: 1px solid var(--border); padding-bottom: 8px; }
 .nav-bottom .nav-account { border-top: 0; padding-top: 8px; padding-bottom: 0; }
 .nav-user { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 24px 6px 27px; color: var(--text); }
 .nav-user:hover { background: rgba(255, 255, 255, .05); }
