@@ -6,8 +6,8 @@ import { ToastProvider } from '@/components/Toast'
 
 const LoadingScreen = dynamic(() => import('@/components/LoadingScreen'), { ssr: false })
 
-// Pages a stranger can open: they should appear at once, with no start-up animation.
-const PUBLIC = ['/', '/login', '/signup', '/privacy', '/terms', '/forgot-password', '/reset-password']
+// Only the signed-in app screens get the start-up animation. Public pages and unknown addresses (the 404) appear at once.
+const APP = ['/dashboard', '/interview', '/study', '/tutor', '/history', '/progress', '/settings', '/onboarding']
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -18,7 +18,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     () => false,
   )
   const [finished, setFinished] = useState(false)
-  const loading = !PUBLIC.includes(pathname) && !seen && !finished
+  const loading = APP.some(p => pathname === p || pathname.startsWith(p + '/')) && !seen && !finished
 
   function handleDone() {
     sessionStorage.setItem('pw_loaded', '1')
