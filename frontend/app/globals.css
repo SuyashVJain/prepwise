@@ -362,3 +362,6 @@ button[aria-pressed="true"]::after, div[role="button"][aria-pressed="true"]::aft
 .hrow { width: 100%; padding: 14px 24px !important; text-align: left; color: inherit; cursor: pointer; min-height: 56px; transition: border-color .15s, background-color .15s; }
 .hrow:hover { border-color: var(--border-2); background: var(--bg3); }
 @media (max-width: 639px) { .hrow-head { display: none; } .hrow { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "date score" "type type"; row-gap: 4px; } .hrow > :nth-child(1) { grid-area: date; } .hrow > :nth-child(2) { grid-area: type; } .hrow > :nth-child(3) { display: none; } .hrow > :nth-child(4) { grid-area: score; } }
+
+.signout { min-height: 44px; padding: 0; background: transparent; border: none; color: var(--text); font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: var(--border-2); text-underline-offset: 4px; }
+.signout:hover { text-decoration-color: var(--lime); }

@@ -3,15 +3,16 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import Logo from '@/components/Logo'
 
 export const NAV_ITEMS = [
-  { label: 'DASHBOARD', href: '/dashboard' },
-  { label: 'NEW SESSION', href: '/interview' },
-  { label: 'STUDY MODE', href: '/study' },
-  { label: 'VOICE TUTOR', href: '/tutor' },
-  { label: 'HISTORY', href: '/history' },
-  { label: 'PROGRESS', href: '/progress' },
-  { label: 'SETTINGS', href: '/settings' },
+  { label: 'Dashboard', href: '/dashboard' },
+  { label: 'New session', href: '/interview' },
+  { label: 'Study mode', href: '/study' },
+  { label: 'Voice tutor', href: '/tutor' },
+  { label: 'History', href: '/history' },
+  { label: 'Progress', href: '/progress' },
+  { label: 'Settings', href: '/settings' },
 ]
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
@@ -45,7 +46,7 @@ export default function Sidebar() {
   return (
     <>
       <div className="app-topbar">
-        <Link href="/dashboard" style={{ ...mono, fontSize: '13px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)' }}>PREPWISE</Link>
+        <Link href="/dashboard" aria-label="Prepwise dashboard"><Logo size="sm" /></Link>
         <button type="button" onClick={() => setOpen(o => !o)} aria-expanded={open} aria-controls="app-sidebar"
           style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', background: 'transparent', border: '1px solid var(--border-2)', padding: '8px 14px', cursor: 'pointer' }}>
           {open ? 'CLOSE' : 'MENU'}
@@ -53,8 +54,7 @@ export default function Sidebar() {
       </div>
       <aside id="app-sidebar" className={`app-sidebar${open ? ' open' : ''}`}>
         <div style={{ padding: '24px 24px 20px', borderBottom: '1px solid var(--border)' }}>
-          <Link href="/dashboard" style={{ ...mono, fontSize: '13px', fontWeight: 700, letterSpacing: '.1em', color: 'var(--lime)', display: 'block' }}>Prepwise</Link>
-          <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginTop: '3px' }}>INTERVIEW PREP</div>
+          <Link href="/dashboard" aria-label="Prepwise dashboard" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}><Logo size="sm" /></Link>
         </div>
         <nav aria-label="Main" style={{ flex: 1, padding: '16px 0', overflowY: 'auto' }}>
           {NAV_ITEMS.map(item => {
@@ -62,8 +62,8 @@ export default function Sidebar() {
             return (
               <Link key={item.href} href={item.href} className="nav-link" aria-current={active ? 'page' : undefined}
                 onClick={() => setOpen(false)}
-                style={{ display: 'flex', alignItems: 'center', padding: '12px 24px', borderLeft: `2px solid ${active ? 'var(--lime)' : 'transparent'}`, background: active ? 'var(--bg2)' : 'transparent' }}>
-                <span style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: active ? 'var(--lime)' : 'var(--text-2)', fontWeight: active ? 700 : 400 }}>{item.label}</span>
+                style={{ display: 'flex', alignItems: 'center', padding: '0 24px', minHeight: '44px', borderLeft: `3px solid ${active ? 'var(--lime)' : 'transparent'}`, background: active ? 'var(--bg2)' : 'transparent' }}>
+                <span style={{ fontSize: '14px', color: active ? 'var(--text)' : 'var(--text-2)', fontWeight: active ? 600 : 400 }}>{item.label}</span>
               </Link>
             )
           })}
@@ -76,8 +76,8 @@ export default function Sidebar() {
             <div style={{ minWidth: 0 }}>
               {loaded ? (
                 <>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text)', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name || 'Student'}</div>
-                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', color: 'var(--text-2)', marginTop: '2px' }}>{university || '-'}</div>
+                  <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text)', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name || 'Student'}</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{university || '-'}</div>
                 </>
               ) : (
                 <div aria-hidden="true">
@@ -87,10 +87,7 @@ export default function Sidebar() {
               )}
             </div>
           </div>
-          <button type="button" onClick={signOut}
-            style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--text-2)', background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}>
-            SIGN OUT →
-          </button>
+          <button type="button" onClick={signOut} className="signout">Sign out</button>
         </div>
       </aside>
     </>
