@@ -7,8 +7,6 @@ import subjects from '@/data/subjects.json'
 import SubjectPicker from '@/components/SubjectPicker'
 
 
-// The shared subject list; saved syllabi store these names as plain topics, so older saves are unaffected.
-const CS_SUBJECTS = subjects.map(s => s.name)
 
 const TARGETS = [
   { id: 'faang', num: '01', name: 'FAANG / BIG TECH', desc: 'LeetCode-style DSA, system design at scale, behavioral STAR format.', companies: ['Google', 'Meta', 'Amazon', 'Microsoft'] },
@@ -313,7 +311,7 @@ export default function OnboardingPage() {
                 <div style={{ marginBottom: 'var(--space-4)' }}>
                   <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>SELECT SUBJECTS</div>
                   <div style={{ marginBottom: 'var(--space-3)' }}>
-                    <SubjectPicker multi label="Subjects" options={CS_SUBJECTS.map(n => ({ value: n, label: n }))} values={selectedSubjects} onToggle={toggleSubject} />
+                    <SubjectPicker multi label="Subjects" options={subjects.map(s => ({ value: s.name, label: s.name, category: s.category }))} values={selectedSubjects} onToggle={toggleSubject} />
                   </div>
                   <div style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: '12px' }}>
                     <input type="text" value={customTopic} onChange={e => setCustomTopic(e.target.value)}

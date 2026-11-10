@@ -330,7 +330,7 @@ export default function TutorPage() {
           <div>
           <div style={{ ...label, marginBottom: '12px' }}>SUBJECT</div>
           <div style={{ marginBottom: '28px' }}>
-            <SubjectPicker label="Subject" options={subjects.map(s => ({ value: s.name, label: s.name }))}
+            <SubjectPicker label="Subject" options={subjects.map(s => ({ value: s.name, label: s.name, category: s.category }))}
               value={isOther ? '' : subject}
               onChange={name => { setIsOther(false); setSubject(name); setTopic('') }}
               other={{ selected: isOther, onSelect: () => { setIsOther(true); setSubject(''); setTopic('') }, text: subject, onText: setSubject, max: MAX_SUBJECT }} />

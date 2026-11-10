@@ -685,7 +685,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           {interviewType === 'subject' && !presetTopic && (
             <div style={{ marginBottom: '28px' }}>
               <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '12px' }}>SUBJECT</div>
-              <SubjectPicker label="Subject" options={[{ value: '', label: 'All my syllabus topics' }, ...subjectList.map(s => ({ value: s.name, label: s.name }))]}
+              <SubjectPicker label="Subject" leading={{ value: '', label: 'All my syllabus topics' }} options={subjectList.map(s => ({ value: s.name, label: s.name, category: s.category }))}
                 value={subjectPick === OTHER ? '__none__' : subjectPick}
                 onChange={setSubjectPick}
                 other={{ selected: subjectPick === OTHER, onSelect: () => setSubjectPick(OTHER), text: otherSubject, onText: setOtherSubject, max: MAX_SUBJECT }} />
