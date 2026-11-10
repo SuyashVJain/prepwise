@@ -7,6 +7,7 @@ import { TutorClient } from '@/lib/tutor/voiceClient'
 import type { Citation, ProviderInfo, SyllabusPayload, TutorState, TurnEnd } from '@/lib/tutor/voiceClient'
 import Sidebar from '@/components/Sidebar'
 import PageShell from '@/components/PageShell'
+import PageHeader from '@/components/PageHeader'
 import MicHelp from '@/components/MicHelp'
 import VideoPanel from '@/components/tutor/VideoPanel'
 import RoadmapPanel from '@/components/tutor/RoadmapPanel'
@@ -317,11 +318,7 @@ export default function TutorPage() {
     return (
       <PageShell>
         <div className="page-narrow">
-          <div style={{ ...eyebrow, marginBottom: '12px' }}>[VOICE TUTOR]</div>
-          <h1 style={{ fontSize: '42px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 'var(--space-2)' }}>Learn by<br />talking</h1>
-          <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.04em', marginBottom: '32px' }}>
-            Pick a subject, say what confuses you, and interrupt whenever you want.
-          </p>
+          <PageHeader label="VOICE TUTOR" title="Learn by talking" subtitle="Pick a subject, say what confuses you, and interrupt whenever you want." />
 
           <div style={{ ...label, marginBottom: '12px' }}>SUBJECT</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 'var(--space-2)', marginBottom: '28px' }}>

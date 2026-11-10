@@ -2,6 +2,7 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import PageShell from '@/components/PageShell'
+import PageHeader from '@/components/PageHeader'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 
 
@@ -227,18 +228,12 @@ function renderMarkdown(text: string): string {
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
                 {/* TOP BAR */}
-                <div style={{ padding: '32px var(--page-gutter) 0', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
-                    <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '6px' }}>[STUDY MODE]</div>
-                    <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '20px' }}>
-                        <h1 style={{ fontSize: '28px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1 }}>
-                            {docName ? `STUDYING: ${docName.toUpperCase().slice(0, 40)}` : 'UPLOAD DOCUMENTS'}
-                        </h1>
-                        {wordCount > 0 && (
-                            <span style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.06em' }}>
-                                {wordCount.toLocaleString()} TOTAL WORDS · {allChunks.length} CHUNKS
-                            </span>
-                        )}
-                    </div>
+                <div className="study-bar" style={{ padding: '32px var(--page-gutter) 0', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
+                    <PageHeader label="STUDY MODE" title={docName ? `Studying: ${docName.slice(0, 40)}` : 'Upload documents'} action={wordCount > 0 && (
+                        <span style={{ ...mono, fontSize: '12px', color: 'var(--lime)', letterSpacing: '.06em' }}>
+                            {wordCount.toLocaleString()} total words · {allChunks.length} chunks
+                        </span>
+                    )} />
                     <div style={{ display: 'flex' }}>
                         {(['chat', 'quiz'] as const).map(t => (
                             <button key={t} onClick={() => setTab(t)} style={{

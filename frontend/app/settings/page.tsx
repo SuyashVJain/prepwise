@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
+import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import { DEFAULTS_KEY } from '@/lib/stats'
 import { useToast } from '@/components/Toast'
@@ -104,8 +105,7 @@ export default function SettingsPage() {
     <PageShell>
         {loading ? <PageSkeleton rows={2} /> : (
           <div className="page-narrow">
-            <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', color: 'var(--lime)', marginBottom: '12px' }}>[SETTINGS]</div>
-            <h1 style={{ fontSize: '36px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: '32px' }}>Settings</h1>
+            <PageHeader label="SETTINGS" title="Settings" />
 
             <section aria-label="Account" style={{ background: 'var(--bg2)', border: '1px solid var(--border)', padding: '24px', marginBottom: '16px' }}>
               <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '20px' }}>ACCOUNT</div>

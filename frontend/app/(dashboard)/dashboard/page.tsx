@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
+import PageHeader from '@/components/PageHeader'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
 import { weakTopicStats } from '@/lib/stats'
@@ -105,17 +106,11 @@ export default function DashboardPage() {
         {/* ── DASHBOARD VIEW ── */}
         {(
           <>
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
-              <div>
-                <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '6px' }}>TECHNICAL OVERVIEW / SYSTEM ACTIVE</div>
-                <h1 style={{ fontSize: 'clamp(26px, 6vw, 36px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1 }}>CANDIDATE DASHBOARD</h1>
-              </div>
-              <div>
-                <Link href="/interview" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', background: 'var(--lime)', color: '#0e0e0e', padding: '0 20px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase' }}>
-                  NEW SESSION →
-                </Link>
-              </div>
-            </div>
+            <PageHeader label="DASHBOARD" title="Candidate dashboard" action={
+              <Link href="/interview" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', background: 'var(--lime)', color: '#0e0e0e', padding: '0 20px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase' }}>
+                NEW SESSION →
+              </Link>
+            } />
 
             <div>
               {sessions.length === 0 && (

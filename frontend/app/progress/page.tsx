@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
+import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import { type SessionRow, scoreColor, formatDate, formatTime, sessionsPerWeek, topicTrends } from '@/lib/stats'
 
@@ -58,8 +59,7 @@ export default function ProgressPage() {
     <PageShell>
         {loading ? <PageSkeleton /> : (
           <div>
-            <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', color: 'var(--lime)', marginBottom: '12px' }}>[PROGRESS]</div>
-            <h1 style={{ fontSize: '36px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: '32px' }}>Your trajectory</h1>
+            <PageHeader label="PROGRESS" title="Your trajectory" />
             {error && <p role="alert" style={{ ...mono, fontSize: '12px', color: '#ef4444', marginBottom: '16px' }}>{error}</p>}
 
             {sessions.length === 0 ? (

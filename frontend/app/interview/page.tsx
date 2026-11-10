@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import { DEFAULTS_KEY } from '@/lib/stats'
 import PageShell from '@/components/PageShell'
+import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import MicHelp from '@/components/MicHelp'
 import { useToast } from '@/components/Toast'
@@ -544,8 +545,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     return (
       <PageShell>
         <div className="page-narrow">
-          <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '12px' }}>[NEW SESSION]</div>
-          <h1 style={{ fontSize: '42px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: '8px' }}>Configure<br />your session</h1>
+          <PageHeader label="NEW SESSION" title="Configure your session" />
 
           {syllabus ? (
             <p style={{ ...mono, fontSize: '11px', color: 'var(--lime)', letterSpacing: '.06em', marginBottom: '32px' }}>

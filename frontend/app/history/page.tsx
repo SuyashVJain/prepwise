@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
+import PageHeader from '@/components/PageHeader'
 import Skeleton, { PageSkeleton } from '@/components/Skeleton'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
 import { typeName } from '@/lib/stats'
@@ -121,10 +122,7 @@ export default function HistoryPage() {
             ← ALL SESSIONS
           </button>
         )}
-        <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '12px' }}>[HISTORY]</div>
-        <h1 style={{ fontSize: '42px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: '32px' }}>
-          {selected ? 'Session replay' : 'Past sessions'}
-        </h1>
+        <PageHeader label="HISTORY" title={selected ? 'Session replay' : 'Past sessions'} />
 
         {error && <div style={{ ...mono, fontSize: '11px', color: '#ef4444', letterSpacing: '.06em', marginBottom: '16px' }}>{error}</div>}
 

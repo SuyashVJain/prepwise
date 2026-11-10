@@ -293,3 +293,13 @@ html.snap { scroll-padding-top: var(--hdr); }
 .app-main[data-full] { display: flex; flex-direction: column; min-height: 100vh; }
 .page-wrap { max-width: 1120px; padding: 32px var(--page-gutter) 48px; margin: 0; }
 .page-narrow { max-width: 760px; }
+
+/* ---- Signed-in pages: one header ---- */
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; }
+.page-head-main { min-width: 0; }
+.page-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--lime); margin-bottom: 8px; }
+.page-title { font-size: 36px; font-weight: 700; text-transform: uppercase; letter-spacing: -.02em; line-height: 1; }
+.page-sub { font-size: 15px; line-height: 1.6; color: var(--text-2); margin-top: 12px; max-width: 60ch; font-family: 'Space Grotesk', sans-serif; }
+.page-action { flex-shrink: 0; }
+@media (max-width: 639px) { .page-title { font-size: 28px; } .page-head { align-items: flex-start; } }
+.study-bar .page-head { margin-bottom: 16px; }
