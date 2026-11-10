@@ -14,13 +14,13 @@
 
 </div>
 
-Prepwise is a mock-interview coach for computer science students. It asks questions drawn from your own syllabus, then checks every answer claim by claim, so the score tells you what was right, what was wrong and what was too vague to count. It was built as a semester project and runs as a Next.js web app on top of a FastAPI service.
+Prepwise is a mock-interview coach for computer science students. It generates questions from your own syllabus, then the language model checks every claim in your answer, so the score tells you what was right, what was wrong and what was too vague to count. It was built as a semester project and runs as a Next.js web app on top of a FastAPI service.
 
 ## Why it is different
 
-- **Every answer is fact-checked.** Each claim in your answer is marked correct, incorrect or unverifiable before it is scored, and you can open the list after every question. A confident, critical mistake caps the score in code, however fluent the rest sounds.
+- **Every answer is fact-checked.** Each claim in your answer is marked correct, incorrect or unverifiable before it is scored, and you can open the list after every question. A confident, critical mistake caps the score in code, however fluent the rest sounds. The check is made by the language model using its own knowledge; the syllabus is context for question generation, not the source of truth for correctness, and scores are a guide rather than a verdict.
 - **Adaptive follow-ups.** If an answer is weak or has a doubtful claim, the next question can probe that exact point once, then move on.
-- **Grounded in your syllabus.** Upload a syllabus PDF or choose topics, and questions are built from retrieved chunks of that material instead of a fixed question bank.
+- **Questions from your syllabus.** Upload a syllabus PDF or choose topics, and questions are generated using retrieved sections of that material as context instead of a fixed question bank. When you choose topics instead of uploading a PDF, the context is a short description of each topic rather than your own text.
 - **A voice tutor.** Learn a subject by talking to Aria. Interrupt at any time, ask for a re-explanation, switch to Hinglish, and get notes and flashcards at the end.
 - **Replay and progress.** Open any past session to see each question, answer, score and claim. Track scores, pace and weak topics over time.
 
@@ -48,7 +48,7 @@ The screenshots use made-up demo data. See [`scripts/screenshots`](scripts/scree
 
 **Interview**
 - Four interview types (technical, HR, system design, subject) and four company styles
-- Questions generated from retrieved syllabus chunks, one at a time
+- Questions generated from your syllabus, one at a time, with retrieved sections as context
 - Type or speak your answers; a timer shows your pace against a soft target
 - Adaptive follow-up questions, at most one per question and a third of a session
 - Ending early saves only what you answered; a session in progress survives a page refresh

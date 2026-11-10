@@ -95,7 +95,7 @@ Which speech providers are active: `{"stt": {...}, "tts": {...}}`, each with `ac
 Query: `subject`, `topic`, `exclude` (comma-separated video ids). Response: suggested videos, or an empty list when no key is configured.
 
 ### `POST /tutor/notes` (llm limit)
-Request: `subject`, `topic`, `transcript` (list of `{role, text}`). Response: a summary and flashcards. Returns `422` when the conversation is too short.
+Request: `subject`, `topic`, `transcript` (list of `{role, text}`). Response: a summary and flashcards. Returns `400` when the conversation is too short.
 
 ### `POST /tutor/code-check` (llm limit)
 Request: `exercise`, `code`. Response: a short review of the student's Python code.
@@ -108,6 +108,7 @@ Voice session. The first message must be `{"type": "auth", "token": "<access tok
 | Status | Meaning |
 |---|---|
 | 401 | Missing, expired or invalid token |
+| 400 | The request cannot be used, for example a conversation too short for notes, an unsupported file or a file that is too large |
 | 422 | The request body failed validation |
 | 429 | Rate limit reached, see `Retry-After` |
 | 503 | The language model key is not configured on the server |
