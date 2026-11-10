@@ -10,7 +10,7 @@ import EmptyState from '@/components/EmptyState'
 import ScoreChart from '@/components/ScoreChart'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
-import { weakTopicStats, typeName, companyName, capFirst } from '@/lib/stats'
+import { weakTopicStats, typeName, companyName, capFirst, longestStreak } from '@/lib/stats'
 import { useRouter } from 'next/navigation'
 
 function scoreColor(s: number) {
@@ -33,6 +33,10 @@ export default function DashboardPage() {
   const [sessions, setSessions] = useState<SessionRow[]>([])
   const [loading, setLoading] = useState(true)
   const [firstName, setFirstName] = useState('')
+  // The true totals, which can be larger than the 20 latest rows kept for the list and chart.
+  const [total, setTotal] = useState(0)
+  const [bestStreak, setBestStreak] = useState(0)
+  const [error, setError] = useState(false)
 
 
   const router = useRouter()
@@ -40,48 +44,45 @@ export default function DashboardPage() {
 
   const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 
-  useEffect(() => {
-    async function load() {
+  async function load() {
+    setError(false)
+    setLoading(true)
+    try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push('/login'); return }
 
-      const { data: sess } = await supabase.from('sessions')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('completed', true)
-        .order('created_at', { ascending: false })
-        .limit(20)
-
-      const { data: prof } = await supabase.from('profiles').select('full_name').eq('id', user.id).single()
-      setFirstName(((prof?.full_name as string | undefined) || '').trim().split(' ')[0] || '')
-      setSessions(sess || [])
-      setLoading(false)
+      const done = () => supabase.from('sessions').select('created_at', { count: 'exact' }).eq('user_id', user.id).eq('completed', true)
+      const [latest, all, prof] = await Promise.all([
+        supabase.from('sessions').select('*').eq('user_id', user.id).eq('completed', true).order('created_at', { ascending: false }).limit(20),
+        done().order('created_at', { ascending: false }).limit(1000),
+        supabase.from('profiles').select('full_name').eq('id', user.id).single(),
+      ])
+      // A failed session query must never look like an empty history.
+      if (latest.error || all.error) throw latest.error ?? all.error
+      setFirstName(((prof.data?.full_name as string | undefined) || '').trim().split(' ')[0] || '')
+      setSessions(latest.data || [])
+      setTotal(all.count ?? (all.data || []).length)
+      setBestStreak(longestStreak((all.data || []).map(r => r.created_at as string)))
+    } catch (err) {
+      console.error('Dashboard load error:', err)
+      setError(true)
     }
+    setLoading(false)
+  }
+
+  useEffect(() => {
     load()
     // Runs once on mount; router and supabase are stable for this page.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // ── COMPUTED STATS ──
-  const totalSessions = sessions.length
-  const avgScore = totalSessions > 0
-    ? Math.round((sessions.reduce((sum, s) => sum + (s.score_avg || 0), 0) / totalSessions) * 10) / 10
+  const totalSessions = total
+  const recent = sessions.length
+  const avgScore = recent > 0
+    ? Math.round((sessions.reduce((sum, s) => sum + (s.score_avg || 0), 0) / recent) * 10) / 10
     : 0
-
-  const streak = (() => {
-    if (!sessions.length) return 0
-    const dates = sessions.map(s => new Date(s.created_at).toDateString())
-    const unique = [...new Set(dates)]
-    let count = 1
-    for (let i = 1; i < unique.length; i++) {
-      const prev = new Date(unique[i - 1])
-      const curr = new Date(unique[i])
-      const diff = (prev.getTime() - curr.getTime()) / (1000 * 60 * 60 * 24)
-      if (diff === 1) count++
-      else break
-    }
-    return count
-  })()
+  const streak = bestStreak
 
   const weakTopics = weakTopicStats(sessions).slice(0, 5)
   const nextTopic = weakTopics[0]?.topic
@@ -92,6 +93,21 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <PageShell><PageSkeleton rows={4} /></PageShell>
+    )
+  }
+
+  if (error) {
+    return (
+      <PageShell>
+        <PageHeader label="DASHBOARD" title="Dashboard" />
+        <div role="alert" style={{ ...cardBase, padding: '24px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '15px', color: '#ef4444' }}>We could not load your sessions. Check your connection and try again.</span>
+          <button type="button" onClick={load} className="btn-primary"
+            style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '0 24px', minHeight: '44px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em' }}>
+            RETRY
+          </button>
+        </div>
+      </PageShell>
     )
   }
 
@@ -110,11 +126,11 @@ export default function DashboardPage() {
             } />
 
             <div>
-              {sessions.length === 0 && (
+              {totalSessions === 0 && (
                 <EmptyState title="No sessions yet" help="Pick a type, answer a few questions and every claim in your answers is checked. Your scores, weak topics and history appear here." actionLabel="Start your first session →" href="/interview" />
               )}
 
-              {sessions.length > 0 && (
+              {totalSessions > 0 && (
                 <>
               {/* next best action: plain rule, no model call */}
               <div style={{ ...cardBase, borderLeft: '4px solid var(--lime)', padding: '24px', marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px', flexWrap: 'wrap' }}>
@@ -124,7 +140,7 @@ export default function DashboardPage() {
                     {nextTopic ? `Practise ${capFirst(nextTopic)}` : 'Start your first mock interview'}
                   </div>
                   <div style={{ fontSize: '15px', color: 'var(--text-2)', marginTop: '4px' }}>
-                    {nextTopic ? 'It is your most frequent weak topic.' : 'Your weak topics show up here afterwards.'}
+                    {nextTopic ? (weakTopics[0].count > 1 ? 'It is your most frequent weak topic.' : 'It is your latest weak topic.') : 'Your weak topics show up here afterwards.'}
                   </div>
                 </div>
                 <Link href={nextTopic ? `/interview?topic=${encodeURIComponent(nextTopic)}` : '/interview'}
@@ -137,7 +153,7 @@ export default function DashboardPage() {
               <div className="stat-row">
                 {[
                   { label: 'SESSIONS DONE', value: totalSessions.toString(), suffix: '', icon: totalSessions > 0 ? '↗' : '' },
-                  { label: 'AVG SCORE', value: avgScore.toString(), suffix: '/10', icon: '' },
+                  { label: totalSessions > recent ? 'AVG SCORE, LAST 20' : 'AVG SCORE', value: avgScore.toString(), suffix: '/10', icon: '' },
                   { label: 'BEST STREAK', value: streak.toString(), suffix: ' DAYS', icon: '' },
                   { label: 'WEAK TOPICS', value: weakTopics.length.toString(), suffix: '', icon: weakTopics.length > 0 ? '⚠' : '' },
                 ].map(stat => (

@@ -84,3 +84,21 @@ export function topicTrends(sessionsNewestFirst: SessionRow[]) {
 export function capFirst(s: string) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : s
 }
+
+// Whole calendar days (local time) as integers, so DST shifts never break "consecutive".
+function dayNumber(iso: string) {
+  const d = new Date(iso)
+  return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000)
+}
+
+// The longest run of consecutive days with at least one session, over every date given.
+export function longestStreak(dates: string[]): number {
+  const days = [...new Set(dates.map(dayNumber))].sort((a, b) => a - b)
+  let best = 0
+  let run = 0
+  for (let i = 0; i < days.length; i++) {
+    run = i > 0 && days[i] - days[i - 1] === 1 ? run + 1 : 1
+    if (run > best) best = run
+  }
+  return best
+}
