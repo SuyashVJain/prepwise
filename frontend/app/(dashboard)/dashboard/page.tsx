@@ -203,11 +203,11 @@ export default function DashboardPage() {
                   const shown = topics.slice(0, 2).map(capFirst).join(', ')
                   return (
                     <Link key={s.id} href={`/history?session=${encodeURIComponent(s.id)}`} className="srow">
-                      <span className="sc-date">{new Date(s.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                      <span className="sc-type">{typeName(s.interview_type)}</span>
-                      <span className="sc-target">{companyName(s.target_company)}</span>
-                      <span className="sc-score" style={{ color: scoreColor(s.score_avg || 0) }}>{s.score_avg || 0}/10</span>
-                      <span className="sc-topics" title={topics.map(capFirst).join(', ')}>
+                      <span className="r-date">{new Date(s.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                      <span className="r-type">{typeName(s.interview_type)}</span>
+                      <span className="r-target">{companyName(s.target_company)}</span>
+                      <span className="r-score" style={{ color: scoreColor(s.score_avg || 0) }}>{s.score_avg || 0}/10</span>
+                      <span className="r-topics" title={topics.map(capFirst).join(', ')}>
                         {shown || <span style={{ color: 'var(--text-2)' }}>None</span>}
                         {topics.length > 2 && <span style={{ color: 'var(--text-2)' }}> +{topics.length - 2} more</span>}
                       </span>
