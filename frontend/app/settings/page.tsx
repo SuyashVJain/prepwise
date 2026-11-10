@@ -132,44 +132,48 @@ export default function SettingsPage() {
             <PageHeader label="SETTINGS" title="Settings" />
             <div className="settings-grid">
 
-            <section aria-label="Account" style={{ ...cardBase, padding: '24px' }}>
+            <section aria-label="Account" className="settings-card" style={{ ...cardBase, padding: '24px' }}>
               <h2 className="sec-title">Account</h2>
               <Row k="Email" v={email} />
               <p style={{ fontSize: '13px', color: 'var(--text-2)', margin: '-12px 0 20px' }}>Email can&apos;t be changed here.</p>
-              <form onSubmit={saveName} noValidate>
+              <form onSubmit={saveName} noValidate className="settings-form">
                 <label htmlFor="display-name" style={label}>Display name</label>
                 <input id="display-name" value={name} autoComplete="name" maxLength={80} aria-invalid={shownNameError ? true : undefined} aria-describedby="display-name-msg"
                   onChange={e => { setName(e.target.value); setNameSaved(false); setNameError('') }}
                   style={{ ...fieldStyle, width: '100%', display: 'block' }} />
-                <p id="display-name-msg" role="status" style={{ fontSize: '14px', minHeight: '22px', margin: '8px 0 12px', color: shownNameError ? '#ef4444' : 'var(--lime)' }}>
-                  {shownNameError || (nameSaved ? 'Saved' : '')}
-                </p>
-                <button type="submit" disabled={!canSaveName} className="btn-primary"
-                  style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', minHeight: '44px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', cursor: canSaveName ? 'pointer' : 'not-allowed', opacity: canSaveName ? 1 : 0.5 }}>
-                  {nameSaving ? 'SAVING...' : 'SAVE NAME'}
-                </button>
+                <div className="settings-foot">
+                  <button type="submit" disabled={!canSaveName} className="btn-primary"
+                    style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', minHeight: '44px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', cursor: canSaveName ? 'pointer' : 'not-allowed', opacity: canSaveName ? 1 : 0.5 }}>
+                    {nameSaving ? 'SAVING...' : 'SAVE NAME'}
+                  </button>
+                  <span id="display-name-msg" role="status" style={{ fontSize: '14px', color: shownNameError ? '#ef4444' : 'var(--lime)' }}>
+                    {shownNameError || (nameSaved ? 'Saved' : '')}
+                  </span>
+                </div>
               </form>
             </section>
 
-            <section aria-label="Session defaults" style={{ ...cardBase, padding: '24px' }}>
+            <section aria-label="Session defaults" className="settings-card" style={{ ...cardBase, padding: '24px' }}>
               <h2 className="sec-title" style={{ marginBottom: '4px' }}>Session defaults</h2>
               <p style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text-2)', marginBottom: '20px' }}>Used to pre-fill the new session screen. Saved in this browser only.</p>
               <span style={label}>Interview type</span>
-              <div role="group" aria-label="Interview type" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
+              <div className="opt-box" style={{ marginBottom: '20px' }}><div role="group" aria-label="Interview type" className="opt-grid opt-grid-type">
                 {Object.entries(TYPES).map(([id, name]) => (
-                  <button key={id} type="button" aria-pressed={type === id} onClick={() => setType(id)} style={tile(type === id)}>{name}</button>
+                  <button key={id} type="button" aria-pressed={type === id} onClick={() => setType(id)} style={{ ...tile(type === id), width: '100%' }}>{name}</button>
                 ))}
-              </div>
+              </div></div>
               <span style={label}>Number of questions</span>
-              <div role="group" aria-label="Number of questions" style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+              <div role="group" aria-label="Number of questions" className="opt-grid opt-grid-count">
                 {COUNTS.map(n => (
-                  <button key={n} type="button" aria-pressed={count === n} onClick={() => setCount(n)} style={tile(count === n)}>{n}</button>
+                  <button key={n} type="button" aria-pressed={count === n} onClick={() => setCount(n)} style={{ ...tile(count === n), width: '100%' }}>{n}</button>
                 ))}
               </div>
-              <button type="button" onClick={save} className="btn-primary"
-                style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', cursor: 'pointer' }}>
-                {saved ? 'SAVED ✓' : 'SAVE DEFAULTS'}
-              </button>
+              <div className="settings-foot">
+                <button type="button" onClick={save} className="btn-primary"
+                  style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '14px 32px', minHeight: '44px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', cursor: 'pointer' }}>
+                  {saved ? 'SAVED ✓' : 'SAVE DEFAULTS'}
+                </button>
+              </div>
             </section>
 
             <section aria-label="Delete my data" className="settings-wide" style={{ ...cardBase, border: '1px solid rgba(239,68,68,0.5)', padding: '24px' }}>
