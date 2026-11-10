@@ -115,15 +115,11 @@ export default function DashboardPage() {
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', padding: '32px clamp(16px, 4vw, 40px) 0', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
               <div>
                 <div style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '6px' }}>TECHNICAL OVERVIEW / SYSTEM ACTIVE</div>
-                <h1 style={{ fontSize: '36px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1 }}>CANDIDATE DASHBOARD</h1>
+                <h1 style={{ fontSize: 'clamp(26px, 6vw, 36px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1 }}>CANDIDATE DASHBOARD</h1>
               </div>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: '4px' }}>LAST UPDATED</div>
-                <div style={{ ...mono, fontSize: '11px', color: 'var(--text-2)' }}>{new Date().toUTCString().slice(0, 25)} UTC</div>
-                <Link href="/interview">
-                  <button style={{ marginTop: '12px', background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '10px 20px', ...grotesk, fontSize: '11px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
-                    NEW SESSION →
-                  </button>
+              <div>
+                <Link href="/interview" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px', background: 'var(--lime)', color: '#0e0e0e', padding: '0 20px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase' }}>
+                  NEW SESSION →
                 </Link>
               </div>
             </div>
