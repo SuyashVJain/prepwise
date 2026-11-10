@@ -326,7 +326,7 @@ export default function TutorPage() {
           <div style={{ ...label, marginBottom: '12px' }}>SUBJECT</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 'var(--space-2)', marginBottom: '28px' }}>
             {subjects.map(s => (
-              <button key={s.id} type="button" onClick={() => { setSubject(s.name); setTopic('') }} style={tile(subject === s.name)}>
+              <button key={s.id} type="button" onClick={() => { setSubject(s.name); setTopic('') }} aria-pressed={subject === s.name} style={tile(subject === s.name)}>
                 {s.name}
               </button>
             ))}
@@ -346,13 +346,13 @@ export default function TutorPage() {
           </div>
 
           {/* Scrolls inside its own box so the start button stays within reach. */}
-          <div style={{ marginBottom: '28px', maxHeight: '260px', overflowY: 'auto', paddingRight: 'var(--space-1)' }}>
+          <div style={{ marginBottom: '28px' }}>
             <RoadmapPanel subjectId={subjectId} currentTopic={topic} startLabel="START" onStart={title => { void startSession(title) }} />
           </div>
 
           <div style={{ ...label, marginBottom: '12px' }}>SOURCE</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-2)', marginBottom: '12px' }}>
-            <button type="button" onClick={() => setMode('standalone')} style={tile(mode === 'standalone')}>
+            <button type="button" onClick={() => setMode('standalone')} aria-pressed={mode === 'standalone'} style={tile(mode === 'standalone')}>
               General knowledge
               <div style={{ fontSize: '14px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Aria teaches the topic from scratch.</div>
             </button>
@@ -369,8 +369,8 @@ export default function TutorPage() {
 
           <div style={{ ...label, marginBottom: '12px' }}>LANGUAGE</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-2)', marginBottom: '32px' }}>
-            <button type="button" onClick={() => setHinglish(false)} style={tile(!hinglish)}>English</button>
-            <button type="button" onClick={() => setHinglish(true)} style={tile(hinglish)}>
+            <button type="button" onClick={() => setHinglish(false)} aria-pressed={!hinglish} style={tile(!hinglish)}>English</button>
+            <button type="button" onClick={() => setHinglish(true)} aria-pressed={hinglish} style={tile(hinglish)}>
               Hinglish
               <div style={{ fontSize: '14px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Hindi and English mixed. Code and terms stay in English.</div>
             </button>

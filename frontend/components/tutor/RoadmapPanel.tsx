@@ -1,6 +1,6 @@
 // Subject roadmap with progress kept in this browser.
 'use client'
-import { useSyncExternalStore } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import { getServerSnapshot, getSnapshot, parseProgress, setTopicDone, subscribe } from '@/lib/tutor/progressStore'
 import { label, mono } from './ui'
 import roadmaps from '@/data/tutor-roadmaps.json'
@@ -21,6 +21,8 @@ export default function RoadmapPanel({ subjectId, currentTopic, startLabel, onSt
   const progress = parseProgress(snapshot)
   const topics = roadmapBySubject[subjectId] ?? []
   const doneCount = topics.filter(t => progress[t.id]).length
+  const [showAll, setShowAll] = useState(false)
+  const shown = showAll ? topics : topics.slice(0, 6)
 
   if (topics.length === 0) {
     return <p style={{ fontSize: '13px', color: 'var(--text-2)', letterSpacing: '.04em' }}>No roadmap for this subject yet.</p>
@@ -38,7 +40,7 @@ export default function RoadmapPanel({ subjectId, currentTopic, startLabel, onSt
         <div style={{ height: '100%', width: `${(doneCount / topics.length) * 100}%`, background: 'var(--lime)', transition: 'width .2s ease' }} />
       </div>
       <ol style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
-        {topics.map((t, i) => {
+        {shown.map((t, i) => {
           const done = Boolean(progress[t.id])
           const current = t.title.toLowerCase() === currentTopic.trim().toLowerCase()
           return (
@@ -46,7 +48,7 @@ export default function RoadmapPanel({ subjectId, currentTopic, startLabel, onSt
               <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '44px', minHeight: '44px', margin: '-10px -14px -10px -14px', flexShrink: 0, cursor: 'pointer' }}>
                 <input type="checkbox" checked={done} onChange={e => setTopicDone(t.id, e.target.checked)}
                 aria-label={`Mark ${t.title} as done`}
-                style={{ accentColor: '#d4fe42', width: '18px', height: '18px', cursor: 'pointer' }} />
+                className="cbx" />
               </label>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: '13px', fontWeight: 600, color: done ? 'var(--text-3)' : 'var(--text)', textDecoration: done ? 'line-through' : 'none' }}>
@@ -63,6 +65,12 @@ export default function RoadmapPanel({ subjectId, currentTopic, startLabel, onSt
           )
         })}
       </ol>
+      {topics.length > 6 && (
+        <button type="button" onClick={() => setShowAll(v => !v)} aria-expanded={showAll}
+          style={{ marginTop: '12px', minHeight: '44px', background: 'transparent', color: 'var(--text)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-card)', padding: '0 16px', fontSize: '14px', fontWeight: 600, cursor: 'pointer' }}>
+          {showAll ? 'Show fewer' : `Show all ${topics.length}`}
+        </button>
+      )}
       <p style={{ fontSize: '13px', color: 'var(--text-2)', marginTop: '10px' }}>Progress is saved in this browser only.</p>
     </div>
   )

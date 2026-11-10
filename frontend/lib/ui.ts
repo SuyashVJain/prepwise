@@ -3,9 +3,9 @@ import type { CSSProperties } from 'react'
 // Shared look for selectable options and form fields on every signed-in page.
 export const optionStyle = (on: boolean): CSSProperties => ({
   minHeight: '44px', padding: '10px 16px', textAlign: 'left', display: 'inline-flex', alignItems: 'center',
-  border: `1px solid ${on ? 'var(--lime)' : 'var(--border-2)'}`,
+  border: `1px solid ${on ? 'var(--lime)' : '#3d3c3c'}`,
   background: on ? 'var(--lime-dim)' : 'var(--bg3)',
-  color: on ? 'var(--lime)' : 'var(--text-2)',
+  color: on ? 'var(--lime)' : 'var(--text)',
   borderRadius: 'var(--radius-card)', fontSize: '14px', fontWeight: 600, cursor: 'pointer',
   fontFamily: "'Space Grotesk', sans-serif",
 })
