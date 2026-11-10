@@ -21,8 +21,17 @@ export function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
 }
 
+// Display names for stored values. Known values map to their exact labels (acronyms stay in capitals);
+// anything else is shown as stored.
+const TYPE_LABELS: Record<string, string> = { technical: 'Technical', hr: 'HR / Behavioural', system_design: 'System Design', subject: 'Subject-Specific' }
+const COMPANY_LABELS: Record<string, string> = { faang: 'FAANG / Big Tech', product: 'Product Startups', service: 'Service Companies', core: 'Core CS Campus' }
+
 export function typeName(t?: string) {
-  return t ? t.replace(/_/g, ' ') : '-'
+  return t ? TYPE_LABELS[t] ?? t.replace(/_/g, ' ') : '-'
+}
+
+export function companyName(c?: string) {
+  return c ? COMPANY_LABELS[c] ?? c : '-'
 }
 
 export function formatTime(s: number) {

@@ -335,8 +335,7 @@ button[aria-pressed="true"]::after, div[role="button"][aria-pressed="true"]::aft
 .srow:last-child { border-bottom: none; }
 .srow:hover { background: rgba(255, 255, 255, .03); }
 .srow .sc-date { white-space: nowrap; }
-.srow .sc-type { text-transform: capitalize; }
-.srow .sc-target { text-transform: capitalize; color: var(--text-2); }
+.srow .sc-target { color: var(--text-2); }
 .srow .sc-score { font-weight: 700; }
 .srow .sc-topics { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
 @media (max-width: 759px) {

@@ -143,7 +143,7 @@ export default function HistoryPage() {
               </section>
             )}
             <div role="group" aria-label="Filter and sort sessions" className="filters">
-              <Dropdown label="Type" value={typeFilter} onChange={setTypeFilter} options={[{ value: 'all', label: 'All types' }, ...types.map(t => ({ value: t, label: typeName(t).split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') }))]} />
+              <Dropdown label="Type" value={typeFilter} onChange={setTypeFilter} options={[{ value: 'all', label: 'All types' }, ...types.map(t => ({ value: t, label: typeName(t) }))]} />
               <label style={controlLabel}>MIN SCORE
                 <input type="number" min={0} max={10} step={0.5} value={minScore} onChange={e => setMinScore(Math.min(10, Math.max(0, Number(e.target.value) || 0)))} className="num-field" style={{ ...control, width: '96px' }} />
               </label>
@@ -162,7 +162,7 @@ export default function HistoryPage() {
             {visible.map(s => (
               <button key={s.id} onClick={() => openSession(s)} className="hrow" style={{ ...cardBase }}>
                 <span style={{ color: 'var(--text-2)', fontSize: '15px' }}>{formatDate(s.created_at)}</span>
-                <span style={{ fontSize: '15px', fontWeight: 600, textTransform: 'capitalize' }}>{typeName(s.interview_type)}</span>
+                <span style={{ fontSize: '15px', fontWeight: 600 }}>{typeName(s.interview_type)}</span>
                 <span style={{ color: 'var(--text-2)', fontSize: '15px' }}>{s.total_questions || 0}</span>
                 <span style={{ fontSize: '24px', fontWeight: 700, color: scoreColor(s.score_avg || 0), lineHeight: 1 }}>
                   {s.score_avg || 0}<span style={{ fontSize: '13px', color: 'var(--text-2)', fontWeight: 400 }}>/10</span>

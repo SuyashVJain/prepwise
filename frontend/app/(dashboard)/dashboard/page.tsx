@@ -10,7 +10,7 @@ import EmptyState from '@/components/EmptyState'
 import ScoreChart from '@/components/ScoreChart'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
-import { weakTopicStats } from '@/lib/stats'
+import { weakTopicStats, typeName, companyName } from '@/lib/stats'
 import { useRouter } from 'next/navigation'
 
 function scoreColor(s: number) {
@@ -204,8 +204,8 @@ export default function DashboardPage() {
                   return (
                     <Link key={s.id} href={`/history?session=${encodeURIComponent(s.id)}`} className="srow">
                       <span className="sc-date">{new Date(s.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                      <span className="sc-type">{(s.interview_type || '-').replace('_', ' ')}</span>
-                      <span className="sc-target">{s.target_company || '-'}</span>
+                      <span className="sc-type">{typeName(s.interview_type)}</span>
+                      <span className="sc-target">{companyName(s.target_company)}</span>
                       <span className="sc-score" style={{ color: scoreColor(s.score_avg || 0) }}>{s.score_avg || 0}/10</span>
                       <span className="sc-topics" title={topics.join(', ')}>
                         {shown || <span style={{ color: 'var(--text-2)' }}>None</span>}
