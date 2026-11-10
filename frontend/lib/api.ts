@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client'
+import { wakeTracker } from '@/lib/wakeTracker'
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -22,9 +23,28 @@ export function wsUrl(path: string): string {
   return API.replace(/^http/, 'ws') + path
 }
 
+// One fetch that the wake tracker watches: a request still waiting after a few seconds shows the "waking up" notice.
+// It is never cancelled or repeated, except that a safe GET is tried once more after a network error (a sleeping
+// server often drops the first connection). Calls that change data are never retried.
+async function trackedFetch(url: string, init: RequestInit, retryGet: boolean): Promise<Response> {
+  let end = wakeTracker.begin()
+  try {
+    return await fetch(url, init)
+  } catch (err) {
+    end()
+    end = () => {}
+    if (!retryGet) throw err
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    end = wakeTracker.begin()
+    return await fetch(url, init)
+  } finally {
+    end()
+  }
+}
+
 // Single entry point for backend calls: attaches the current Supabase
 // access token, sends the user to /login if the backend rejects it, and throws
-// RATE_LIMIT_MESSAGE when the backend returns 429.
+// RATE_LIMIT_MESSAGE when the backend returns 429. Slow answers are reported to the wake tracker.
 export async function apiFetch(path: string, init: RequestInit = {}): Promise<Response> {
   const token = await getAccessToken()
 
@@ -33,7 +53,8 @@ export async function apiFetch(path: string, init: RequestInit = {}): Promise<Re
     headers.set('Authorization', `Bearer ${token}`)
   }
 
-  const res = await fetch(`${API}${path}`, { ...init, headers })
+  const isGet = !init.method || init.method.toUpperCase() === 'GET'
+  const res = await trackedFetch(`${API}${path}`, { ...init, headers }, isGet)
 
   if (res.status === 401) {
     await signOutToLogin()
