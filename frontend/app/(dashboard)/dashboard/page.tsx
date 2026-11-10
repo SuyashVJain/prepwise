@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
 import { cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
+import EmptyState from '@/components/EmptyState'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
 import { weakTopicStats } from '@/lib/stats'
@@ -36,7 +37,6 @@ export default function DashboardPage() {
   const supabase = createClient()
 
   const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
-  const grotesk: React.CSSProperties = { fontFamily: "'Space Grotesk', sans-serif" }
 
   useEffect(() => {
     async function load() {
@@ -115,16 +115,7 @@ export default function DashboardPage() {
 
             <div>
               {sessions.length === 0 && (
-                <div style={{ background: 'var(--bg2)', border: '1px solid var(--lime-border)', padding: 'clamp(24px, 5vw, 56px)', textAlign: 'center' }}>
-                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', color: 'var(--lime)', marginBottom: '16px' }}>[START HERE]</div>
-                  <h2 style={{ fontSize: 'clamp(26px, 4vw, 40px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1.1, marginBottom: '16px' }}>Run your first mock interview</h2>
-                  <p style={{ fontSize: '16px', color: 'var(--text-2)', lineHeight: 1.7, maxWidth: '52ch', margin: '0 auto 24px' }}>
-                    Pick a type, answer a few questions, and see every claim in your answers checked. Your scores, weak topics and history appear here afterwards.
-                  </p>
-                  <Link href="/interview" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '48px', background: 'var(--lime)', color: '#0e0e0e', padding: '14px 32px', fontSize: '13px', fontWeight: 700, letterSpacing: '.08em' }}>
-                    START YOUR FIRST SESSION →
-                  </Link>
-                </div>
+                <EmptyState title="No sessions yet" help="Pick a type, answer a few questions and every claim in your answers is checked. Your scores, weak topics and history appear here." actionLabel="Start your first session →" href="/interview" />
               )}
 
               {sessions.length > 0 && (
@@ -226,14 +217,7 @@ export default function DashboardPage() {
                   <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)' }}>RECENT SESSIONS</div>
                 </div>
                 {sessions.length === 0 ? (
-                  <div style={{ padding: '60px 24px', textAlign: 'center' }}>
-                    <div style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '16px' }}>No sessions yet. Start your first mock interview.</div>
-                    <Link href="/interview">
-                      <button style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '12px 28px', ...grotesk, fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
-                        START SESSION →
-                      </button>
-                    </Link>
-                  </div>
+                  <p style={{ padding: '16px 24px', fontSize: '15px', color: 'var(--text-2)' }}>Finished sessions will be listed here.</p>
                 ) : (
                   <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', minWidth: '560px', borderCollapse: 'collapse' }}>
                     <thead>

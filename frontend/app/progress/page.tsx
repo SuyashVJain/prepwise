@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
 import { cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
+import EmptyState from '@/components/EmptyState'
 import { PageSkeleton } from '@/components/Skeleton'
 import { type SessionRow, scoreColor, formatDate, formatTime, sessionsPerWeek, topicTrends } from '@/lib/stats'
 
@@ -64,10 +65,7 @@ export default function ProgressPage() {
             {error && <p role="alert" style={{ ...mono, fontSize: '12px', color: '#ef4444', marginBottom: '16px' }}>{error}</p>}
 
             {sessions.length === 0 ? (
-              <div style={card}>
-                <p style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: '16px' }}>No sessions yet. Finish a mock interview and your progress will show up here.</p>
-                <Link href="/interview" className="btn-primary" style={{ display: 'inline-block', background: 'var(--lime)', color: '#0e0e0e', padding: '12px 28px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em' }}>START SESSION →</Link>
-              </div>
+              <EmptyState title="No sessions yet" help="Finish a mock interview and your score trend, pace and weak topics show up here." actionLabel="Start a session →" href="/interview" />
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '16px' }}>

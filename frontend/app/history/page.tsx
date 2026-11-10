@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import PageShell from '@/components/PageShell'
 import { fieldStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
+import EmptyState from '@/components/EmptyState'
 import Skeleton, { PageSkeleton } from '@/components/Skeleton'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
 import { typeName } from '@/lib/stats'
@@ -128,13 +129,7 @@ export default function HistoryPage() {
         {error && <div style={{ ...mono, fontSize: '12px', color: '#ef4444', letterSpacing: '.06em', marginBottom: '16px' }}>{error}</div>}
 
         {!selected && (sessions.length === 0 ? (
-          <div style={{ ...cardBase, padding: '24px' }}>
-            <div style={{ fontSize: '13px', color: 'var(--text-2)', marginBottom: '16px' }}>No sessions yet. Start your first mock interview.</div>
-            <button onClick={() => router.push('/interview')}
-              style={{ background: 'var(--lime)', color: '#0e0e0e', border: 'none', padding: '12px 28px', fontSize: '12px', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer' }}>
-              START SESSION →
-            </button>
-          </div>
+          <EmptyState title="No sessions yet" help="Finished sessions appear here, and you can replay every question, answer and claim." actionLabel="Start a session →" href="/interview" />
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {trend.length >= 2 && (
