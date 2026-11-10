@@ -12,6 +12,7 @@ import { fieldStyle, cardBase, optionStyle } from '@/lib/ui'
 import MicHelp from '@/components/MicHelp'
 import VideoPanel from '@/components/tutor/VideoPanel'
 import SubjectPicker from '@/components/SubjectPicker'
+import { useMySubjects } from '@/lib/mySubjects'
 import RoadmapPanel, { hasRoadmap } from '@/components/tutor/RoadmapPanel'
 import CodePanel from '@/components/tutor/CodePanel'
 import WalkthroughPanel, { WALKTHROUGH_SUBJECTS } from '@/components/tutor/WalkthroughPanel'
@@ -71,6 +72,7 @@ export default function TutorPage() {
   // The subject sent to the tutor: a name from the shared list, or the text the student typed under Other.
   const [subject, setSubject] = useState(subjects[0].name)
   const [isOther, setIsOther] = useState(false)
+  const { ids: myIds, remember } = useMySubjects(subjects)
   const [topic, setTopic] = useState('')
   const [mode, setMode] = useState<Mode>('standalone')
   const [hinglish, setHinglish] = useState(false)
@@ -331,6 +333,8 @@ export default function TutorPage() {
           <div style={{ ...label, marginBottom: '12px' }}>SUBJECT</div>
           <div style={{ marginBottom: '28px' }}>
             <SubjectPicker label="Subject" options={subjects.map(s => ({ value: s.name, label: s.name, category: s.category }))}
+              mine={myIds.flatMap(id => { const s = subjects.find(x => x.id === id); return s ? [{ value: s.name, label: s.name, category: s.category }] : [] })}
+              onPickMore={name => { const s = subjects.find(x => x.name === name); if (s) remember(s.id) }}
               value={isOther ? '' : subject}
               onChange={name => { setIsOther(false); setSubject(name); setTopic('') }}
               other={{ selected: isOther, onSelect: () => { setIsOther(true); setSubject(''); setTopic('') }, text: subject, onText: setSubject, max: MAX_SUBJECT }} />

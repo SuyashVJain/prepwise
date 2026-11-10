@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import subjects from '@/data/subjects.json'
-import SubjectPicker from '@/components/SubjectPicker'
+import SubjectGrid from '@/components/SubjectGrid'
 
 
 
@@ -311,7 +311,7 @@ export default function OnboardingPage() {
                 <div style={{ marginBottom: 'var(--space-4)' }}>
                   <div style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: '12px' }}>SELECT SUBJECTS</div>
                   <div style={{ marginBottom: 'var(--space-3)' }}>
-                    <SubjectPicker multi label="Subjects" options={subjects.map(s => ({ value: s.name, label: s.name, category: s.category }))} values={selectedSubjects} onToggle={toggleSubject} />
+                    <SubjectGrid label="Subjects" options={subjects.map(s => ({ value: s.name, label: s.name, category: s.category }))} values={selectedSubjects} onToggle={toggleSubject} />
                   </div>
                   <div style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: '12px' }}>
                     <input type="text" value={customTopic} onChange={e => setCustomTopic(e.target.value)}

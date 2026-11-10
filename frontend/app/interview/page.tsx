@@ -15,6 +15,7 @@ import { useToast } from '@/components/Toast'
 import ScoreRing from '@/components/ScoreRing'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
 import SubjectPicker from '@/components/SubjectPicker'
+import { useMySubjects } from '@/lib/mySubjects'
 import subjectList from '@/data/subjects.json'
 
 
@@ -139,6 +140,7 @@ export default function InterviewPage() {
   // For the Subject-Specific type: keep every question on one subject from the shared list ('' = the whole syllabus).
   const [subjectPick, setSubjectPick] = useState('')
   const [otherSubject, setOtherSubject] = useState('')
+  const { ids: myIds, remember } = useMySubjects(subjectList)
 
 const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const questionStartRef = useRef(0)
@@ -685,7 +687,10 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
           {interviewType === 'subject' && !presetTopic && (
             <div style={{ marginBottom: '28px' }}>
               <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '12px' }}>SUBJECT</div>
-              <SubjectPicker label="Subject" leading={{ value: '', label: 'All my syllabus topics' }} options={subjectList.map(s => ({ value: s.name, label: s.name, category: s.category }))}
+              <SubjectPicker label="Subject" leading={{ value: '', label: 'All my syllabus topics' }}
+                options={subjectList.map(s => ({ value: s.name, label: s.name, category: s.category }))}
+                mine={myIds.flatMap(id => { const s = subjectList.find(x => x.id === id); return s ? [{ value: s.name, label: s.name, category: s.category }] : [] })}
+                onPickMore={name => { const s = subjectList.find(x => x.name === name); if (s) remember(s.id) }}
                 value={subjectPick === OTHER ? '__none__' : subjectPick}
                 onChange={setSubjectPick}
                 other={{ selected: subjectPick === OTHER, onSelect: () => setSubjectPick(OTHER), text: otherSubject, onText: setOtherSubject, max: MAX_SUBJECT }} />
