@@ -100,8 +100,7 @@ export default function SettingsPage() {
         {loading ? <PageSkeleton rows={2} /> : (
           <div>
             <PageHeader label="SETTINGS" title="Settings" />
-            <div className="page-cols">
-            <div>
+            <div style={{ maxWidth: '760px' }}>
 
             <section aria-label="Account" style={{ ...cardBase, padding: '24px', marginBottom: '24px' }}>
               <h2 className="sec-title">Account</h2>
@@ -144,15 +143,6 @@ export default function SettingsPage() {
               </button>
               {deleteMsg && <p role="status" style={{ fontSize: '14px', color: 'var(--text)', marginTop: '12px' }}>{deleteMsg}</p>}
             </section>
-            </div>
-          <aside className="page-aside">
-            <section style={{ ...cardBase, padding: '24px' }}>
-              <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '12px' }}>Your defaults now</h2>
-              <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.7 }}>
-                New sessions start as <strong style={{ color: 'var(--text)' }}>{TYPES[type] || type}</strong> with <strong style={{ color: 'var(--text)' }}>{count} questions</strong>. Change them here and press Save.
-              </p>
-            </section>
-          </aside>
             </div>
           </div>
         )}
