@@ -327,7 +327,9 @@ button[aria-pressed="true"]::after, div[role="button"][aria-pressed="true"]::aft
 @media (max-width: 639px) { .stat-row { gap: 16px; } }
 
 /* Recent sessions: plain rows, each one a link; stacked on phones. */
-.srow-head, .srow { display: grid; grid-template-columns: 130px minmax(0, 1fr) minmax(0, 1fr) 80px minmax(0, 2fr); gap: 16px; align-items: center; }
+.srow-head, .srow { display: grid; grid-template-columns: 130px minmax(0, 1fr) minmax(0, 1fr) 112px minmax(0, 2fr); gap: 16px; align-items: center; }
+.srow-head > :nth-child(4), .srow .sc-score { padding-right: 24px; }
+.srow-head > :nth-child(5), .srow .sc-topics { padding-left: 24px; }
 .srow-head { padding: 8px 0 12px; font-size: 13px; color: var(--text-2); border-bottom: 1px solid var(--border); }
 .srow { min-height: 56px; padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--text); font-size: 15px; transition: background-color .15s; }
 .srow:last-child { border-bottom: none; }
@@ -341,7 +343,7 @@ button[aria-pressed="true"]::after, div[role="button"][aria-pressed="true"]::aft
   .srow-head { display: none; }
   .srow { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "date score" "type topics"; row-gap: 4px; padding: 12px 0; }
   .srow .sc-date { grid-area: date; } .srow .sc-score { grid-area: score; } .srow .sc-type { grid-area: type; font-size: 14px; color: var(--text-2); } .srow .sc-target { display: none; }
-  .srow .sc-topics { grid-area: topics; font-size: 14px; color: var(--text-2); text-align: right; }
+  .srow .sc-topics { grid-area: topics; font-size: 14px; color: var(--text-2); text-align: right; padding-left: 0; } .srow .sc-score { padding-right: 0; }
 }
 
 /* Score chart (dashboard, progress, history) */
