@@ -71,7 +71,7 @@ export default function ProgressPage() {
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '8px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
                   {[
                     { label: 'SESSIONS', value: String(sessions.length) },
                     { label: 'AVERAGE SCORE', value: `${avg}/10` },

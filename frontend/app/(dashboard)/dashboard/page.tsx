@@ -155,7 +155,7 @@ export default function DashboardPage() {
               </div>
 
               {/* stat cards */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '8px', marginBottom: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px', marginBottom: '24px' }}>
                 {[
                   { label: 'SESSIONS DONE', value: totalSessions.toString(), suffix: '', icon: totalSessions > 0 ? '↗' : '' },
                   { label: 'AVG SCORE', value: avgScore.toString(), suffix: '/10', icon: '' },
