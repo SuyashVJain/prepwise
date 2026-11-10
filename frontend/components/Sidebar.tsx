@@ -5,16 +5,28 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Logo from '@/components/Logo'
 import { NAME_EVENT } from '@/lib/profileEvents'
+import { DashboardIcon, NewSessionIcon, StudyIcon, TutorIcon, HistoryIcon, ProgressIcon, SettingsIcon } from '@/components/icons'
 
-export const NAV_ITEMS = [
-  { label: 'Dashboard', href: '/dashboard' },
-  { label: 'New session', href: '/interview' },
-  { label: 'Study mode', href: '/study' },
-  { label: 'Voice tutor', href: '/tutor' },
-  { label: 'History', href: '/history' },
-  { label: 'Progress', href: '/progress' },
-  { label: 'Settings', href: '/settings' },
+type NavItem = { label: string; href: string; icon: () => React.JSX.Element }
+
+const DASHBOARD: NavItem = { label: 'Dashboard', href: '/dashboard', icon: DashboardIcon }
+const SETTINGS: NavItem = { label: 'Settings', href: '/settings', icon: SettingsIcon }
+
+// The main navigation: Dashboard on its own, then two labelled groups. Settings sits in the bottom area.
+export const NAV_GROUPS: { label?: string; items: NavItem[] }[] = [
+  { items: [DASHBOARD] },
+  {
+    label: 'PRACTISE',
+    items: [
+      { label: 'New session', href: '/interview', icon: NewSessionIcon },
+      { label: 'Study mode', href: '/study', icon: StudyIcon },
+      { label: 'Voice tutor', href: '/tutor', icon: TutorIcon },
+    ],
+  },
+  { label: 'TRACK', items: [{ label: 'History', href: '/history', icon: HistoryIcon }, { label: 'Progress', href: '/progress', icon: ProgressIcon }] },
 ]
+
+export const NAV_ITEMS = [...NAV_GROUPS.flatMap(g => g.items), SETTINGS]
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 
@@ -51,6 +63,17 @@ export default function Sidebar() {
     router.push('/')
   }
 
+  function navLink(item: NavItem) {
+    const active = pathname === item.href || pathname.startsWith(item.href + '/')
+    const Icon = item.icon
+    return (
+      <Link key={item.href} href={item.href} className="nav-link" aria-current={active ? 'page' : undefined} onClick={() => setOpen(false)}>
+        <Icon />
+        <span>{item.label}</span>
+      </Link>
+    )
+  }
+
   return (
     <>
       <div className="app-topbar">
@@ -64,17 +87,16 @@ export default function Sidebar() {
         <div style={{ padding: '24px 24px 20px', borderBottom: '1px solid var(--border)' }}>
           <Link href="/dashboard" aria-label="Prepwise dashboard" style={{ display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}><Logo size="sm" /></Link>
         </div>
-        <nav aria-label="Main" style={{ flex: 1, padding: '16px 0', overflowY: 'auto' }}>
-          {NAV_ITEMS.map(item => {
-            const active = pathname === item.href || pathname.startsWith(item.href + '/')
-            return (
-              <Link key={item.href} href={item.href} className="nav-link" aria-current={active ? 'page' : undefined}
-                onClick={() => setOpen(false)}
-                style={{ display: 'flex', alignItems: 'center', padding: '0 24px', minHeight: '44px', borderLeft: `3px solid ${active ? 'var(--lime)' : 'transparent'}`, background: active ? 'var(--bg2)' : 'transparent' }}>
-                <span style={{ fontSize: '14px', color: active ? 'var(--text)' : 'var(--text-2)', fontWeight: active ? 600 : 400 }}>{item.label}</span>
-              </Link>
-            )
-          })}
+        <nav aria-label="Main" className="nav-main">
+          {NAV_GROUPS.map((group, gi) => (
+            <div key={group.label ?? gi} className="nav-group">
+              {group.label && <div className="nav-group-label">{group.label}</div>}
+              {group.items.map(item => navLink(item))}
+            </div>
+          ))}
+        </nav>
+        <nav aria-label="Account" className="nav-account">
+          {navLink(SETTINGS)}
         </nav>
         <div style={{ padding: '16px 24px', borderTop: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
