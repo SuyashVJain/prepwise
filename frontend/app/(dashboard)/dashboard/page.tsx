@@ -154,7 +154,7 @@ export default function DashboardPage() {
 
               {/* charts row */}
               <div className="dash-split">
-                <div style={{ ...cardBase, padding: '24px' }}>
+                <div className="chart-card" style={{ ...cardBase, padding: '24px' }}>
                   <h2 className="sec-title">Performance over time</h2>
                   {scores.length >= 2 ? (
                     <ScoreChart points={chartSessions.map(s => ({ score: s.score_avg || 0, at: s.created_at }))} label={`Scores for the last ${scores.length} sessions`} />

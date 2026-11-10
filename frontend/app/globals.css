@@ -383,3 +383,7 @@ button[aria-pressed="true"]::after, div[role="button"][aria-pressed="true"]::aft
 input[type="number"].num-field { -moz-appearance: textfield; appearance: textfield; }
 input[type="number"].num-field::-webkit-inner-spin-button, input[type="number"].num-field::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 @media (prefers-reduced-motion: reduce) { .dd-chevron { transition: none; } }
+
+/* Dashboard chart card: the chart takes the height left by the card beside it. */
+.chart-card { display: flex; flex-direction: column; }
+.chart-card .chart { flex: 1 1 auto; height: auto; min-height: 190px; }
