@@ -143,7 +143,7 @@ export default function HistoryPage() {
               </section>
             )}
             <div role="group" aria-label="Filter and sort sessions" className="filters">
-              <Dropdown label="Type" value={typeFilter} onChange={setTypeFilter} options={[{ value: 'all', label: 'All types' }, ...types.map(t => ({ value: t, label: typeName(t) }))]} />
+              <Dropdown label="Type" value={typeFilter} onChange={setTypeFilter} options={[{ value: 'all', label: 'All types' }, ...types.map(t => ({ value: t, label: typeName(t).split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') }))]} />
               <label style={controlLabel}>MIN SCORE
                 <input type="number" min={0} max={10} step={0.5} value={minScore} onChange={e => setMinScore(Math.min(10, Math.max(0, Number(e.target.value) || 0)))} className="num-field" style={{ ...control, width: '96px' }} />
               </label>

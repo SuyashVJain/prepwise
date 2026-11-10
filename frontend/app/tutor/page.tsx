@@ -8,7 +8,7 @@ import type { Citation, ProviderInfo, SyllabusPayload, TutorState, TurnEnd } fro
 import Sidebar from '@/components/Sidebar'
 import PageShell from '@/components/PageShell'
 import PageHeader from '@/components/PageHeader'
-import { fieldStyle, cardBase } from '@/lib/ui'
+import { fieldStyle, cardBase, optionStyle } from '@/lib/ui'
 import MicHelp from '@/components/MicHelp'
 import VideoPanel from '@/components/tutor/VideoPanel'
 import RoadmapPanel from '@/components/tutor/RoadmapPanel'
@@ -336,16 +336,14 @@ export default function TutorPage() {
           <input value={topic} onChange={e => setTopic(e.target.value)} placeholder="e.g. recursion, joins, deadlocks" maxLength={120}
             aria-label="Topic"
             style={{ ...fieldStyle, width: '100%', marginBottom: '12px' }} />
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '28px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '28px' }}>
             {subjectTopics.map(t => (
-              <button key={t} type="button" onClick={() => setTopic(t)}
-                style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 10px', cursor: 'pointer', background: topic === t ? 'var(--lime-dim)' : 'var(--bg4)', border: `1px solid ${topic === t ? 'var(--lime)' : 'var(--border)'}`, color: topic === t ? 'var(--lime)' : 'var(--text-2)' }}>
+              <button key={t} type="button" onClick={() => setTopic(t)} aria-pressed={topic === t} style={{ ...optionStyle(topic === t), minHeight: '44px', padding: '8px 14px', fontWeight: 500 }}>
                 {t}
               </button>
             ))}
           </div>
 
-          {/* Scrolls inside its own box so the start button stays within reach. */}
           <div style={{ marginBottom: '28px' }}>
             <RoadmapPanel subjectId={subjectId} currentTopic={topic} startLabel="START" onStart={title => { void startSession(title) }} />
           </div>
