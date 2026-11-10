@@ -275,10 +275,12 @@ html.snap { scroll-padding-top: var(--hdr); }
 @media (max-width: 899px) {
   .app-topbar a, .app-topbar button, .app-sidebar a, .app-sidebar button { min-height: 44px; display: inline-flex; align-items: center; }
   .app-sidebar .nav-link { min-height: 44px; }
+  /* The rule above makes links inline; nav rows must stay full-width blocks so the active tint spans the drawer and long names truncate. */
+  .app-sidebar a.nav-link, .app-sidebar a.nav-user, .app-sidebar button.nav-link { display: flex; }
 }
 @media (max-width: 639px) {
   button, summary, select, input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), a.btn-primary { min-height: 44px; }
-  a[href]:not(p a):not(.skip):not(.srow) { display: inline-flex; align-items: center; min-height: 44px; }
+  a[href]:not(p a):not(.skip):not(.srow):not(.nav-link):not(.nav-user) { display: inline-flex; align-items: center; min-height: 44px; }
   summary { display: flex; align-items: center; }
 }
 @media (max-width: 639px) { p a[href] { padding-block: 14px; } }
