@@ -9,7 +9,7 @@ import PageHeader from '@/components/PageHeader'
 import EmptyState from '@/components/EmptyState'
 import ScoreChart from '@/components/ScoreChart'
 import { PageSkeleton } from '@/components/Skeleton'
-import { type SessionRow, scoreColor, formatDate, formatTime, sessionsPerWeek, topicTrends } from '@/lib/stats'
+import { type SessionRow, scoreColor, formatDate, formatTime, sessionsPerWeek, topicTrends, capFirst } from '@/lib/stats'
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 const card: React.CSSProperties = { ...cardBase, padding: '24px' }
@@ -116,7 +116,7 @@ export default function ProgressPage() {
                           const tag = t.earlier === 0 ? 'New this period' : delta > 0 ? `Up ${delta}` : delta < 0 ? `Down ${-delta}` : 'No change'
                           return (
                             <li key={t.topic} style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', fontSize: '15px' }}>
-                              <span style={{ color: 'var(--text)' }}>{t.topic.charAt(0).toUpperCase() + t.topic.slice(1)}</span>
+                              <span style={{ color: 'var(--text)' }}>{capFirst(t.topic)}</span>
                               <span style={{ fontSize: '13px', color: delta > 0 && t.earlier > 0 ? '#f59e0b' : delta < 0 ? 'var(--lime)' : 'var(--text-2)', whiteSpace: 'nowrap' }}>{tag}</span>
                             </li>
                           )

@@ -10,7 +10,7 @@ import EmptyState from '@/components/EmptyState'
 import ScoreChart from '@/components/ScoreChart'
 import WelcomeGuide from '@/components/WelcomeGuide'
 import { PageSkeleton } from '@/components/Skeleton'
-import { weakTopicStats, typeName, companyName } from '@/lib/stats'
+import { weakTopicStats, typeName, companyName, capFirst } from '@/lib/stats'
 import { useRouter } from 'next/navigation'
 
 function scoreColor(s: number) {
@@ -121,7 +121,7 @@ export default function DashboardPage() {
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: '14px', color: 'var(--lime)', fontWeight: 600, marginBottom: '6px' }}>Next best action</div>
                   <div style={{ fontSize: '22px', fontWeight: 600, lineHeight: 1.3, color: 'var(--text)' }}>
-                    {nextTopic ? `Practise ${nextTopic}` : 'Start your first mock interview'}
+                    {nextTopic ? `Practise ${capFirst(nextTopic)}` : 'Start your first mock interview'}
                   </div>
                   <div style={{ fontSize: '15px', color: 'var(--text-2)', marginTop: '4px' }}>
                     {nextTopic ? 'It is your most frequent weak topic.' : 'Your weak topics show up here afterwards.'}
@@ -174,7 +174,7 @@ export default function DashboardPage() {
                         return (
                           <div key={topic}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', gap: '12px' }}>
-                              <span style={{ fontSize: '15px', color: 'var(--text)' }}>{topic.charAt(0).toUpperCase() + topic.slice(1)}</span>
+                              <span style={{ fontSize: '15px', color: 'var(--text)' }}>{capFirst(topic)}</span>
                               <span style={{ fontSize: '14px', color: 'var(--text-2)', whiteSpace: 'nowrap' }}>{count} of {total} sessions</span>
                             </div>
                             <div style={{ height: '3px', background: 'var(--bg4)' }}>
@@ -200,14 +200,14 @@ export default function DashboardPage() {
                 </div>
                 {sessions.map(s => {
                   const topics = s.weak_topics || []
-                  const shown = topics.slice(0, 2).join(', ')
+                  const shown = topics.slice(0, 2).map(capFirst).join(', ')
                   return (
                     <Link key={s.id} href={`/history?session=${encodeURIComponent(s.id)}`} className="srow">
                       <span className="sc-date">{new Date(s.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                       <span className="sc-type">{typeName(s.interview_type)}</span>
                       <span className="sc-target">{companyName(s.target_company)}</span>
                       <span className="sc-score" style={{ color: scoreColor(s.score_avg || 0) }}>{s.score_avg || 0}/10</span>
-                      <span className="sc-topics" title={topics.join(', ')}>
+                      <span className="sc-topics" title={topics.map(capFirst).join(', ')}>
                         {shown || <span style={{ color: 'var(--text-2)' }}>None</span>}
                         {topics.length > 2 && <span style={{ color: 'var(--text-2)' }}> +{topics.length - 2} more</span>}
                       </span>

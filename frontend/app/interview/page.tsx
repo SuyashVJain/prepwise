@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
-import { DEFAULTS_KEY } from '@/lib/stats'
+import { DEFAULTS_KEY, capFirst } from '@/lib/stats'
 import PageShell from '@/components/PageShell'
 import { optionStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
@@ -860,7 +860,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
                   {debrief.weak_topics!.map(t => (
                     <li key={t} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
-                      <span style={{ fontSize: '15px', color: 'var(--text)' }}>{t}</span>
+                      <span style={{ fontSize: '15px', color: 'var(--text)' }}>{capFirst(t)}</span>
                       <Link href={`/interview?topic=${encodeURIComponent(t)}`} className="no-print"
                         style={{ ...mono, fontSize: '12px', letterSpacing: '.08em', color: 'var(--lime)', border: '1px solid var(--lime-border)', padding: '8px 14px', minHeight: '40px', display: 'inline-flex', alignItems: 'center' }}>
                         PRACTISE THIS →

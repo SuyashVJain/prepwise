@@ -79,3 +79,8 @@ export function topicTrends(sessionsNewestFirst: SessionRow[]) {
     topic: s.topic, recent: count(recent, s.topic), earlier: count(earlier, s.topic),
   }))
 }
+
+// Uppercases only the first character; the rest is left as stored.
+export function capFirst(s: string) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s
+}
