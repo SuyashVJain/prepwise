@@ -171,7 +171,7 @@ export default function OnboardingPage() {
             <div>
               <span style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '12px', display: 'block' }}>[01 - INSTITUTION]</span>
               <h1 style={{ fontSize: '42px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 'var(--space-2)' }}>Where do you study?</h1>
-              <p style={{ ...mono, fontSize: '12px', color: 'var(--text-3)', letterSpacing: '.04em', marginBottom: '32px' }}>Select your university or enter a custom one below.</p>
+              <p style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: '32px' }}>Select your university or enter a custom one below.</p>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 'var(--space-2)', marginBottom: '20px' }}>
                 {['SUAS', 'VTU', 'RGPV', 'Mumbai Uni', 'GTU', 'AKTU', 'Anna Univ', 'JNTU'].map(u => (
@@ -200,7 +200,7 @@ export default function OnboardingPage() {
             <div>
               <span style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '12px', display: 'block' }}>[02 - TARGET COMPANY]</span>
               <h1 style={{ fontSize: '42px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 'var(--space-2)' }}>Who are you preparing for?</h1>
-              <p style={{ ...mono, fontSize: '12px', color: 'var(--text-3)', letterSpacing: '.04em', marginBottom: 'var(--space-2)' }}>Prepwise calibrates question style, difficulty, and vocabulary to match.</p>
+              <p style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: 'var(--space-2)' }}>Prepwise calibrates question style, difficulty, and vocabulary to match.</p>
               <p style={{ ...mono, fontSize: '11px', color: 'var(--text-3)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 'var(--space-4)' }}>SELECT ALL THAT APPLY</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-2)' }}>
                 {TARGETS.map(t => (
@@ -225,7 +225,7 @@ export default function OnboardingPage() {
             <div>
               <span style={{ ...mono, fontSize: '11px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '12px', display: 'block' }}>[03 - SYLLABUS]</span>
               <h1 style={{ fontSize: '42px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-.02em', lineHeight: 1, marginBottom: 'var(--space-2)' }}>Load your syllabus</h1>
-              <p style={{ ...mono, fontSize: '12px', color: 'var(--text-3)', letterSpacing: '.04em', marginBottom: '32px' }}>This is what makes Prepwise different. Every question is grounded in what you actually study.</p>
+              <p style={{ fontSize: '14px', color: 'var(--text-2)', marginBottom: '32px' }}>This is what makes Prepwise different. Every question is grounded in what you actually study.</p>
 
               {/* mode selector */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-2)', marginBottom: '28px' }}>

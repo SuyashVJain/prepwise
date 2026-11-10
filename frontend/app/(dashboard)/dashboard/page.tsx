@@ -145,7 +145,7 @@ export default function DashboardPage() {
                   <div key={stat.label} style={{ ...cardBase, padding: '16px' }}>
                     <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '10px' }}>{stat.label}</div>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                      <span style={{ fontSize: '36px', fontWeight: 700, color: 'var(--lime)', letterSpacing: '-.02em', lineHeight: 1 }}>{stat.value}</span>
+                      <span style={{ fontSize: '40px', fontWeight: 700, color: 'var(--lime)', letterSpacing: '-.02em', lineHeight: 1 }}>{stat.value}</span>
                       <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)' }}>{stat.suffix}</span>
                       {stat.icon && <span style={{ fontSize: '14px', color: stat.label === 'WEAK TOPICS' ? '#f59e0b' : 'var(--lime)', marginLeft: '4px' }}>{stat.icon}</span>}
                     </div>
@@ -156,7 +156,7 @@ export default function DashboardPage() {
               {/* charts row */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', marginBottom: '24px' }}>
                 <div style={{ ...cardBase, padding: '24px' }}>
-                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '20px' }}>PERFORMANCE OVER TIME</div>
+                  <h2 className="sec-title">Performance over time</h2>
                   {scores.length >= 2 ? (
                     <svg width="100%" viewBox={`0 0 ${chartW} ${chartH}`} style={{ overflow: 'visible' }}>
                       {[0, 0.25, 0.5, 0.75, 1].map((t, i) => (
@@ -178,14 +178,14 @@ export default function DashboardPage() {
                       })}
                     </svg>
                   ) : (
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.08em', textTransform: 'uppercase' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', fontSize: '14px', color: 'var(--text-2)', textTransform: 'uppercase' }}>
                       Complete 2+ sessions to see chart
                     </div>
                   )}
                 </div>
 
                 <div style={{ ...cardBase, padding: '24px' }}>
-                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '20px' }}>WEAK TOPICS ANALYSIS</div>
+                  <h2 className="sec-title">Weak topics</h2>
                   {weakTopics.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                       {weakTopics.map(({ topic, count, total }) => {
@@ -214,7 +214,7 @@ export default function DashboardPage() {
               {/* sessions table */}
               <div style={{ ...cardBase }}>
                 <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
-                  <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)' }}>RECENT SESSIONS</div>
+                  <h2 className="sec-title">Recent sessions</h2>
                 </div>
                 {sessions.length === 0 ? (
                   <p style={{ padding: '16px 24px', fontSize: '15px', color: 'var(--text-2)' }}>Finished sessions will be listed here.</p>

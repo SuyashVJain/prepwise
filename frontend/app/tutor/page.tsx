@@ -354,11 +354,11 @@ export default function TutorPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-2)', marginBottom: '12px' }}>
             <button type="button" onClick={() => setMode('standalone')} style={tile(mode === 'standalone')}>
               General knowledge
-              <div style={{ ...mono, fontSize: '12px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Aria teaches the topic from scratch.</div>
+              <div style={{ fontSize: '14px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Aria teaches the topic from scratch.</div>
             </button>
             <button type="button" disabled={docsUnavailable} onClick={() => setMode('documents')} style={disabled(tile(mode === 'documents'), docsUnavailable)}>
               Use my documents
-              <div style={{ ...mono, fontSize: '12px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Answers only from your syllabus, with citations.</div>
+              <div style={{ fontSize: '14px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Answers only from your syllabus, with citations.</div>
             </button>
           </div>
           <p style={{ fontSize: '13px', color: syllabus ? 'var(--lime)' : 'var(--text-3)', marginBottom: '32px' }}>
@@ -372,7 +372,7 @@ export default function TutorPage() {
             <button type="button" onClick={() => setHinglish(false)} style={tile(!hinglish)}>English</button>
             <button type="button" onClick={() => setHinglish(true)} style={tile(hinglish)}>
               Hinglish
-              <div style={{ ...mono, fontSize: '12px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Hindi and English mixed. Code and terms stay in English.</div>
+              <div style={{ fontSize: '14px', fontWeight: 400, color: 'var(--text-2)', marginTop: '6px' }}>Hindi and English mixed. Code and terms stay in English.</div>
             </button>
           </div>
 

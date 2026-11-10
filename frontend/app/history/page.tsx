@@ -134,7 +134,7 @@ export default function HistoryPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {trend.length >= 2 && (
               <section aria-label="Score trend" style={{ ...cardBase, padding: '16px 24px', marginBottom: '8px' }}>
-                <div style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', color: 'var(--text-2)', marginBottom: '8px' }}>SCORE TREND</div>
+                <h2 className="sec-title" style={{ marginBottom: '8px' }}>Score trend</h2>
                 <svg width="100%" viewBox="0 0 460 90" role="img" aria-label={`Score trend across ${trend.length} sessions, from ${trend[0]} to ${trend[trend.length - 1]}`}>
                   {[0, 5, 10].map(v => <line key={v} x1="0" x2="460" y1={80 - (v / 10) * 70} y2={80 - (v / 10) * 70} stroke="var(--border-2)" />)}
                   <polyline fill="none" stroke="var(--lime)" strokeWidth="2.5" strokeLinejoin="round"

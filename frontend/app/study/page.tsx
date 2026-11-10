@@ -230,7 +230,7 @@ function renderMarkdown(text: string): string {
 
                 {/* TOP BAR */}
                 <div className="study-bar" style={{ padding: '32px var(--page-gutter) 0', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
-                    <PageHeader label="STUDY MODE" title={docName ? `Studying: ${docName.slice(0, 40)}` : 'Upload documents'} action={wordCount > 0 && (
+                    <PageHeader label="STUDY MODE" title="Study mode" subtitle={docName ? `Studying: ${docName.slice(0, 60)}` : 'Upload documents, then chat about them or take a quiz.'} action={wordCount > 0 && (
                         <span style={{ ...mono, fontSize: '12px', color: 'var(--lime)', letterSpacing: '.06em' }}>
                             {wordCount.toLocaleString()} total words · {allChunks.length} chunks
                         </span>

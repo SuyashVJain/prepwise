@@ -12,7 +12,7 @@ import { type SessionRow, scoreColor, formatDate, formatTime, sessionsPerWeek, t
 
 const mono: React.CSSProperties = { fontFamily: "'JetBrains Mono', monospace" }
 const card: React.CSSProperties = { ...cardBase, padding: '24px' }
-const cardTitle: React.CSSProperties = { ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)', marginBottom: '20px' }
+const cardTitle: React.CSSProperties = { fontSize: '20px', fontWeight: 600, color: 'var(--text)', marginBottom: '16px', lineHeight: 1.3 }
 
 export default function ProgressPage() {
   const [sessions, setSessions] = useState<SessionRow[]>([])
@@ -77,13 +77,13 @@ export default function ProgressPage() {
                   ].map(s => (
                     <div key={s.label} style={{ ...card, padding: '20px' }}>
                       <div style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.1em', marginBottom: '8px' }}>{s.label}</div>
-                      <div style={{ ...mono, fontSize: '32px', fontWeight: 700, color: 'var(--lime)', lineHeight: 1 }}>{s.value}</div>
+                      <div style={{ ...mono, fontSize: '40px', fontWeight: 700, color: 'var(--lime)', lineHeight: 1 }}>{s.value}</div>
                     </div>
                   ))}
                 </div>
 
                 <section style={card} aria-label="Score over time">
-                  <div style={cardTitle}>SCORE OVER TIME</div>
+                  <h2 style={cardTitle}>Score over time</h2>
                   {scores.length >= 2 ? (
                     <svg width="100%" viewBox={`0 0 ${W} ${H + 16}`} role="img" aria-label={`Scores for the last ${scores.length} sessions, from ${scores[0]} to ${scores[scores.length - 1]}`}>
                       {[0, 5, 10].map(v => {
@@ -107,7 +107,7 @@ export default function ProgressPage() {
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
                   <section style={card} aria-label="Sessions per week">
-                    <div style={cardTitle}>SESSIONS PER WEEK</div>
+                    <h2 style={cardTitle}>Sessions per week</h2>
                     <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', height: '120px' }}>
                       {weeks.map(w => (
                         <div key={w.start} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', height: '100%' }}>
@@ -120,7 +120,7 @@ export default function ProgressPage() {
                   </section>
 
                   <section style={card} aria-label="Weak topic trend">
-                    <div style={cardTitle}>WEAK TOPICS: LAST 5 VS THE 5 BEFORE</div>
+                    <h2 style={cardTitle}>Weak topics, last 5 sessions vs the 5 before</h2>
                     {trends.length === 0 ? (
                       <p style={{ fontSize: '14px', color: 'var(--text-2)' }}>No weak topics recorded yet.</p>
                     ) : (
