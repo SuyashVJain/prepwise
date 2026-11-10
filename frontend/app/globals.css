@@ -413,3 +413,9 @@ input[type="number"].num-field::-webkit-inner-spin-button, input[type="number"].
 .sp-opt[aria-selected="true"] { color: var(--text); font-weight: 600; }
 .sp-empty { padding: 12px; font-size: 14px; color: var(--text-2); }
 
+/* Shown at the top of the page content while the backend is slow to answer (components/WakingNotice.tsx). */
+.waking-notice { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; padding: 12px 16px; background: var(--bg2); border: 1px solid var(--border); border-left: 4px solid var(--lime); border-radius: var(--radius-card); font-size: 14px; line-height: 1.5; color: var(--text); }
+.waking-dot { flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--lime); animation: waking-pulse 1.2s ease-in-out infinite; }
+@keyframes waking-pulse { 0%, 100% { opacity: .35; transform: scale(.8); } 50% { opacity: 1; transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .waking-dot { animation: none; } }
+
