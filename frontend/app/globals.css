@@ -269,3 +269,6 @@ html.snap { scroll-padding-top: var(--hdr); }
   [style*="font-size:13px"]:not([style*="JetBrains"]):not(button):not(a):not(label):not(summary):not(th),
   [style*="font-size: 13px"]:not([style*="JetBrains"]):not(button):not(a):not(label):not(summary):not(th) { font-size: 14px !important; }
 }
+
+/* Auth fields: placeholders are plainly lighter and quieter than typed text. */
+.auth-input::placeholder { color: #8a8787; opacity: 1; letter-spacing: normal; text-transform: none; }

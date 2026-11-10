@@ -81,13 +81,13 @@ export default function SignupPage() {
             <>
             <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
               {[
-                { label: 'FULL NAME', type: 'text', value: fullName, onChange: setFullName, placeholder: 'ALAN TURING' },
-                { label: 'EMAIL ADDRESS', type: 'email', value: email, onChange: setEmail, placeholder: 'ALAN@ENIGMA.EDU' },
-                { label: 'PASSWORD', type: 'password', value: password, onChange: setPassword, placeholder: '••••••••' },
+                { label: 'FULL NAME', type: 'text', value: fullName, onChange: setFullName, placeholder: 'Your full name' },
+                { label: 'EMAIL ADDRESS', type: 'email', value: email, onChange: setEmail, placeholder: 'you@college.edu' },
+                { label: 'PASSWORD', type: 'password', value: password, onChange: setPassword, placeholder: 'At least 8 characters' },
               ].map(field => (
                 <div key={field.label} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <label style={{ ...mono, fontSize: '11px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{field.label}</label>
-                  <input type={field.type} value={field.value} onChange={e => field.onChange(e.target.value)} placeholder={field.placeholder} required
+                  <label style={{ ...mono, fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-2)' }}>{field.label}</label>
+                  <input className="auth-input" type={field.type} value={field.value} onChange={e => field.onChange(e.target.value)} placeholder={field.placeholder} required
                     style={{ width: '100%', background: 'var(--bg2)', border: 'none', borderBottom: '2px solid var(--border-2)', padding: '14px 12px', fontSize: '16px', color: 'var(--text)', outline: 'none', letterSpacing: '.04em' }}
                     onFocus={e => e.currentTarget.style.borderBottomColor = 'var(--lime)'}
                     onBlur={e => e.currentTarget.style.borderBottomColor = 'var(--border-2)'} />
