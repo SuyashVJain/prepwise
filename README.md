@@ -63,7 +63,8 @@ The screenshots use made-up demo data. See [`scripts/screenshots`](scripts/scree
 - Generate multiple-choice quizzes from your material
 
 **Voice tutor**
-- Speech to text and text to speech run locally by default and fall back to cloud providers
+- Speech to text and text to speech run locally by default and fall back to cloud providers. The spoken reply tries the Groq voice, then Edge, then your browser's own voice, with a "Tap to enable voice" button when the browser blocks autoplay
+- Mock interview answers can be typed or spoken. Spoken answers are recorded in the browser and transcribed on the server (`POST /interview/transcribe`), so they work in any browser that can record audio
 - Doubt mode, Hinglish mode, session notes and flashcards, subject roadmaps, visual walkthroughs, video suggestions and a Python code-along
 - Hand-off from the tutor to a mock interview on the same topic
 
@@ -182,7 +183,9 @@ Backend (`backend/.env`):
 | `FRONTEND_URL` | Allowed browser origins, comma separated | No (defaults to localhost) |
 | `LLM_MODEL`, `LLM_REASONING_EFFORT` | Model and reasoning effort | No |
 | `RATE_LIMIT_LLM`, `RATE_LIMIT_UPLOAD`, `RATE_LIMIT_DEFAULT`, `RATE_LIMIT_TUTOR` | Per-user limits such as `30/minute` | No |
-| `VOICE_WARMUP`, `VOICE_STT_PROVIDER`, `VOICE_TTS_PROVIDER` | Voice settings; use `0`, `cloud`, `cloud` to skip local models | No |
+| `VOICE_STT_PROVIDER`, `VOICE_TTS_PROVIDER` | `local` (default, falls back to cloud) or `cloud`. Production: `cloud` for both | No |
+| `VOICE_WARMUP` | `0` skips loading speech models at start. Production on Render's 512 MB plan: `0` | No |
+| `VOICE_STT_CLOUD_MODEL`, `VOICE_TTS_CLOUD_MODEL`, `VOICE_TTS_CLOUD_VOICE`, `VOICE_TTS_EDGE_VOICE` | Cloud speech model and voice names (Groq, then Edge). See [docs/VOICE_TUTOR.md](docs/VOICE_TUTOR.md) | No |
 | `YOUTUBE_API_KEY` | Enables video suggestions in the tutor | No |
 
 Frontend (`frontend/.env.local`):
@@ -197,7 +200,7 @@ Frontend (`frontend/.env.local`):
 
 ### Run the tests
 
-The backend tests need no keys or network. With the backend virtual environment active:
+The backend tests need no keys or network (151 tests). The frontend has 55 unit tests (`npm test`). With the backend virtual environment active:
 
 ```bash
 cd backend
@@ -206,6 +209,7 @@ python -m tests.score_comparison --offline
 cd ../frontend
 npm run lint
 npx tsc --noEmit
+npm test
 npm run build
 ```
 

@@ -2,6 +2,13 @@
 
 All notable changes are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- Spoken interview answers are recorded and transcribed on the server (`POST /interview/transcribe`) instead of using browser speech recognition
+- The microphone message says "blocked" only for a real permission error
+- The spoken reply tries the Groq voice, then Edge, then the browser voice
+
 ## [1.0.0] - 2026-11-09
 
 First tagged release.

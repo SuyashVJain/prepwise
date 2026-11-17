@@ -116,9 +116,9 @@ The tutor also uses `GROQ_API_KEY`, `LLM_MODEL` and `SUPABASE_URL`, already set 
 | Needs | `requirements-voice.txt`, about 600 MB of models on first run | Internet; Groq key for speech-to-text and text-to-speech (the Orpheus model may need its terms accepted once in the Groq console); nothing for edge-tts |
 | Cost | Free, no request limits | Groq transcription and speech requests count against the account |
 | Privacy | Audio stays on the machine | Audio goes to Groq; the text to be spoken goes to Groq (and to the edge-tts service if Groq fails) |
-| Best for | A laptop demo, or any machine with a few GB of free RAM | Railway and other small servers |
+| Best for | A laptop demo, or any machine with a few GB of free RAM | Render's free plan and other small servers |
 
-On Railway, leave the voice requirements out. The app starts without them, the local providers fail to load, and the tutor uses the cloud providers automatically. Setting both provider variables to `cloud` skips the failed load attempt.
+On Render's free plan (512 MB), set `VOICE_STT_PROVIDER=cloud`, `VOICE_TTS_PROVIDER=cloud` and `VOICE_WARMUP=0`, and leave the voice requirements out. The app starts without them, the local providers fail to load, and the tutor uses the cloud providers automatically. Setting both provider variables to `cloud` skips the failed load attempt.
 
 Hinglish always uses the cloud voice, even when `VOICE_TTS_PROVIDER=local`: the local English voice mispronounces Roman-script Hindi.
 
@@ -185,7 +185,7 @@ cd backend
 python -m unittest discover -s tests -t .
 ```
 
-88 offline tests, no network and no speech models: sentence splitting, history trimming, provider fallback, cancellation, the session socket (valid, missing, garbage and expired tokens, rate limit, barge-in, documents mode, citations, refusal), Doubt Mode, Hinglish, notes, video search and caching, and the code review path (including a check that student code is never executed).
+Offline tests, no network and no speech models (the whole backend suite is 151 tests): sentence splitting, history trimming, provider fallback, cancellation, the session socket (valid, missing, garbage and expired tokens, rate limit, barge-in, documents mode, citations, refusal), Doubt Mode, Hinglish, notes, video search and caching, and the code review path (including a check that student code is never executed).
 
 ---
 
@@ -238,13 +238,17 @@ For a spoken question, add the transcription time to the first-audio time: about
 - **Other.** The student types a subject (up to 60 characters). It is sent as the session's `subject`, so the tutor, notes and video search work without a roadmap. The backend removes control characters and markup characters and caps the length (`clean_subject` in `backend/app/subjects.py`). The same typed subject can be used for a Subject-Specific interview. Existing rate limits apply.
 - **Categories.** Each subject has a `category`: "Core CS" (Python, DSA, DBMS, OOP, Operating Systems, Computer Networks), "Theory and hardware" (Theory of Computation, Compilers, Computer Organization and Architecture, Digital Electronics, Discrete Mathematics) and "Software and applied" (System Design, Software Engineering, Web Technologies, Machine Learning, Artificial Intelligence). The pickers show the groups in that order. A subject with no category would fall into a final group with no label.
 
+## Interview voice answers
+
+The mock interview does not use the browser's speech recognition. The VOICE button records the microphone with `MediaRecorder` (up to 3 minutes) and sends the clip to `POST /interview/transcribe`, which uses the same server speech-to-text as the tutor (local Whisper if loaded, then Groq Whisper). The text is added after the current answer. Only a real permission error is called "blocked"; a missing or busy microphone, an unsupported browser, a rate limit, an upload over 10 MB and an unavailable speech service each get their own message and offer typing.
+
 ## Speech output order
 
 The server voice is chosen in this order, and a voice that fails to load or to answer is dropped for the rest of the session:
 
 1. `VOICE_TTS_PROVIDER=local`: Kokoro, then Groq, then edge-tts. `cloud`: Groq, then edge-tts. Hinglish always uses the cloud order.
 2. Groq accepts at most 200 characters per request, so each sentence is sent on its own and a sentence longer than 200 characters is split at a comma or a space. The pieces are joined into one WAV per sentence, so sentence-by-sentence streaming to the browser is unchanged.
-3. If every server voice fails, the browser's own speech reads the reply, and only if that fails too does the page show "Voice output failed; showing text only."
+3. If every server voice fails, the browser's own speech reads the reply (a "Tap to enable voice" button appears when the browser blocks autoplay), and only if that fails too does the page show "Voice output failed; showing text only."
 
 A failed Groq call is logged as `voice: Groq speech synthesis failed (<error type>, HTTP <status>)`. The key and the request text are never logged.
 
