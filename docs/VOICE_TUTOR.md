@@ -14,11 +14,11 @@ Two sources:
 ```
 browser (/tutor)                         backend (FastAPI)
 ┌──────────────────────────┐   WebSocket  ┌──────────────────────────────────────────┐
-│ mic → voice detector     │──audio──────▶│ speech-to-text  (local Whisper | cloud)   │
+│ mic → voice detector     │──audio──────▶│ speech-to-text  (cloud Whisper)           │
 │ text box                 │──text───────▶│ conversation    (last 8 messages + summary)│
 │ transcript, state        │◀─sentences───│ LLM             (streamed, via call_llm)   │
 │ Web Audio playback       │◀─audio───────│ sentence splitter → text-to-speech         │
-└──────────────────────────┘              │                 (local Kokoro | cloud)     │
+└──────────────────────────┘              │                 (Groq | browser voice)   │
                                           └──────────────────────────────────────────┘
 ```
 
@@ -28,11 +28,11 @@ browser (/tutor)                         backend (FastAPI)
 
 **Providers.** Each stage sits behind a small interface in `backend/app/voice/providers.py`, chosen by env var. A local provider that fails to load, or fails on a request, is replaced by the cloud one for the rest of the process, and the page shows which one is active.
 
-| Stage | Local (default) | Cloud fallback |
+| Stage | Live (default) | Optional local mode |
 |---|---|---|
-| Speech-to-text | faster-whisper, `base`, int8, GPU if usable else CPU | Groq Whisper (`whisper-large-v3-turbo`) |
-| LLM | — | Groq, whatever `LLM_MODEL` is set to |
-| Text-to-speech | Kokoro (ONNX, CPU) | Groq (`canopylabs/orpheus-v1-english`, voice `hannah`), then edge-tts |
+| Speech-to-text | Groq Whisper (`whisper-large-v3-turbo`) | faster-whisper, `base`, int8, GPU if usable else CPU |
+| LLM | Groq, whatever `LLM_MODEL` is set to | — |
+| Text-to-speech | Groq (`canopylabs/orpheus-v1-english`, voice `hannah`); the browser's voice is the fallback and reads Hinglish | Kokoro (ONNX, CPU), off by default |
 
 ### Files
 
@@ -92,9 +92,9 @@ All optional. Defaults are shown; they are also listed in `backend/.env.example`
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `VOICE_STT_PROVIDER` | `local` | `local` (falls back to cloud if it cannot load) or `cloud` |
-| `VOICE_TTS_PROVIDER` | `local` | `local` or `cloud`. Only sets the default order below |
-| `VOICE_TTS_ORDER` | empty | Server voice engines in the order to try them, for example `groq,kokoro,browser`. Names: `kokoro`, `groq`, `edge`; `browser` ends the list. Empty means `kokoro,groq` when `VOICE_TTS_PROVIDER=local`, otherwise `groq` |
+| `VOICE_STT_PROVIDER` | `cloud` | `cloud` (Groq Whisper) or `local` (optional; falls back to cloud if it cannot load) |
+| `VOICE_TTS_PROVIDER` | `cloud` | `cloud` or `local`. Only sets the default order below |
+| `VOICE_TTS_ORDER` | empty | Server voice engines in the order to try them. Production: `groq`. Names: `kokoro`, `groq`, `edge`; `browser` ends the list. Empty means `groq` (`kokoro,groq` only with `VOICE_TTS_PROVIDER=local`) |
 | `VOICE_TTS_HINDI_VOICE` | `hf_alpha` | Kokoro's Hindi voice, used for Hinglish only when `kokoro` is in the order |
 | `VOICE_STT_MODEL` | `base` | faster-whisper model size. `small` is more accurate but about three times slower on a CPU |
 | `VOICE_STT_CLOUD_MODEL` | `whisper-large-v3-turbo` | Groq transcription model |
@@ -120,7 +120,7 @@ The tutor also uses `GROQ_API_KEY`, `LLM_MODEL` and `SUPABASE_URL`, already set 
 | Privacy | Audio stays on the machine | Audio goes to Groq; the text to be spoken goes to Groq (and to the edge-tts service if Groq fails) |
 | Best for | A laptop demo, or any machine with a few GB of free RAM | Render's free plan and other small servers |
 
-On Render's free plan (512 MB), set `VOICE_STT_PROVIDER=cloud`, `VOICE_TTS_PROVIDER=cloud` and `VOICE_WARMUP=0`, and leave the voice requirements out. The app starts without them, the local providers fail to load, and the tutor uses the cloud providers automatically. Setting both provider variables to `cloud` skips the failed load attempt.
+Production runs on Render's free plan (512 MB; the service sleeps after about 15 minutes idle) with `VOICE_TTS_ORDER=groq`, `VOICE_STT_PROVIDER=cloud` and `VOICE_WARMUP=0`. With no voice variables set the defaults are the same, so nothing local loads at start and the voice requirements are not installed.
 
 Hinglish uses Kokoro's Hindi voice when `kokoro` is in `VOICE_TTS_ORDER`, and the browser's own voice otherwise. The English cloud voices mispronounce Roman-script Hindi, so they are not used for it.
 
@@ -248,19 +248,19 @@ The mock interview does not use the browser's speech recognition. The VOICE butt
 
 The server voice is chosen in this order, and a voice that fails to load or to answer is dropped for the rest of the session:
 
-1. `VOICE_TTS_ORDER` sets the order, for example `groq,kokoro,browser`. Empty means `kokoro,groq` with `VOICE_TTS_PROVIDER=local` and `groq` otherwise. `browser` ends the list, and an engine that is not listed is never loaded (Kokoro in particular). Edge is used only if you list `edge`. Hinglish uses Kokoro's Hindi voice when Kokoro is listed, otherwise the browser voice.
+1. `VOICE_TTS_ORDER` sets the order, for example `groq,kokoro,browser`. Empty means `groq`. `browser` ends the list, and an engine that is not listed is never loaded (Kokoro in particular). Edge is used only if you list `edge`. Hinglish uses Kokoro's Hindi voice when Kokoro is listed, otherwise the browser voice.
 2. Groq accepts at most 200 characters per request, so each sentence is sent on its own and a sentence longer than 200 characters is split at a comma or a space. The pieces are joined into one WAV per sentence, so sentence-by-sentence streaming to the browser is unchanged.
 3. If every server voice fails, the browser's own speech reads the reply (a "Tap to enable voice" button appears when the browser blocks autoplay), and only if that fails too does the page show "Voice output failed; showing text only."
 
 ### Free mode and full mode
 
-| | Free mode (Render free plan, 512 MB) | Full mode (a machine with 1 GB or more free) |
+| | Free mode (Render free plan, 512 MB) | Optional local Kokoro mode, off by default (1 GB or more free) |
 |---|---|---|
-| Settings | `VOICE_STT_PROVIDER=cloud`, `VOICE_TTS_PROVIDER=cloud`, `VOICE_WARMUP=0` | `VOICE_TTS_ORDER=kokoro,groq,browser` and the voice requirements installed |
+| Settings | `VOICE_STT_PROVIDER=cloud`, `VOICE_TTS_ORDER=groq`, `VOICE_WARMUP=0` | `VOICE_TTS_ORDER=kokoro,groq,browser` and the voice requirements installed |
 | Voice | Groq, then the browser's voice. Hinglish uses the browser's voice | Kokoro (English and Hindi), then Groq, then the browser's voice |
 | Memory | about 320 MB with a 300-chunk FAISS index | about 450 MB resident and a peak of about 610 MB, measured with Kokoro loaded on top of that |
 
-Kokoro's memory was measured on a Windows laptop CPU with the backend and a 300-chunk FAISS index loaded (318 MB). With the ONNX runtime's defaults the resident size grew by about 150 MB for each new sentence length and peaked at 848 MB. The Kokoro session now turns off the CPU memory arena and memory-pattern reuse: resident memory stays at about 445 to 450 MB after any of the test sentences (English, Hindi, Hinglish) and the peak is 610 MB. The cost is speed: a 20-word sentence takes about 3.5 s instead of 2.3 s. Even so, Kokoro does not fit in 512 MB, so keep it out of the order on the free plan.
+Kokoro's memory was measured on a Windows laptop CPU with the backend and a 300-chunk FAISS index loaded (318 MB). With the ONNX runtime's defaults the resident size grew by about 150 MB for each new sentence length and peaked at 848 MB. The Kokoro session now turns off the CPU memory arena and memory-pattern reuse: resident memory stays at about 445 to 450 MB after any of the test sentences (English, Hindi, Hinglish) and the peak is 610 MB. The cost is speed: a 20-word sentence takes about 3.5 s instead of 2.3 s. Even so, Kokoro does not fit in 512 MB, so it stays out of the order on the free plan.
 
 A failed Groq call is logged as `voice: Groq speech synthesis failed (<error type>, HTTP <status>)`. The key and the request text are never logged.
 

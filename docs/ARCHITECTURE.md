@@ -20,8 +20,8 @@ flowchart LR
     VOICE[Voice tutor<br/>provider interfaces]
   end
   LLM[[Groq<br/>language model]]
-  STT[[Speech to text<br/>local Whisper or Groq]]
-  TTS[[Text to speech<br/>local Kokoro or cloud voice]]
+  STT[[Speech to text<br/>Groq Whisper]]
+  TTS[[Text to speech<br/>Groq voice, browser fallback]]
 
   UI -- sign in --> AUTH
   UI -- reads and writes own rows --> PG
@@ -76,7 +76,7 @@ flowchart TD
 - **Why the caps live in code.** Prompts are suggestions, code is a guarantee. The caps keep a confidently wrong answer from scoring well even if the model is generous, and they are covered by offline tests.
 - **Why only confident critical errors cap.** The question hint can be wrong. A cap needs a high-confidence verdict so that one wrong guess by the checker cannot sink a correct answer.
 - **Why the backend is stateless.** The browser already holds the student's data through Supabase. Keeping the API free of storage makes it cheap to host and easy to scale or restart.
-- **Why voice uses provider interfaces.** Speech to text, the language model and text to speech each sit behind a small interface. Local models are the default for privacy and cost on a laptop; if one is missing or fails, a cloud provider takes over and the page shows which one is active. See [VOICE_TUTOR.md](VOICE_TUTOR.md).
+- **Why voice uses provider interfaces.** Speech to text, the language model and text to speech each sit behind a small interface. Cloud providers are the default so the backend fits a 512 MB host; optional local models can be enabled on a larger machine, and if one is missing or fails, the cloud provider takes over and the page shows which one is active. See [VOICE_TUTOR.md](VOICE_TUTOR.md).
 
 ## Stack
 
@@ -88,5 +88,5 @@ flowchart TD
 | Embeddings and search | fastembed (ONNX) `all-MiniLM-L6-v2`, FAISS |
 | Documents | PyMuPDF, python-docx |
 | Auth and data | Supabase (Postgres, row level security) |
-| Voice | faster-whisper and Kokoro locally; Groq Whisper and edge-tts in the cloud |
+| Voice | Groq Whisper, Groq speech, browser voice (optional local Kokoro, off by default) |
 | Deploy | Vercel (frontend), Render (backend) |

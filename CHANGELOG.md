@@ -5,6 +5,7 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 ## [Unreleased]
 
 ### Changed
+- Voice defaults now suit a 512 MB host: cloud speech to text, Groq text to speech and no model preload, so nothing local loads unless it is enabled
 - Spoken interview answers are recorded and transcribed on the server (`POST /interview/transcribe`) instead of using browser speech recognition, with live transcription, a microphone-level waveform and a calm retry on errors
 - The microphone message says "blocked" only for a real permission error
 - The spoken reply follows `VOICE_TTS_ORDER` (default: Groq, then the browser voice; Kokoro and Edge only when listed). Hinglish uses Kokoro's Hindi voice when Kokoro is enabled, otherwise the browser voice

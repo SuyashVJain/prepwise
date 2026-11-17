@@ -17,6 +17,8 @@ services:
         value: cloud
       - key: VOICE_TTS_PROVIDER
         value: cloud
+      - key: VOICE_TTS_ORDER
+        value: groq
       - key: VOICE_WARMUP
         value: "0"
       - key: LLM_MODEL

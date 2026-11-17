@@ -22,8 +22,8 @@ RATE_LIMIT_TUTOR = os.getenv("RATE_LIMIT_TUTOR") or "20/minute"
 
 # Voice tutor. "local" runs speech models on this machine and falls back to the
 # cloud provider if they cannot load; "cloud" skips the local models.
-VOICE_STT_PROVIDER = (os.getenv("VOICE_STT_PROVIDER") or "local").lower()
-VOICE_TTS_PROVIDER = (os.getenv("VOICE_TTS_PROVIDER") or "local").lower()
+VOICE_STT_PROVIDER = (os.getenv("VOICE_STT_PROVIDER") or "cloud").lower()
+VOICE_TTS_PROVIDER = (os.getenv("VOICE_TTS_PROVIDER") or "cloud").lower()
 # "base" transcribes a short question in well under a second on a laptop CPU; "small" is more accurate but about three times slower there.
 VOICE_STT_MODEL = os.getenv("VOICE_STT_MODEL") or "base"
 VOICE_STT_CLOUD_MODEL = os.getenv("VOICE_STT_CLOUD_MODEL") or "whisper-large-v3-turbo"
@@ -43,7 +43,7 @@ VOICE_TTS_CLOUD_VOICE = "hannah" if (not _cloud_voice or _edge_name) else _cloud
 # Second cloud fallback (edge-tts).
 VOICE_TTS_EDGE_VOICE = os.getenv("VOICE_TTS_EDGE_VOICE") or (_cloud_voice if _edge_name else "en-IN-NeerjaNeural")
 # Load the speech models when the server starts instead of on the first tutor question.
-VOICE_WARMUP = (os.getenv("VOICE_WARMUP") or "1").lower() not in ("0", "false", "no", "off")
+VOICE_WARMUP = (os.getenv("VOICE_WARMUP") or "0").lower() not in ("0", "false", "no", "off")
 # Speech models are cached here, outside the repo.
 VOICE_MODEL_DIR = os.getenv("VOICE_MODEL_DIR") or os.path.join(os.path.expanduser("~"), ".cache", "prepwise", "voice")
 
