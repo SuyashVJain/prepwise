@@ -29,7 +29,14 @@ VOICE_STT_MODEL = os.getenv("VOICE_STT_MODEL") or "base"
 VOICE_STT_CLOUD_MODEL = os.getenv("VOICE_STT_CLOUD_MODEL") or "whisper-large-v3-turbo"
 VOICE_TTS_VOICE = os.getenv("VOICE_TTS_VOICE") or "af_heart"
 VOICE_TTS_MODEL_FILE = os.getenv("VOICE_TTS_MODEL_FILE") or "kokoro-v1.0.int8.onnx"
-VOICE_TTS_CLOUD_VOICE = os.getenv("VOICE_TTS_CLOUD_VOICE") or "en-IN-NeerjaNeural"
+# The cloud voice is Groq's text-to-speech. A value that ends in "Neural" is an old Edge voice name: keep it for the
+# Edge fallback and use the default Groq voice, so an existing setting does not break the Groq voice.
+VOICE_TTS_CLOUD_MODEL = os.getenv("VOICE_TTS_CLOUD_MODEL") or "canopylabs/orpheus-v1-english"
+_cloud_voice = os.getenv("VOICE_TTS_CLOUD_VOICE") or ""
+_edge_name = _cloud_voice.endswith("Neural")
+VOICE_TTS_CLOUD_VOICE = "hannah" if (not _cloud_voice or _edge_name) else _cloud_voice
+# Second cloud fallback (edge-tts).
+VOICE_TTS_EDGE_VOICE = os.getenv("VOICE_TTS_EDGE_VOICE") or (_cloud_voice if _edge_name else "en-IN-NeerjaNeural")
 # Load the speech models when the server starts instead of on the first tutor question.
 VOICE_WARMUP = (os.getenv("VOICE_WARMUP") or "1").lower() not in ("0", "false", "no", "off")
 # Speech models are cached here, outside the repo.

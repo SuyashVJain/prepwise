@@ -112,7 +112,7 @@ The web app signs in through Supabase and stores a student's sessions there unde
 | Retrieval | fastembed (ONNX) `all-MiniLM-L6-v2`, FAISS (in memory) |
 | Documents | PyMuPDF, python-docx |
 | Auth and data | Supabase Postgres with row level security |
-| Voice | faster-whisper and Kokoro locally; Groq Whisper and edge-tts in the cloud |
+| Voice | faster-whisper and Kokoro locally; Groq Whisper and Groq speech in the cloud, edge-tts as a fallback |
 | Deploy | Vercel (frontend), Render (backend) |
 
 ## Quick start

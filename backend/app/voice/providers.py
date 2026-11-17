@@ -10,10 +10,16 @@ from app.config import (
     VOICE_MODEL_DIR,
     VOICE_STT_CLOUD_MODEL,
     VOICE_STT_MODEL,
+    VOICE_TTS_CLOUD_MODEL,
     VOICE_TTS_CLOUD_VOICE,
+    VOICE_TTS_EDGE_VOICE,
     VOICE_TTS_MODEL_FILE,
     VOICE_TTS_VOICE,
 )
+from app.voice.text import chunk_text
+
+# Groq's speech endpoint takes at most this many characters per request.
+GROQ_TTS_MAX_CHARS = 200
 
 
 class ProviderError(RuntimeError):
@@ -244,13 +250,74 @@ def _describe_error(e: Exception) -> str:
     return type(e).__name__ + (f", HTTP {status}" if status else "")
 
 
+def join_wavs(parts: list[bytes]) -> bytes:
+    """One WAV from several, in order. They must share the same format, as pieces from one voice do."""
+    if len(parts) == 1:
+        return parts[0]
+    frames = []
+    params = None
+    for part in parts:
+        try:
+            with wave.open(io.BytesIO(part), "rb") as f:
+                current = (f.getnchannels(), f.getsampwidth(), f.getframerate())
+                if params is None:
+                    params = current
+                elif current != params:
+                    raise ProviderError("speech pieces have different audio formats")
+                frames.append(f.readframes(f.getnframes()))
+        except wave.Error as e:
+            raise ProviderError(f"speech piece is not a valid WAV file ({e})")
+    buffer = io.BytesIO()
+    with wave.open(buffer, "wb") as out:
+        out.setnchannels(params[0])
+        out.setsampwidth(params[1])
+        out.setframerate(params[2])
+        out.writeframes(b"".join(frames))
+    return buffer.getvalue()
+
+
+class GroqTTS(TTSProvider):
+    """Groq's hosted speech (Orpheus). Uses the same key as the language model. Text longer than 200 characters is sent in pieces."""
+
+    mime = "audio/wav"
+
+    def __init__(self, voice: str = VOICE_TTS_CLOUD_VOICE, model: str = VOICE_TTS_CLOUD_MODEL):
+        from fastapi import HTTPException
+
+        from app.services.gemini import get_client
+
+        try:
+            self._client = get_client()
+        except HTTPException as e:
+            # No key on the server: this voice is unavailable, so the next one in the chain is used.
+            raise ProviderError(str(e.detail))
+        self._voice = voice
+        self._model = model
+        self.name = f"cloud-groq-{voice}"
+
+    def synthesize(self, text: str) -> bytes:
+        pieces = chunk_text(text, GROQ_TTS_MAX_CHARS)
+        if not pieces:
+            raise ProviderError("nothing to speak")
+        parts = []
+        for piece in pieces:
+            try:
+                response = self._client.audio.speech.create(model=self._model, voice=self._voice, input=piece, response_format="wav")
+                parts.append(response.read())
+            except Exception as e:
+                detail = _describe_error(e)
+                print(f"voice: Groq speech synthesis failed ({detail})", flush=True)
+                raise ProviderError(f"Groq speech synthesis failed ({detail})")
+        return join_wavs(parts)
+
+
 class EdgeTTS(TTSProvider):
-    """Hosted neural voice. Needs internet, no key."""
+    """Hosted neural voice. Needs internet, no key. The last cloud fallback."""
 
     name = "cloud-edge-tts"
     mime = "audio/mpeg"
 
-    def __init__(self, voice: str = VOICE_TTS_CLOUD_VOICE):
+    def __init__(self, voice: str = VOICE_TTS_EDGE_VOICE):
         try:
             import edge_tts
         except ImportError as e:
@@ -299,10 +366,10 @@ class GroqLLM(LLMProvider):
 # ── FALLBACK ──
 
 class FallbackSTT(STTProvider):
-    """Uses the preferred provider until it fails to load or to answer, then the fallback for good."""
+    """Uses the preferred provider until it fails to load or to answer, then the next one for good."""
 
-    def __init__(self, preferred: Callable[[], STTProvider], fallback: Callable[[], STTProvider]):
-        self._chain = _Chain(preferred, fallback)
+    def __init__(self, *factories: Callable[[], STTProvider]):
+        self._chain = _Chain(*factories)
 
     @property
     def name(self) -> str:  # type: ignore[override]
@@ -321,8 +388,10 @@ class FallbackSTT(STTProvider):
 
 
 class FallbackTTS(TTSProvider):
-    def __init__(self, preferred: Callable[[], TTSProvider], fallback: Callable[[], TTSProvider]):
-        self._chain = _Chain(preferred, fallback)
+    """Tries the providers in the order given: each one is used until it fails to load or to answer, then the next."""
+
+    def __init__(self, *factories: Callable[[], TTSProvider]):
+        self._chain = _Chain(*factories)
 
     @property
     def name(self) -> str:  # type: ignore[override]
@@ -345,34 +414,36 @@ class FallbackTTS(TTSProvider):
 
 
 class _Chain:
-    def __init__(self, preferred: Callable, fallback: Callable):
-        self._factories = [preferred, fallback]
+    """Providers in order of preference. A provider that fails to load or to answer is dropped for good and the next one is tried."""
+
+    def __init__(self, *factories: Callable):
+        self._factories = list(factories)
+        self._index = 0
         self._provider = None
         self.fell_back = False
         self.reason = ""
 
     def provider(self):
-        if self._provider is None:
+        while self._provider is None:
             try:
-                self._provider = self._factories[0]()
+                self._provider = self._factories[self._index]()
             except Exception as e:
-                self._switch(e)
+                self._advance(e)
         return self._provider
 
-    def _switch(self, error: Exception):
-        if self.fell_back:
-            raise ProviderError(f"both providers failed ({error})")
+    def _advance(self, error: Exception):
+        if self._index + 1 >= len(self._factories):
+            raise ProviderError(f"all providers failed ({error})")
         self.fell_back = True
         self.reason = str(error)
         print(f"voice: preferred provider unavailable, using the fallback ({error})")
-        self._provider = self._factories[1]()
+        self._index += 1
+        self._provider = None
 
     def call(self, action: Callable):
-        provider = self.provider()
-        try:
-            return action(provider)
-        except Exception as e:
-            if self.fell_back:
-                raise
-            self._switch(e)
-            return action(self._provider)
+        while True:
+            provider = self.provider()
+            try:
+                return action(provider)
+            except Exception as e:
+                self._advance(e)

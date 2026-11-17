@@ -42,6 +42,35 @@ def split_sentences(text: str) -> list[str]:
     return splitter.feed(text) + splitter.flush()
 
 
+def _cut_point(text: str, limit: int) -> int:
+    """Where to cut a piece longer than `limit`: after a comma or similar mark if there is one late enough, else at a space, else at the limit."""
+    window = text[:limit]
+    marks = [m.end() for m in re.finditer(r"[,;:\u2014\u2013]\s", window)]
+    if marks and marks[-1] >= limit * 0.4:
+        return marks[-1]
+    space = window.rfind(" ")
+    return space if space >= limit * 0.4 else limit
+
+
+def chunk_text(text: str, limit: int = 200) -> list[str]:
+    """
+    Pieces of at most `limit` characters, in reading order: each sentence on its own, and a sentence that is longer
+    than the limit split at a comma or a space. Used for speech services that accept a limited text length.
+    """
+    chunks: list[str] = []
+    for sentence in split_sentences(text):
+        rest = " ".join(sentence.split())
+        while len(rest) > limit:
+            cut = _cut_point(rest, limit)
+            piece = rest[:cut].strip()
+            if piece:
+                chunks.append(piece)
+            rest = rest[cut:].strip()
+        if rest:
+            chunks.append(rest)
+    return chunks
+
+
 def clean_for_speech(text: str) -> str:
     """Remove markup a voice should not read out."""
     text = re.sub(r"```.*?```", " ", text, flags=re.DOTALL)

@@ -32,7 +32,7 @@ browser (/tutor)                         backend (FastAPI)
 |---|---|---|
 | Speech-to-text | faster-whisper, `base`, int8, GPU if usable else CPU | Groq Whisper (`whisper-large-v3-turbo`) |
 | LLM | — | Groq, whatever `LLM_MODEL` is set to |
-| Text-to-speech | Kokoro (ONNX, CPU) | edge-tts, voice `en-IN-NeerjaNeural` |
+| Text-to-speech | Kokoro (ONNX, CPU) | Groq (`canopylabs/orpheus-v1-english`, voice `hannah`), then edge-tts |
 
 ### Files
 
@@ -98,7 +98,9 @@ All optional. Defaults are shown; they are also listed in `backend/.env.example`
 | `VOICE_STT_CLOUD_MODEL` | `whisper-large-v3-turbo` | Groq transcription model |
 | `VOICE_TTS_VOICE` | `af_heart` | Kokoro voice |
 | `VOICE_TTS_MODEL_FILE` | `kokoro-v1.0.int8.onnx` | Kokoro model file (`kokoro-v1.0.fp16.onnx` and `kokoro-v1.0.onnx` are larger) |
-| `VOICE_TTS_CLOUD_VOICE` | `en-IN-NeerjaNeural` | edge-tts voice |
+| `VOICE_TTS_CLOUD_MODEL` | `canopylabs/orpheus-v1-english` | Groq text-to-speech model |
+| `VOICE_TTS_CLOUD_VOICE` | `hannah` | Groq voice (autumn, diana, hannah, austin, daniel, troy). A value ending in `Neural` is treated as an old edge-tts voice name: it goes to `VOICE_TTS_EDGE_VOICE` and Groq keeps `hannah` |
+| `VOICE_TTS_EDGE_VOICE` | `en-IN-NeerjaNeural` | edge-tts voice, the last cloud fallback |
 | `VOICE_MODEL_DIR` | `~/.cache/prepwise/voice` | Where speech models are cached, outside the repo |
 | `RATE_LIMIT_TUTOR` | `20/minute` | Tutor turns per user |
 | `YOUTUBE_API_KEY` | empty | YouTube Data API v3 key. Without it only the hand-picked videos show |
@@ -111,9 +113,9 @@ The tutor also uses `GROQ_API_KEY`, `LLM_MODEL` and `SUPABASE_URL`, already set 
 
 | | Local | Cloud |
 |---|---|---|
-| Needs | `requirements-voice.txt`, about 600 MB of models on first run | Internet; Groq key for speech-to-text; nothing for edge-tts |
-| Cost | Free, no request limits | Groq transcription requests count against the account |
-| Privacy | Audio stays on the machine | Audio goes to Groq; text goes to the edge-tts service |
+| Needs | `requirements-voice.txt`, about 600 MB of models on first run | Internet; Groq key for speech-to-text and text-to-speech (the Orpheus model may need its terms accepted once in the Groq console); nothing for edge-tts |
+| Cost | Free, no request limits | Groq transcription and speech requests count against the account |
+| Privacy | Audio stays on the machine | Audio goes to Groq; the text to be spoken goes to Groq (and to the edge-tts service if Groq fails) |
 | Best for | A laptop demo, or any machine with a few GB of free RAM | Railway and other small servers |
 
 On Railway, leave the voice requirements out. The app starts without them, the local providers fail to load, and the tutor uses the cloud providers automatically. Setting both provider variables to `cloud` skips the failed load attempt.
@@ -235,3 +237,14 @@ For a spoken question, add the transcription time to the first-audio time: about
 - Walkthroughs (Python and DSA) and the Python code-along stay limited to those subjects. Curated videos are keyed by subject id; the YouTube search uses the subject name.
 - **Other.** The student types a subject (up to 60 characters). It is sent as the session's `subject`, so the tutor, notes and video search work without a roadmap. The backend removes control characters and markup characters and caps the length (`clean_subject` in `backend/app/subjects.py`). The same typed subject can be used for a Subject-Specific interview. Existing rate limits apply.
 - **Categories.** Each subject has a `category`: "Core CS" (Python, DSA, DBMS, OOP, Operating Systems, Computer Networks), "Theory and hardware" (Theory of Computation, Compilers, Computer Organization and Architecture, Digital Electronics, Discrete Mathematics) and "Software and applied" (System Design, Software Engineering, Web Technologies, Machine Learning, Artificial Intelligence). The pickers show the groups in that order. A subject with no category would fall into a final group with no label.
+
+## Speech output order
+
+The server voice is chosen in this order, and a voice that fails to load or to answer is dropped for the rest of the session:
+
+1. `VOICE_TTS_PROVIDER=local`: Kokoro, then Groq, then edge-tts. `cloud`: Groq, then edge-tts. Hinglish always uses the cloud order.
+2. Groq accepts at most 200 characters per request, so each sentence is sent on its own and a sentence longer than 200 characters is split at a comma or a space. The pieces are joined into one WAV per sentence, so sentence-by-sentence streaming to the browser is unchanged.
+3. If every server voice fails, the browser's own speech reads the reply, and only if that fails too does the page show "Voice output failed; showing text only."
+
+A failed Groq call is logged as `voice: Groq speech synthesis failed (<error type>, HTTP <status>)`. The key and the request text are never logged.
+

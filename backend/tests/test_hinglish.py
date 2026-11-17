@@ -33,13 +33,17 @@ class HinglishVoiceTests(unittest.TestCase):
     def test_hinglish_uses_the_cloud_voice_even_when_local_is_configured(self):
         local, cloud = FakeTTS(), FakeTTS()
         cloud.name = "cloud-voice"
-        with mock.patch.object(factory, "KokoroTTS", lambda: local), mock.patch.object(factory, "EdgeTTS", lambda: cloud):
+        with mock.patch.object(factory, "KokoroTTS", lambda: local), mock.patch.object(factory, "GroqTTS", lambda: cloud):
             self.assertEqual(factory.VOICE_TTS_PROVIDER, "local")
-            self.assertIs(factory.get_tts(hinglish=True), cloud)
+            hinglish = factory.get_tts(hinglish=True)
+            hinglish.synthesize("namaste dost")
+            self.assertEqual(hinglish.name, "cloud-voice")
+            self.assertEqual(cloud.spoken, ["namaste dost"])
+            self.assertEqual(local.spoken, [])
             english = factory.get_tts(hinglish=False)
             english.synthesize("hello there")
             self.assertEqual(local.spoken, ["hello there"])
-            self.assertEqual(cloud.spoken, [])
+            self.assertEqual(cloud.spoken, ["namaste dost"])
 
 
 class HinglishSessionTests(unittest.TestCase):

@@ -1,4 +1,4 @@
-"""Chooses the speech providers from settings and falls back to cloud ones when a local model is missing."""
+"""Chooses the speech providers from settings and falls back along a chain (local, then Groq, then Edge) when one is missing or fails."""
 import threading
 from typing import Optional
 
@@ -8,6 +8,7 @@ from app.voice.providers import (
     FallbackSTT,
     FallbackTTS,
     GroqLLM,
+    GroqTTS,
     GroqWhisperSTT,
     KokoroTTS,
     LLMProvider,
@@ -37,17 +38,18 @@ def get_stt() -> STTProvider:
 
 def get_tts(hinglish: bool = False) -> TTSProvider:
     """
-    Text-to-speech chosen by VOICE_TTS_PROVIDER. Hinglish always uses the cloud
-    voice: the local English voice mispronounces Roman-script Hindi.
+    Text-to-speech chosen by VOICE_TTS_PROVIDER. The cloud voice is Groq's, with Edge as its fallback. The local voice
+    (Kokoro) falls back to the cloud ones. Hinglish always uses the cloud voice: the local English voice mispronounces
+    Roman-script Hindi.
     """
     global _tts, _cloud_tts
     with _lock:
         if hinglish or VOICE_TTS_PROVIDER == "cloud":
             if _cloud_tts is None:
-                _cloud_tts = EdgeTTS()
+                _cloud_tts = FallbackTTS(GroqTTS, EdgeTTS)
             return _cloud_tts
         if _tts is None:
-            _tts = FallbackTTS(KokoroTTS, EdgeTTS)
+            _tts = FallbackTTS(KokoroTTS, GroqTTS, EdgeTTS)
         return _tts
 
 
