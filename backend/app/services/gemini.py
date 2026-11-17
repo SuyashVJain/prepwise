@@ -4,6 +4,7 @@ from groq import Groq
 from app.config import GROQ_API_KEY, LLM_MODEL, LLM_REASONING_EFFORT
 from typing import Iterator, Optional
 import json
+import re
 
 _client = None
 
@@ -369,6 +370,21 @@ Respond ONLY with valid JSON, no markdown, no extra text:
     return result
 
 
+TRIVIAL_MIN_WORDS = 15
+TRIVIAL_ANSWER_HINT = "Too short to score properly. Try a longer answer."
+# At least this share of the answer's words must come from the question for it to count as a restatement.
+RESTATEMENT_SHARE = 0.7
+
+
+def is_trivial_answer(question: str, answer: str) -> bool:
+    """True for an empty or very short answer, or one that mostly repeats the question's own words."""
+    words = re.findall(r"[a-z0-9']+", (answer or "").lower())
+    if len(words) < TRIVIAL_MIN_WORDS:
+        return True
+    asked = set(re.findall(r"[a-z0-9']+", (question or "").lower()))
+    return sum(w in asked for w in words) / len(words) >= RESTATEMENT_SHARE
+
+
 async def score_answer(
     question: str,
     answer: str,
@@ -382,10 +398,11 @@ async def score_answer(
     verified claims. Falls back to single-prompt scoring if the chain fails,
     so an interview never breaks on a bad model reply.
     """
-    if not answer or len(answer.strip()) < 15:
+    if is_trivial_answer(question, answer):
+        # No model call and no critique: there is nothing to check, so the score is capped at 1 (0 for no real attempt).
         return {
-            "score": 0.0,
-            "hint": "No meaningful answer provided. Always attempt the question even if unsure - partial credit is better than silence.",
+            "score": 1.0 if len((answer or "").strip()) >= 15 else 0.0,  # under 15 characters is no attempt at all
+            "hint": TRIVIAL_ANSWER_HINT,
             "ideal_answer": ideal_answer_hint,
             "weak_areas": [topic],
             "claims": [],

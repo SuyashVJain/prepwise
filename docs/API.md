@@ -57,7 +57,7 @@ Checks the claims in an answer and scores it.
 
 Request: `question`, `answer`, `topic` (required); `expected_keywords`, `ideal_answer_hint`, `time_taken_seconds` (optional, recorded for pacing only).
 
-Response: `score` (0 to 10), `hint`, `ideal_answer`, `weak_areas`, and `claims`, a list of `{claim, verdict, critical, confidence, reason}`. `claims` is absent when the single-prompt fallback was used. An answer under 15 characters scores 0 without a model call.
+Response: `score` (0 to 10), `hint`, `ideal_answer`, `weak_areas`, and `claims`, a list of `{claim, verdict, critical, confidence, reason}`. `claims` is absent when the single-prompt fallback was used. An answer under 15 characters scores 0 without a model call. An answer under 15 words, or one that mostly repeats the question's own words, scores 1 at most without a model call, with the hint "Too short to score properly. Try a longer answer." and no claims.
 
 ### `POST /interview/transcribe` (llm limit)
 Multipart form: `file` (a recording, up to 10 MB) and optional `language`. Response: `{"text": "..."}`, empty when no speech was heard. Returns `400` for an empty file, `413` when it is too large and `502` when speech-to-text fails. Used for spoken interview answers.
