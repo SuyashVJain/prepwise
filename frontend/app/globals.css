@@ -80,7 +80,8 @@ summary { min-height: 40px; }
 @media (max-width: 599px) { .hide-mobile { display: none !important; } }
 @media (max-width: 1099px) {
   .tutor-root { flex-wrap: wrap; }
-  .tutor-main { height: auto !important; min-height: 70vh; overflow: visible !important; }
+  /* flex-basis 100% so the main column takes its own row and the side panel wraps below it, instead of both squeezing into one row */
+  .tutor-main { flex: 1 1 100% !important; height: auto !important; min-height: 70vh; overflow: visible !important; }
   .tutor-aside { width: 100% !important; height: auto !important; min-height: 50vh; border-left: none !important; border-top: 1px solid var(--border); }
 }
 
