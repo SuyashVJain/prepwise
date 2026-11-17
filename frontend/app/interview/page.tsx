@@ -11,6 +11,7 @@ import { optionStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import MicHelp from '@/components/MicHelp'
+import { describeSpeechError } from '@/lib/voiceErrors'
 import { useToast } from '@/components/Toast'
 import ScoreRing from '@/components/ScoreRing'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
@@ -124,6 +125,8 @@ export default function InterviewPage() {
   const [voiceMode, setVoiceMode] = useState(false)
   const [listening, setListening] = useState(false)
   const [voiceNote, setVoiceNote] = useState('')
+  // True only for a real permission error, so the "blocked" help opens only then.
+  const [micBlocked, setMicBlocked] = useState(false)
   const [startingSession, setStartingSession] = useState(false)
 
   const [debrief, setDebrief] = useState<Debrief | null>(null)
@@ -597,6 +600,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
       return
     }
     setVoiceNote('')
+    setMicBlocked(false)
     // Results are cumulative for one recognition run, so each result replaces the whole spoken part after the typed text.
     baseAnswerRef.current = answer.trim() ? answer.trimEnd() + ' ' : ''
     const rec = new SR()
@@ -608,10 +612,12 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
       setAnswer(baseAnswerRef.current + spoken)
     }
     rec.onerror = e => {
-      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-        setVoiceNote('The microphone is blocked. Allow it in the browser address bar, or type your answer.')
-        stopRecognition()
-      }
+      console.warn('Speech recognition error:', e.error)
+      const issue = describeSpeechError(e.error)
+      if (!issue) return
+      setVoiceNote(issue.message)
+      setMicBlocked(issue.blocked)
+      stopRecognition()
     }
     // The browser can end a run by itself, for example after silence.
     rec.onend = () => {
@@ -862,7 +868,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             {(voiceMode || voiceNote) && (
               <div style={{ padding: '8px 24px 0', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
                 {voiceNote && <p role="alert" style={{ fontSize: '14px', color: '#f59e0b', marginBottom: '4px' }}>{voiceNote}</p>}
-                <MicHelp blocked={!!voiceNote} />
+                <MicHelp blocked={micBlocked} />
               </div>
             )}
 
