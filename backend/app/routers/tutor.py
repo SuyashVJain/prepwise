@@ -416,5 +416,6 @@ async def tutor_ws(ws: WebSocket):
         await session.cancel_turn()
         try:
             await ws.close()
-        except RuntimeError:
+        except (WebSocketDisconnect, RuntimeError):
+            # The browser already left, so there is nothing left to close.
             pass
