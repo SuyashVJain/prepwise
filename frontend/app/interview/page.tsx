@@ -11,7 +11,8 @@ import { optionStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
 import MicHelp from '@/components/MicHelp'
-import { describeSpeechError } from '@/lib/voiceErrors'
+import { describeMicError, NO_SPEECH_MESSAGE } from '@/lib/voiceErrors'
+import { canRecord, startRecording, transcribeRecording, transcribeFailureMessage, type Recording } from '@/lib/voiceAnswer'
 import { useToast } from '@/components/Toast'
 import ScoreRing from '@/components/ScoreRing'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
@@ -55,8 +56,6 @@ type SessionQuestion = Question & { answer: string; result: AnswerResult | null;
 type Profile = { university?: string; semester?: number }
 type Syllabus = { id?: string; name?: string; topics?: string[]; raw_chunks?: string[]; vectors?: Record<string, unknown>[] }
 type Debrief = { debrief: string; avg_score: number; weak_topics?: string[] }
-type SpeechRec = { continuous: boolean; interimResults: boolean; onerror: ((e: { error: string }) => void) | null; onend: (() => void) | null; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; start(): void; stop(): void }
-type SpeechRecCtor = new () => SpeechRec
 type Phase = 'setup' | 'interview' | 'debrief'
 
 // A soft target only: nothing stops the student going over it.
@@ -124,6 +123,7 @@ export default function InterviewPage() {
   const [takenSeconds, setTakenSeconds] = useState<number | null>(null)
   const [voiceMode, setVoiceMode] = useState(false)
   const [listening, setListening] = useState(false)
+  const [transcribing, setTranscribing] = useState(false)
   const [voiceNote, setVoiceNote] = useState('')
   // True only for a real permission error, so the "blocked" help opens only then.
   const [micBlocked, setMicBlocked] = useState(false)
@@ -148,9 +148,10 @@ export default function InterviewPage() {
 const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const questionStartRef = useRef(0)
   const scoreRef = useRef<HTMLDivElement | null>(null)
-  const recognitionRef = useRef<SpeechRec | null>(null)
+  const recorderRef = useRef<Recording | null>(null)
+  const voiceTokenRef = useRef(0)
+  const voiceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   // The text typed before voice input started; recognised speech is added after it.
-  const baseAnswerRef = useRef('')
   // The saved session row, so a retry after a failed answers save does not create a second session.
   const savedIdRef = useRef<string | null>(null)
   const router = useRouter()
@@ -269,24 +270,22 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     } catch { toast('Could not copy. Select the text and copy it by hand.', 'error') }
   }
 
-  // Detach first so a late result from the old question can never write into the next one.
+  // Throw away any recording or pending transcription, so a late result can never write into the next question.
   function stopRecognition() {
-    const rec = recognitionRef.current
-    recognitionRef.current = null
-    if (rec) {
-      rec.onresult = null
-      rec.onend = null
-      rec.onerror = null
-      try { rec.stop() } catch { /* already stopped */ }
-    }
+    voiceTokenRef.current++
+    if (voiceTimerRef.current) { clearTimeout(voiceTimerRef.current); voiceTimerRef.current = null }
+    recorderRef.current?.cancel()
+    recorderRef.current = null
     setVoiceMode(false)
     setListening(false)
+    setTranscribing(false)
   }
 
   // Release the microphone when leaving the page.
   useEffect(() => () => {
-    const rec = recognitionRef.current
-    if (rec) { rec.onresult = null; rec.onend = null; rec.onerror = null; try { rec.stop() } catch { /* ignore */ } }
+    voiceTokenRef.current++
+    if (voiceTimerRef.current) clearTimeout(voiceTimerRef.current)
+    recorderRef.current?.cancel()
   }, [])
 
   function exitSession() {
@@ -304,7 +303,6 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   function newSession() {
     try { sessionStorage.removeItem(SESSION_KEY) } catch { /* ignore */ }
     savedIdRef.current = null
-    baseAnswerRef.current = ''
     setPresetTopic('')
     try { window.history.replaceState(null, '', '/interview') } catch { /* ignore */ }
     setPhase('setup')
@@ -452,7 +450,6 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   async function nextQuestion() {
     if (qNumber >= totalQuestions) { await fetchDebrief(); return }
     stopRecognition()
-    baseAnswerRef.current = ''
     const nextNum = qNumber + 1
     setQNumber(nextNum)
     setAnswer('')
@@ -591,46 +588,49 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     }
   }
 
-  function toggleVoice() {
-    if (voiceMode) { stopRecognition(); return }
-    const w = window as unknown as { SpeechRecognition?: SpeechRecCtor; webkitSpeechRecognition?: SpeechRecCtor }
-    const SR = w.SpeechRecognition || w.webkitSpeechRecognition
-    if (!SR) {
-      setVoiceNote('Voice input is not supported in this browser. Use Chrome or Edge, or type your answer.')
-      return
+  // Stop recording and turn it into text on the server, then add it after what is already in the answer.
+  async function finishVoice() {
+    const rec = recorderRef.current
+    if (!rec) return
+    recorderRef.current = null
+    if (voiceTimerRef.current) { clearTimeout(voiceTimerRef.current); voiceTimerRef.current = null }
+    setListening(false)
+    setTranscribing(true)
+    const token = ++voiceTokenRef.current
+    try {
+      const text = await transcribeRecording(await rec.stop())
+      if (token !== voiceTokenRef.current) return
+      if (!text) setVoiceNote(NO_SPEECH_MESSAGE)
+      else setAnswer(prev => (prev.trim() ? prev.trimEnd() + ' ' : '') + text)
+    } catch (err) {
+      if (token === voiceTokenRef.current) setVoiceNote(transcribeFailureMessage(err))
+    } finally {
+      if (token === voiceTokenRef.current) { setTranscribing(false); setVoiceMode(false) }
     }
+  }
+
+  async function toggleVoice() {
+    if (transcribing) return
+    if (recorderRef.current) { await finishVoice(); return }
     setVoiceNote('')
     setMicBlocked(false)
-    // Results are cumulative for one recognition run, so each result replaces the whole spoken part after the typed text.
-    baseAnswerRef.current = answer.trim() ? answer.trimEnd() + ' ' : ''
-    const rec = new SR()
-    rec.continuous = true
-    rec.interimResults = true
-    rec.onresult = e => {
-      if (recognitionRef.current !== rec) return
-      const spoken = Array.from(e.results).map(r => r[0].transcript).join('').trim()
-      setAnswer(baseAnswerRef.current + spoken)
-    }
-    rec.onerror = e => {
-      console.warn('Speech recognition error:', e.error)
-      const issue = describeSpeechError(e.error)
-      if (!issue) return
+    if (!canRecord()) { setVoiceNote(describeMicError('unsupported').message); return }
+    const token = ++voiceTokenRef.current
+    try {
+      const rec = await startRecording()
+      if (token !== voiceTokenRef.current) { rec.cancel(); return }
+      recorderRef.current = rec
+      setVoiceMode(true)
+      setListening(true)
+      // Keep one recording well under the server's size limit.
+      voiceTimerRef.current = setTimeout(() => { void finishVoice() }, 180_000)
+    } catch (err) {
+      const name = err instanceof Error ? err.name : ''
+      console.warn('Microphone error:', name)
+      const issue = describeMicError(name)
       setVoiceNote(issue.message)
       setMicBlocked(issue.blocked)
-      stopRecognition()
     }
-    // The browser can end a run by itself, for example after silence.
-    rec.onend = () => {
-      if (recognitionRef.current !== rec) return
-      recognitionRef.current = null
-      setVoiceMode(false)
-      setListening(false)
-      setVoiceNote('Voice input stopped. Press VOICE to continue.')
-    }
-    recognitionRef.current = rec
-    try { rec.start() } catch { recognitionRef.current = null; setVoiceNote('Voice input could not start. Type your answer instead.'); return }
-    setVoiceMode(true)
-    setListening(true)
   }
 
   if (loadingProfile) {
@@ -858,9 +858,9 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                   style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 12px', border: '1px solid var(--border)', background: !voiceMode ? 'var(--lime)' : 'transparent', color: !voiceMode ? '#0e0e0e' : 'var(--text-3)', cursor: 'pointer' }}>
                   TEXT
                 </button>
-                <button onClick={toggleVoice}
+                <button onClick={toggleVoice} disabled={transcribing}
                   style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 12px', border: '1px solid var(--border)', background: voiceMode ? 'var(--lime)' : 'transparent', color: voiceMode ? '#0e0e0e' : 'var(--text-3)', cursor: 'pointer' }}>
-                  VOICE {listening ? '●' : '○'}
+                  {transcribing ? 'TRANSCRIBING…' : <>VOICE {listening ? '●' : '○'}</>}
                 </button>
               </div>
             </div>
