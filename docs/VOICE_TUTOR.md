@@ -93,14 +93,16 @@ All optional. Defaults are shown; they are also listed in `backend/.env.example`
 | Variable | Default | Meaning |
 |---|---|---|
 | `VOICE_STT_PROVIDER` | `local` | `local` (falls back to cloud if it cannot load) or `cloud` |
-| `VOICE_TTS_PROVIDER` | `local` | `local` (falls back to cloud) or `cloud` |
+| `VOICE_TTS_PROVIDER` | `local` | `local` or `cloud`. Only sets the default order below |
+| `VOICE_TTS_ORDER` | empty | Server voice engines in the order to try them, for example `groq,kokoro,browser`. Names: `kokoro`, `groq`, `edge`; `browser` ends the list. Empty means `kokoro,groq` when `VOICE_TTS_PROVIDER=local`, otherwise `groq` |
+| `VOICE_TTS_HINDI_VOICE` | `hf_alpha` | Kokoro's Hindi voice, used for Hinglish only when `kokoro` is in the order |
 | `VOICE_STT_MODEL` | `base` | faster-whisper model size. `small` is more accurate but about three times slower on a CPU |
 | `VOICE_STT_CLOUD_MODEL` | `whisper-large-v3-turbo` | Groq transcription model |
 | `VOICE_TTS_VOICE` | `af_heart` | Kokoro voice |
 | `VOICE_TTS_MODEL_FILE` | `kokoro-v1.0.int8.onnx` | Kokoro model file (`kokoro-v1.0.fp16.onnx` and `kokoro-v1.0.onnx` are larger) |
 | `VOICE_TTS_CLOUD_MODEL` | `canopylabs/orpheus-v1-english` | Groq text-to-speech model |
 | `VOICE_TTS_CLOUD_VOICE` | `hannah` | Groq voice (autumn, diana, hannah, austin, daniel, troy). A value ending in `Neural` is treated as an old edge-tts voice name: it goes to `VOICE_TTS_EDGE_VOICE` and Groq keeps `hannah` |
-| `VOICE_TTS_EDGE_VOICE` | `en-IN-NeerjaNeural` | edge-tts voice, the last cloud fallback |
+| `VOICE_TTS_EDGE_VOICE` | `en-IN-NeerjaNeural` | edge-tts voice, used only when `edge` is in the order |
 | `VOICE_MODEL_DIR` | `~/.cache/prepwise/voice` | Where speech models are cached, outside the repo |
 | `RATE_LIMIT_TUTOR` | `20/minute` | Tutor turns per user |
 | `YOUTUBE_API_KEY` | empty | YouTube Data API v3 key. Without it only the hand-picked videos show |
@@ -120,7 +122,7 @@ The tutor also uses `GROQ_API_KEY`, `LLM_MODEL` and `SUPABASE_URL`, already set 
 
 On Render's free plan (512 MB), set `VOICE_STT_PROVIDER=cloud`, `VOICE_TTS_PROVIDER=cloud` and `VOICE_WARMUP=0`, and leave the voice requirements out. The app starts without them, the local providers fail to load, and the tutor uses the cloud providers automatically. Setting both provider variables to `cloud` skips the failed load attempt.
 
-Hinglish always uses the cloud voice, even when `VOICE_TTS_PROVIDER=local`: the local English voice mispronounces Roman-script Hindi.
+Hinglish uses Kokoro's Hindi voice when `kokoro` is in `VOICE_TTS_ORDER`, and the browser's own voice otherwise. The English cloud voices mispronounce Roman-script Hindi, so they are not used for it.
 
 ---
 
@@ -246,9 +248,19 @@ The mock interview does not use the browser's speech recognition. The VOICE butt
 
 The server voice is chosen in this order, and a voice that fails to load or to answer is dropped for the rest of the session:
 
-1. `VOICE_TTS_PROVIDER=local`: Kokoro, then Groq, then edge-tts. `cloud`: Groq, then edge-tts. Hinglish always uses the cloud order.
+1. `VOICE_TTS_ORDER` sets the order, for example `groq,kokoro,browser`. Empty means `kokoro,groq` with `VOICE_TTS_PROVIDER=local` and `groq` otherwise. `browser` ends the list, and an engine that is not listed is never loaded (Kokoro in particular). Edge is used only if you list `edge`. Hinglish uses Kokoro's Hindi voice when Kokoro is listed, otherwise the browser voice.
 2. Groq accepts at most 200 characters per request, so each sentence is sent on its own and a sentence longer than 200 characters is split at a comma or a space. The pieces are joined into one WAV per sentence, so sentence-by-sentence streaming to the browser is unchanged.
 3. If every server voice fails, the browser's own speech reads the reply (a "Tap to enable voice" button appears when the browser blocks autoplay), and only if that fails too does the page show "Voice output failed; showing text only."
+
+### Free mode and full mode
+
+| | Free mode (Render free plan, 512 MB) | Full mode (a machine with 1 GB or more free) |
+|---|---|---|
+| Settings | `VOICE_STT_PROVIDER=cloud`, `VOICE_TTS_PROVIDER=cloud`, `VOICE_WARMUP=0` | `VOICE_TTS_ORDER=kokoro,groq,browser` and the voice requirements installed |
+| Voice | Groq, then the browser's voice. Hinglish uses the browser's voice | Kokoro (English and Hindi), then Groq, then the browser's voice |
+| Memory | about 320 MB with a 300-chunk FAISS index | about 450 MB resident and a peak of about 610 MB, measured with Kokoro loaded on top of that |
+
+Kokoro's memory was measured on a Windows laptop CPU with the backend and a 300-chunk FAISS index loaded (318 MB). With the ONNX runtime's defaults the resident size grew by about 150 MB for each new sentence length and peaked at 848 MB. The Kokoro session now turns off the CPU memory arena and memory-pattern reuse: resident memory stays at about 445 to 450 MB after any of the test sentences (English, Hindi, Hinglish) and the peak is 610 MB. The cost is speed: a 20-word sentence takes about 3.5 s instead of 2.3 s. Even so, Kokoro does not fit in 512 MB, so keep it out of the order on the free plan.
 
 A failed Groq call is logged as `voice: Groq speech synthesis failed (<error type>, HTTP <status>)`. The key and the request text are never logged.
 

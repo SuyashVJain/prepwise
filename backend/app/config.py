@@ -28,6 +28,11 @@ VOICE_TTS_PROVIDER = (os.getenv("VOICE_TTS_PROVIDER") or "local").lower()
 VOICE_STT_MODEL = os.getenv("VOICE_STT_MODEL") or "base"
 VOICE_STT_CLOUD_MODEL = os.getenv("VOICE_STT_CLOUD_MODEL") or "whisper-large-v3-turbo"
 VOICE_TTS_VOICE = os.getenv("VOICE_TTS_VOICE") or "af_heart"
+# Kokoro's Hindi voice, used for Hinglish when Kokoro is enabled.
+VOICE_TTS_HINDI_VOICE = os.getenv("VOICE_TTS_HINDI_VOICE") or "hf_alpha"
+# Order of the server voice engines, for example "groq,kokoro,browser". Names: kokoro, groq, edge; "browser" ends the list
+# (the page then uses the browser's own voice). Empty: "kokoro,groq" when VOICE_TTS_PROVIDER=local, otherwise "groq".
+VOICE_TTS_ORDER = os.getenv("VOICE_TTS_ORDER") or ""
 VOICE_TTS_MODEL_FILE = os.getenv("VOICE_TTS_MODEL_FILE") or "kokoro-v1.0.int8.onnx"
 # The cloud voice is Groq's text-to-speech. A value that ends in "Neural" is an old Edge voice name: keep it for the
 # Edge fallback and use the default Groq voice, so an existing setting does not break the Groq voice.

@@ -200,7 +200,7 @@ class RecordingProvider(FakeTTS):
 
 
 def builder(label, events, fail_to_build=False, fail_on_synthesize=False):
-    def build():
+    def build(**_kwargs):
         events.append(f"{label}:build")
         if fail_to_build:
             raise ProviderError(f"{label} is not available")
@@ -215,10 +215,11 @@ class FallbackOrderTests(unittest.TestCase):
         self.addCleanup(factory.reset)
         self.events = []
 
-    def patched(self, kokoro, groq, edge, provider="local"):
+    def patched(self, kokoro, groq, edge, provider="local", order="kokoro,groq,edge,browser"):
         return (
             mock.patch.object(factory, "KokoroTTS", kokoro), mock.patch.object(factory, "GroqTTS", groq),
             mock.patch.object(factory, "EdgeTTS", edge), mock.patch.object(factory, "VOICE_TTS_PROVIDER", provider),
+            mock.patch.object(factory, "VOICE_TTS_ORDER", order),
         )
 
     def run_with(self, *patches):
@@ -242,25 +243,25 @@ class FallbackOrderTests(unittest.TestCase):
             factory.get_tts().synthesize("hello there friend")
         self.assertEqual(e, ["kokoro:build", "kokoro:synthesize"])
 
-    def test_the_cloud_setting_goes_groq_then_edge_and_never_touches_the_local_voice(self):
+    def test_an_order_of_groq_then_edge_never_touches_the_local_voice(self):
         e = self.events
-        with self.run_with(*self.patched(builder("kokoro", e), builder("groq", e, fail_to_build=True), builder("edge", e), provider="cloud")):
+        with self.run_with(*self.patched(builder("kokoro", e), builder("groq", e, fail_to_build=True), builder("edge", e), provider="cloud", order="groq,edge,browser")):
             factory.get_tts().synthesize("hello there friend")
         self.assertEqual(e, ["groq:build", "edge:build", "edge:synthesize"])
 
     def test_groq_is_the_cloud_voice_when_it_works(self):
         e = self.events
-        with self.run_with(*self.patched(builder("kokoro", e), builder("groq", e), builder("edge", e), provider="cloud")):
+        with self.run_with(*self.patched(builder("kokoro", e), builder("groq", e), builder("edge", e), provider="cloud", order="")):
             tts = factory.get_tts()
             tts.synthesize("hello there friend")
         self.assertEqual(e, ["groq:build", "groq:synthesize"])
         self.assertFalse(tts.fell_back)
 
-    def test_hinglish_uses_the_cloud_chain_even_when_local_is_configured(self):
+    def test_hinglish_uses_kokoro_when_it_is_enabled_and_never_the_english_cloud_voice(self):
         e = self.events
         with self.run_with(*self.patched(builder("kokoro", e), builder("groq", e), builder("edge", e))):
             factory.get_tts(hinglish=True).synthesize("namaste dost")
-        self.assertEqual(e, ["groq:build", "groq:synthesize"])
+        self.assertEqual(e, ["kokoro:build", "kokoro:synthesize"])
 
     def test_when_every_server_voice_fails_the_error_reaches_the_pipeline(self):
         e = self.events

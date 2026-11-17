@@ -52,7 +52,7 @@ Environment variables (names only, set the values in the Render dashboard):
 | `FRONTEND_URL` | Allowed browser origins, comma separated, for example the production domain and a preview domain. No trailing slash needed. |
 | `VOICE_WARMUP` | Set to `0` on a small instance so no speech models load at start. |
 | `VOICE_STT_PROVIDER` | `cloud` (speech to text). |
-| `VOICE_TTS_PROVIDER` | `cloud` (text to speech). |
+| `VOICE_TTS_PROVIDER` | `cloud` (text to speech). With `VOICE_TTS_ORDER` empty this means Groq, then the browser's voice. Do not add `kokoro` to the order on this plan: with it the backend needs about 450 MB resident (peak about 610 MB). |
 | `LLM_MODEL` | Optional. Overrides the default model. |
 | `LLM_REASONING_EFFORT` | Optional. `low` by default, `none` to leave it out. |
 | `RATE_LIMIT_LLM`, `RATE_LIMIT_UPLOAD`, `RATE_LIMIT_DEFAULT`, `RATE_LIMIT_TUTOR` | Optional per-user limits such as `30/minute`. |

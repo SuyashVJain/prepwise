@@ -7,7 +7,8 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 ### Changed
 - Spoken interview answers are recorded and transcribed on the server (`POST /interview/transcribe`) instead of using browser speech recognition, with live transcription, a microphone-level waveform and a calm retry on errors
 - The microphone message says "blocked" only for a real permission error
-- The spoken reply tries the Groq voice, then Edge, then the browser voice
+- The spoken reply follows `VOICE_TTS_ORDER` (default: Groq, then the browser voice; Kokoro and Edge only when listed). Hinglish uses Kokoro's Hindi voice when Kokoro is enabled, otherwise the browser voice
+- Kokoro runs with the ONNX CPU memory arena and memory-pattern reuse off, cutting its peak from about 850 MB to about 610 MB
 
 ## [1.0.0] - 2026-11-09
 

@@ -2,6 +2,7 @@
 import asyncio
 import io
 import os
+import threading
 import wave
 from abc import ABC, abstractmethod
 from typing import Callable, Iterator, Optional
@@ -208,40 +209,83 @@ def pcm_to_wav(samples, sample_rate: int) -> bytes:
     return buffer.getvalue()
 
 
+_kokoro_lock = threading.Lock()
+_kokoro_models: dict = {}
+
+
+def _load_kokoro(model_dir: str, model_file: str):
+    """
+    One Kokoro model per process, shared by every voice and language that uses it. The ONNX session is created with the
+    CPU memory arena and memory-pattern reuse switched off: by default the runtime keeps the memory it used for each new
+    input size, which made resident memory grow by about 150 MB per new sentence length (peak 848 MB measured).
+    """
+    key = (model_dir, model_file)
+    with _kokoro_lock:
+        if key in _kokoro_models:
+            return _kokoro_models[key]
+        from kokoro_onnx import Kokoro
+
+        directory = os.path.join(model_dir, "kokoro")
+        os.makedirs(directory, exist_ok=True)
+        model_path = os.path.join(directory, model_file)
+        voices_path = os.path.join(directory, "voices-v1.0.bin")
+        for path in (model_path, voices_path):
+            if not os.path.exists(path):
+                print(f"voice: downloading {os.path.basename(path)} to {directory} (first run only)")
+                _download(f"{KOKORO_RELEASE}/{os.path.basename(path)}", path)
+        try:
+            import onnxruntime as ort
+
+            options = ort.SessionOptions()
+            options.enable_cpu_mem_arena = False
+            options.enable_mem_pattern = False
+            session = ort.InferenceSession(model_path, sess_options=options, providers=["CPUExecutionProvider"])
+            model = Kokoro.from_session(session, voices_path)
+        except (ImportError, AttributeError):
+            model = Kokoro(model_path, voices_path)  # an older kokoro-onnx without from_session: default memory behaviour
+        _kokoro_models[key] = model
+        return model
+
+
 class KokoroTTS(TTSProvider):
     """Kokoro through ONNX Runtime. Runs on the CPU; model files are fetched once into the cache directory."""
 
     name = "local-kokoro"
     mime = "audio/wav"
 
-    def __init__(self, voice: str = VOICE_TTS_VOICE, model_dir: str = VOICE_MODEL_DIR, model_file: str = VOICE_TTS_MODEL_FILE):
+    def __init__(self, voice: str = VOICE_TTS_VOICE, model_dir: str = VOICE_MODEL_DIR, model_file: str = VOICE_TTS_MODEL_FILE, lang: str = "en-us"):
         try:
-            from kokoro_onnx import Kokoro
+            import kokoro_onnx  # noqa: F401
         except ImportError as e:
             raise ProviderError(f"kokoro-onnx is not installed ({e})")
-
-        directory = os.path.join(model_dir, "kokoro")
-        os.makedirs(directory, exist_ok=True)
-        model_path = os.path.join(directory, model_file)
-        voices_path = os.path.join(directory, "voices-v1.0.bin")
         try:
-            for path in (model_path, voices_path):
-                if not os.path.exists(path):
-                    print(f"voice: downloading {os.path.basename(path)} to {directory} (first run only)")
-                    _download(f"{KOKORO_RELEASE}/{os.path.basename(path)}", path)
-            self._kokoro = Kokoro(model_path, voices_path)
+            self._kokoro = _load_kokoro(model_dir, model_file)
         except Exception as e:
             raise ProviderError(f"could not load the Kokoro model ({type(e).__name__}: {e})")
         self._voice = voice
+        self._lang = lang
         # The first synthesis after loading is several times slower; spend it here, not on the first reply.
-        self.synthesize("Ready.")
+        self.synthesize("Ready." if lang.startswith("en") else "Ready")
 
     def synthesize(self, text: str) -> bytes:
         try:
-            samples, sample_rate = self._kokoro.create(text, voice=self._voice, speed=1.0, lang="en-us")
+            samples, sample_rate = self._kokoro.create(text, voice=self._voice, speed=1.0, lang=self._lang)
         except Exception as e:
             raise ProviderError(f"local speech synthesis failed ({type(e).__name__}: {e})")
         return pcm_to_wav(samples, sample_rate)
+
+
+class NoServerVoice(TTSProvider):
+    """Stands in when no server voice engine is enabled, so the page falls back to the browser's own voice."""
+
+    name = "browser"
+    mime = "audio/wav"
+
+    def __init__(self):
+        raise ProviderError("no server voice is enabled (VOICE_TTS_ORDER); the browser voice is used")
+
+    def synthesize(self, text: str) -> bytes:  # pragma: no cover - never constructed
+        raise ProviderError("no server voice is enabled")
 
 
 def _describe_error(e: Exception) -> str:

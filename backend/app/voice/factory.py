@@ -1,8 +1,8 @@
-"""Chooses the speech providers from settings and falls back along a chain (local, then Groq, then Edge) when one is missing or fails."""
+"""Chooses the speech providers from settings and falls back along a chain when one is missing or fails."""
 import threading
 from typing import Optional
 
-from app.config import VOICE_STT_PROVIDER, VOICE_TTS_PROVIDER
+from app.config import VOICE_STT_PROVIDER, VOICE_TTS_HINDI_VOICE, VOICE_TTS_ORDER, VOICE_TTS_PROVIDER
 from app.voice.providers import (
     EdgeTTS,
     FallbackSTT,
@@ -13,6 +13,7 @@ from app.voice.providers import (
     KokoroTTS,
     LLMProvider,
     LocalWhisperSTT,
+    NoServerVoice,
     STTProvider,
     TTSProvider,
 )
@@ -20,7 +21,7 @@ from app.voice.providers import (
 _lock = threading.Lock()
 _stt: Optional[STTProvider] = None
 _tts: Optional[TTSProvider] = None
-_cloud_tts: Optional[TTSProvider] = None
+_hinglish_tts: Optional[TTSProvider] = None
 _llm: Optional[LLMProvider] = None
 
 
@@ -36,20 +37,51 @@ def get_stt() -> STTProvider:
         return _stt
 
 
+TTS_ENGINES = ("kokoro", "groq", "edge")
+
+
+def tts_order(raw: Optional[str] = None, provider: Optional[str] = None) -> list[str]:
+    """
+    The server voice engines in the order to try them, from VOICE_TTS_ORDER (for example "groq,kokoro,browser").
+    "browser" ends the list: the page uses the browser's own voice after the last server engine. When the variable is
+    empty the order is Groq alone, with Kokoro first only if VOICE_TTS_PROVIDER=local.
+    """
+    raw = VOICE_TTS_ORDER if raw is None else raw
+    provider = VOICE_TTS_PROVIDER if provider is None else provider
+    if not raw.strip():
+        return ["kokoro", "groq"] if provider == "local" else ["groq"]
+    order: list[str] = []
+    for part in raw.lower().split(","):
+        name = part.strip()
+        if name == "browser":
+            break
+        if name in TTS_ENGINES:
+            if name not in order:
+                order.append(name)
+        elif name:
+            print(f"voice: ignoring unknown engine '{name}' in VOICE_TTS_ORDER")
+    return order
+
+
 def get_tts(hinglish: bool = False) -> TTSProvider:
     """
-    Text-to-speech chosen by VOICE_TTS_PROVIDER. The cloud voice is Groq's, with Edge as its fallback. The local voice
-    (Kokoro) falls back to the cloud ones. Hinglish always uses the cloud voice: the local English voice mispronounces
-    Roman-script Hindi.
+    Text-to-speech following VOICE_TTS_ORDER. Kokoro is never loaded unless it is in the order. Hinglish uses Kokoro's
+    Hindi voice when Kokoro is in the order, otherwise there is no server voice and the page uses the browser's voice.
+    With no engine at all, building the provider fails with a plain reason, which the page treats like any voice failure.
     """
-    global _tts, _cloud_tts
+    global _tts, _hinglish_tts
     with _lock:
-        if hinglish or VOICE_TTS_PROVIDER == "cloud":
-            if _cloud_tts is None:
-                _cloud_tts = FallbackTTS(GroqTTS, EdgeTTS)
-            return _cloud_tts
+        order = tts_order()
+        if hinglish:
+            if _hinglish_tts is None:
+                if "kokoro" in order:
+                    _hinglish_tts = FallbackTTS(lambda: KokoroTTS(voice=VOICE_TTS_HINDI_VOICE, lang="hi"))
+                else:
+                    _hinglish_tts = FallbackTTS(NoServerVoice)
+            return _hinglish_tts
         if _tts is None:
-            _tts = FallbackTTS(KokoroTTS, GroqTTS, EdgeTTS)
+            engines = {"kokoro": KokoroTTS, "groq": GroqTTS, "edge": EdgeTTS}
+            _tts = FallbackTTS(*[engines[name] for name in order]) if order else FallbackTTS(NoServerVoice)
         return _tts
 
 
@@ -76,6 +108,6 @@ def describe(provider) -> dict:
 
 def reset() -> None:
     """Forget loaded providers. Used by tests."""
-    global _stt, _tts, _cloud_tts, _llm
+    global _stt, _tts, _hinglish_tts, _llm
     with _lock:
-        _stt = _tts = _cloud_tts = _llm = None
+        _stt = _tts = _hinglish_tts = _llm = None

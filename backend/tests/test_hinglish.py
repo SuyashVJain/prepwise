@@ -30,20 +30,30 @@ class HinglishVoiceTests(unittest.TestCase):
         factory.reset()
         self.addCleanup(factory.reset)
 
-    def test_hinglish_uses_the_cloud_voice_even_when_local_is_configured(self):
+    def test_hinglish_uses_kokoro_with_the_hindi_voice_when_local_is_configured(self):
         local, cloud = FakeTTS(), FakeTTS()
         cloud.name = "cloud-voice"
-        with mock.patch.object(factory, "KokoroTTS", lambda: local), mock.patch.object(factory, "GroqTTS", lambda: cloud):
-            self.assertEqual(factory.VOICE_TTS_PROVIDER, "local")
+        built = []
+
+        def kokoro(voice="af_heart", lang="en-us"):
+            built.append((voice, lang))
+            return local
+
+        with mock.patch.object(factory, "KokoroTTS", kokoro), mock.patch.object(factory, "GroqTTS", lambda: cloud):
+            self.assertEqual(factory.tts_order(), ["kokoro", "groq"])
             hinglish = factory.get_tts(hinglish=True)
             hinglish.synthesize("namaste dost")
-            self.assertEqual(hinglish.name, "cloud-voice")
-            self.assertEqual(cloud.spoken, ["namaste dost"])
-            self.assertEqual(local.spoken, [])
-            english = factory.get_tts(hinglish=False)
-            english.synthesize("hello there")
-            self.assertEqual(local.spoken, ["hello there"])
-            self.assertEqual(cloud.spoken, ["namaste dost"])
+            self.assertEqual(built, [("hf_alpha", "hi")])
+            self.assertEqual(local.spoken, ["namaste dost"])
+            self.assertEqual(cloud.spoken, [])
+
+    def test_hinglish_has_no_server_voice_without_kokoro(self):
+        cloud = FakeTTS()
+        with mock.patch.object(factory, "VOICE_TTS_ORDER", "groq"), mock.patch.object(factory, "GroqTTS", lambda: cloud):
+            with self.assertRaises(Exception) as ctx:
+                factory.get_tts(hinglish=True).synthesize("namaste dost")
+            self.assertIn("browser voice", str(ctx.exception))
+            self.assertEqual(cloud.spoken, [])
 
 
 class HinglishSessionTests(unittest.TestCase):
