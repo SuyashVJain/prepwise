@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { apiFetch, RATE_LIMIT_MESSAGE } from '@/lib/api'
 import { TutorClient } from '@/lib/tutor/voiceClient'
-import type { Citation, ProviderInfo, SyllabusPayload, TutorState, TurnEnd } from '@/lib/tutor/voiceClient'
+import type { Citation, ProviderInfo, SyllabusPayload, TutorState, TurnEnd, VoiceStatus } from '@/lib/tutor/voiceClient'
 import Sidebar from '@/components/Sidebar'
 import PageShell from '@/components/PageShell'
 import PageHeader from '@/components/PageHeader'
@@ -58,6 +58,13 @@ const DOUBT_LABELS: Record<string, string> = {
   example: 'WITH AN EXAMPLE',
 }
 
+// The header names the voice actually in use: the server's provider, or the browser's own.
+function voiceLabel(voice: VoiceStatus, tts: ProviderInfo | null): string {
+  if (voice.source === 'browser') return 'BROWSER VOICE'
+  if (voice.source === 'text') return 'NONE (TEXT ONLY)'
+  return providerLabel(tts)
+}
+
 function providerLabel(info: ProviderInfo | null): string {
   if (!info) return 'LOADING'
   return info.fell_back ? `${info.active} (CLOUD FALLBACK)` : info.active
@@ -91,6 +98,8 @@ export default function TutorPage() {
   const [providers, setProviders] = useState<{ stt: ProviderInfo; tts: ProviderInfo } | null>(null)
   const [docsInfo, setDocsInfo] = useState<{ documents_loaded: boolean; chunks: number } | null>(null)
   const [lastTiming, setLastTiming] = useState<TurnEnd | null>(null)
+  // Which voice is speaking, and whether the browser is waiting for a tap before it plays audio.
+  const [voice, setVoice] = useState<VoiceStatus>({ source: 'server', blocked: false })
   const [sideTab, setSideTab] = useState<SideTab>('roadmap')
   // Labels for tutor turns that arrive before the turn's first sentence, keyed by turn number.
   const [pendingNotes, setPendingNotes] = useState<Record<number, string>>({})
@@ -152,6 +161,7 @@ export default function TutorPage() {
     setPendingNotes({})
     setProviders(null)
     setLastTiming(null)
+    setVoice({ source: 'server', blocked: false })
     setPhase('connecting')
 
     const client = new TutorClient({
@@ -175,6 +185,7 @@ export default function TutorPage() {
       onCitations: (turn, sources) => setMessages(prev => prev.map(m => m.role === 'tutor' && m.turn === turn ? { ...m, citations: sources } : m)),
       onDoubt: (turn, style) => setPendingNotes(prev => ({ ...prev, [turn]: `EXPLAINED AGAIN: ${DOUBT_LABELS[style] ?? style.toUpperCase()}` })),
       onProviders: (stt, tts) => setProviders({ stt, tts }),
+      onVoiceStatus: setVoice,
       onReady: info => setDocsInfo(info),
       onError: (code, message) => {
         if (code === 'mic_denied' || code === 'mic_unavailable' || code === 'mic_unsupported') {
@@ -429,7 +440,7 @@ export default function TutorPage() {
           </div>
           <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
             <span style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', color: 'var(--text-2)', textAlign: 'right', textTransform: 'uppercase' }}>
-              EARS: {providerLabel(providers?.stt ?? null)}<br />VOICE: {providerLabel(providers?.tts ?? null)}
+              EARS: {providerLabel(providers?.stt ?? null)}<br />VOICE: {voiceLabel(voice, providers?.tts ?? null)}
             </span>
             <button type="button" onClick={endSession} style={ghostButton}>END + NOTES</button>
           </div>
@@ -458,6 +469,24 @@ export default function TutorPage() {
             </span>
           )}
         </div>
+
+        {/* VOICE: a calm line while the browser's voice is used, a tap button if audio is blocked, an error only if nothing can speak */}
+        {(voice.blocked || voice.source !== 'server') && (
+          <div role="status" style={{ padding: '8px var(--space-5)', borderBottom: '1px solid var(--border)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 'var(--space-3)', flexWrap: 'wrap' }}>
+            {voice.source === 'text' ? (
+              <span role="alert" style={{ ...mono, fontSize: '12px', color: '#ef4444', letterSpacing: '.06em' }}>Voice output failed; showing text only.</span>
+            ) : (
+              <span style={{ ...mono, fontSize: '12px', color: 'var(--text-2)', letterSpacing: '.06em' }}>
+                {voice.blocked ? 'Your browser is waiting for a tap before it plays audio.' : "Using your browser's voice."}
+              </span>
+            )}
+            {voice.blocked && (
+              <button type="button" onClick={() => { void clientRef.current?.enableVoice() }} style={{ ...primaryButton, padding: '8px var(--space-3)', fontSize: '12px', minHeight: '44px' }}>
+                Tap to enable voice
+              </button>
+            )}
+          </div>
+        )}
 
         {(error || disconnected) && (
           <div role="alert" style={{ padding: 'var(--space-2) var(--space-5)', background: 'rgba(239,68,68,0.08)', borderBottom: '1px solid rgba(239,68,68,0.2)', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>

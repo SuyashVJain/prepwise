@@ -1,4 +1,5 @@
 import { getAccessToken, signOutToLogin, wsUrl } from '@/lib/api'
+import { cleanForBrowserSpeech, pickVoice, sentencesForBrowser, type SentenceLog } from '@/lib/browserVoice'
 
 export type TutorState = 'idle' | 'listening' | 'thinking' | 'speaking'
 export type ProviderInfo = { active: string; fell_back: boolean; reason: string }
@@ -11,6 +12,8 @@ export type TurnEnd = {
   first_audio_ms: number | null
   total_ms: number
 }
+// Which voice the student hears: the server's, the browser's own (when the server voice fails), or none (text only).
+export type VoiceStatus = { source: 'server' | 'browser' | 'text'; blocked: boolean }
 export type SyllabusPayload = {
   topics: string[]
   raw_chunks: string[]
@@ -36,6 +39,7 @@ export interface TutorHandlers {
   onCitations(turn: number, sources: Citation[]): void
   onDoubt(turn: number, style: string): void
   onProviders(stt: ProviderInfo, tts: ProviderInfo): void
+  onVoiceStatus(status: VoiceStatus): void
   onReady(info: { documents_loaded: boolean; chunks: number }): void
   onError(code: string, message: string): void
   onLevel(level: number): void
@@ -87,6 +91,14 @@ export class TutorClient {
   private state: TutorState = 'idle'
   private closedByUs = false
 
+  // Browser voice: used when the server voice fails or is unavailable.
+  private sentenceLog: SentenceLog[] = []
+  private browserMode = false
+  private browserPending = 0 // utterances handed to the browser that have not finished
+  private blockedTexts: string[] = [] // utterances the browser refused until the student taps
+  private voiceSource: VoiceStatus['source'] = 'server'
+  private voiceBlocked = false
+
   constructor(private handlers: TutorHandlers) {}
 
   // ── connection ──
@@ -99,7 +111,11 @@ export class TutorClient {
       throw new Error('Not signed in')
     }
     this.audio = new AudioContext()
-    if (this.audio.state === 'suspended') await this.audio.resume()
+    // Not awaited: without a tap the browser keeps it suspended. The page shows "Tap to enable voice" instead of waiting here.
+    if (this.audio.state === 'suspended') void this.audio.resume().catch(() => {})
+    this.audio.onstatechange = () => {
+      if (this.audio?.state === 'running' && this.voiceBlocked && this.blockedTexts.length === 0) this.setVoiceBlocked(false)
+    }
 
     await new Promise<void>((resolve, reject) => {
       const ws = new WebSocket(wsUrl('/tutor/ws'))
@@ -186,6 +202,8 @@ export class TutorClient {
         break
       case 'providers':
         this.handlers.onProviders(msg.stt as ProviderInfo, msg.tts as ProviderInfo)
+        // No server voice at all: use the browser's from the first sentence.
+        if ((msg.tts as ProviderInfo | undefined)?.active === 'unavailable') this.useBrowserVoice()
         break
       case 'state':
         if (msg.value === 'thinking') {
@@ -199,11 +217,16 @@ export class TutorClient {
       case 'sentence':
         if (turn <= this.mutedThrough) break
         this.handlers.onSentence(turn, Number(msg.seq), String(msg.text || ''))
+        this.logSentence({ turn, seq: Number(msg.seq), text: String(msg.text || ''), hasAudio: false, queued: false })
         if (!this.isRecording()) this.setState('speaking')
         break
-      case 'audio':
+      case 'audio': {
+        const seq = Number(msg.seq)
+        const logged = this.sentenceLog.find(e => e.turn === turn && e.seq === seq)
+        if (logged) logged.hasAudio = true
         this.pendingAudio = { turn, mime: String(msg.mime || 'audio/wav') }
         break
+      }
       case 'doubt':
         this.handlers.onDoubt(turn, String(msg.style || ''))
         break
@@ -216,7 +239,13 @@ export class TutorClient {
         this.settle()
         break
       case 'error':
-        if (msg.code !== 'tts_failed') this.serverBusy = false
+        if (msg.code === 'tts_failed') {
+          // The server voice failed: speak this reply with the browser's voice instead of showing an error.
+          this.useBrowserVoice()
+          this.settle()
+          break
+        }
+        this.serverBusy = false
         this.handlers.onError(String(msg.code || 'error'), String(msg.message || 'Something went wrong. Try again.'))
         this.settle()
         break
@@ -245,6 +274,7 @@ export class TutorClient {
         source.start(at)
         this.nextPlayTime = at + buffer.duration
         this.playing.add(source)
+        if (ctx.state === 'suspended') this.setVoiceBlocked(true)
         source.onended = () => {
           this.playing.delete(source)
           this.settle()
@@ -267,11 +297,99 @@ export class TutorClient {
     this.playing.clear()
     this.nextPlayTime = 0
     this.pendingAudio = null
+    this.cancelBrowserVoice()
+  }
+
+  // ── browser voice ──
+
+  private browserSupported(): boolean {
+    return typeof window !== 'undefined' && 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined'
+  }
+
+  private emitVoice(): void {
+    this.handlers.onVoiceStatus({ source: this.voiceSource, blocked: this.voiceBlocked })
+  }
+
+  private setVoiceBlocked(blocked: boolean): void {
+    if (this.voiceBlocked === blocked) return
+    this.voiceBlocked = blocked
+    this.emitVoice()
+  }
+
+  private logSentence(entry: SentenceLog): void {
+    this.sentenceLog.push(entry)
+    if (this.sentenceLog.length > 60) this.sentenceLog.shift()
+    if (this.browserMode) this.speakInBrowser(entry)
+  }
+
+  /** Switch to the browser's voice and speak every sentence that has no server audio yet. */
+  private useBrowserVoice(): void {
+    if (this.voiceSource === 'text') return
+    if (!this.browserSupported()) {
+      this.voiceSource = 'text'
+      this.emitVoice()
+      return
+    }
+    if (!this.browserMode) {
+      this.browserMode = true
+      this.voiceSource = 'browser'
+      this.emitVoice()
+    }
+    for (const entry of sentencesForBrowser(this.sentenceLog, this.mutedThrough)) this.speakInBrowser(entry)
+  }
+
+  private speakInBrowser(entry: SentenceLog): void {
+    if (entry.queued || entry.hasAudio || entry.turn <= this.mutedThrough) return
+    entry.queued = true
+    const text = cleanForBrowserSpeech(entry.text)
+    if (!text) return
+    if (this.voiceBlocked) this.blockedTexts.push(text)
+    else this.queueUtterance(text)
+  }
+
+  private queueUtterance(text: string): void {
+    const synth = window.speechSynthesis
+    const utterance = new SpeechSynthesisUtterance(text)
+    const voice = pickVoice(synth.getVoices())
+    if (voice) { utterance.voice = voice; utterance.lang = voice.lang } else utterance.lang = 'en-IN'
+    utterance.onstart = () => { if (!this.isRecording()) this.setState('speaking') }
+    utterance.onend = () => { this.browserPending = Math.max(0, this.browserPending - 1); this.settle() }
+    utterance.onerror = event => {
+      this.browserPending = Math.max(0, this.browserPending - 1)
+      if (event.error === 'not-allowed') {
+        // The browser wants a tap first. Keep the text and say it after the tap.
+        this.blockedTexts.push(text)
+        this.setVoiceBlocked(true)
+      } else if (event.error !== 'canceled' && event.error !== 'interrupted') {
+        // Both the server voice and the browser voice failed.
+        this.voiceSource = 'text'
+        this.emitVoice()
+      }
+      this.settle()
+    }
+    this.browserPending += 1
+    synth.speak(utterance)
+  }
+
+  private cancelBrowserVoice(): void {
+    this.blockedTexts = []
+    this.browserPending = 0
+    if (this.browserSupported()) window.speechSynthesis.cancel()
+  }
+
+  /** Call from the "Tap to enable voice" button: the tap lets the browser play audio, then the waiting reply is spoken. */
+  async enableVoice(): Promise<void> {
+    try { await this.audio?.resume() } catch { /* still blocked: the button stays */ }
+    const waiting = this.blockedTexts
+    this.blockedTexts = []
+    this.voiceBlocked = false
+    this.emitVoice()
+    for (const text of waiting) this.queueUtterance(text)
   }
 
   /** Barge-in: silence the tutor and cancel the reply being generated. */
   interrupt(): void {
-    const wasActive = this.serverBusy || this.playing.size > 0 || this.decoding > 0
+    const wasActive = this.serverBusy || this.playing.size > 0 || this.decoding > 0 || this.browserPending > 0
     this.mutedThrough = this.latestTurn
     this.stopPlayback()
     if (wasActive) {
@@ -282,7 +400,7 @@ export class TutorClient {
   }
 
   isBusy(): boolean {
-    return this.serverBusy || this.playing.size > 0 || this.decoding > 0
+    return this.serverBusy || this.playing.size > 0 || this.decoding > 0 || this.browserPending > 0
   }
 
   // ── state ──
@@ -296,7 +414,7 @@ export class TutorClient {
   private settle(): void {
     if (this.isRecording()) { this.setState('listening'); return }
     if (this.serverBusy) return
-    if (this.playing.size > 0 || this.decoding > 0) return
+    if (this.playing.size > 0 || this.decoding > 0 || this.browserPending > 0) return
     this.setState(this.handsFree ? 'listening' : 'idle')
   }
 
