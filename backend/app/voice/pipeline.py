@@ -86,6 +86,7 @@ async def run_turn(
             except Exception as e:
                 # Keep the text flowing even if the voice fails.
                 result.tts_error = str(e)
+                print(f"voice: speech output failed, this reply is text only ({e})", flush=True)
                 await emit({"type": "error", "code": "tts_failed", "message": "Voice output failed; showing text only."}, None)
                 continue
             if cancel.is_set():

@@ -238,6 +238,12 @@ class KokoroTTS(TTSProvider):
         return pcm_to_wav(samples, sample_rate)
 
 
+def _describe_error(e: Exception) -> str:
+    """Exception type and HTTP status only. The text of a cloud error can contain the request address, so it is neither logged nor sent to the browser."""
+    status = getattr(e, "status", None) or getattr(e, "status_code", None)
+    return type(e).__name__ + (f", HTTP {status}" if status else "")
+
+
 class EdgeTTS(TTSProvider):
     """Hosted neural voice. Needs internet, no key."""
 
@@ -264,7 +270,9 @@ class EdgeTTS(TTSProvider):
         try:
             audio = asyncio.run(self._collect(text))
         except Exception as e:
-            raise ProviderError(f"cloud speech synthesis failed ({type(e).__name__}: {e})")
+            detail = _describe_error(e)
+            print(f"voice: cloud speech synthesis failed ({detail})", flush=True)
+            raise ProviderError(f"cloud speech synthesis failed ({detail})")
         if not audio:
             raise ProviderError("cloud speech synthesis returned no audio")
         return audio
