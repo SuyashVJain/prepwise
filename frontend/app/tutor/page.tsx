@@ -65,9 +65,17 @@ function voiceLabel(voice: VoiceStatus, tts: ProviderInfo | null): string {
   return providerLabel(tts)
 }
 
+// A readable name for the engine the server reports, e.g. cloud-groq-hannah becomes GROQ VOICE.
+function engineName(active: string): string {
+  if (active.startsWith('cloud-groq')) return 'GROQ VOICE'
+  if (active.startsWith('cloud-edge-tts')) return 'EDGE VOICE'
+  return active
+}
+
 function providerLabel(info: ProviderInfo | null): string {
   if (!info) return 'LOADING'
-  return info.fell_back ? `${info.active} (CLOUD FALLBACK)` : info.active
+  const name = engineName(info.active)
+  return info.fell_back ? `${name} (CLOUD FALLBACK)` : name
 }
 
 export default function TutorPage() {
