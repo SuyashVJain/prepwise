@@ -1,5 +1,7 @@
-"""Interview routes: start a session, next question or follow-up, submit an answer, debrief."""
-from fastapi import APIRouter, Depends, Request
+"""Interview routes: start a session, next question or follow-up, submit an answer, voice answer transcription, debrief."""
+import asyncio
+
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 from pydantic import BaseModel, Field
 from typing import Optional
 from app.auth import get_current_user
@@ -9,6 +11,8 @@ from app.services.gemini import generate_question
 from app.services.rag import select_topic_for_question, build_rag, get_cached_rag, CS_SUBJECTS
 from app.services.scorer import evaluate_answer, generate_session_debrief
 from app.subjects import clean_subject
+from app.voice import factory
+from app.voice.providers import ProviderError
 
 router = APIRouter(prefix="/interview", tags=["interview"], dependencies=[Depends(get_current_user)])
 
@@ -176,3 +180,31 @@ async def get_debrief(request: Request, req: DebriefRequest):
         "interview_type": req.interview_type,
         "target_company": req.target_company,
     })
+
+
+# A spoken answer is a few minutes of speech at most; this leaves room for any browser's recording format.
+MAX_AUDIO_BYTES = 10 * 1024 * 1024
+
+
+@router.post("/transcribe")
+@llm_limit
+async def transcribe_answer(request: Request, file: UploadFile = File(...), language: str = Form("")):
+    """
+    Turns a recorded voice answer into text with the same speech-to-text the voice tutor uses (local model, cloud
+    fallback), so voice answers work in any browser that can record audio.
+    """
+    audio = await file.read()
+    if not audio:
+        raise HTTPException(status_code=400, detail="No audio was received.")
+    if len(audio) > MAX_AUDIO_BYTES:
+        raise HTTPException(status_code=413, detail="That recording is too long. Record a shorter answer.")
+    try:
+        text = await asyncio.to_thread(factory.get_stt().transcribe, audio, file.content_type or "audio/webm", language.strip()[:12] or None)
+    except HTTPException:
+        raise
+    except ProviderError as e:
+        # The reason goes to the server log only.
+        print(f"voice: answer transcription failed ({e})", flush=True)
+        raise HTTPException(status_code=502, detail="Could not turn that recording into text. Try again or type your answer.")
+    return {"text": text.strip()}
+
