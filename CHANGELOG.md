@@ -5,7 +5,7 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 ## [Unreleased]
 
 ### Changed
-- Spoken interview answers are recorded and transcribed on the server (`POST /interview/transcribe`) instead of using browser speech recognition
+- Spoken interview answers are recorded and transcribed on the server (`POST /interview/transcribe`) instead of using browser speech recognition, with live transcription, a microphone-level waveform and a calm retry on errors
 - The microphone message says "blocked" only for a real permission error
 - The spoken reply tries the Groq voice, then Edge, then the browser voice
 

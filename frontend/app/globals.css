@@ -112,6 +112,19 @@ summary { min-height: 40px; }
   .interview-footer { position: sticky; bottom: 0; background: var(--bg); z-index: 5; }
 }
 
+/* Voice answer view in the interview. */
+.voice-panel { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 8px 0; }
+.voice-mic { width: 96px; height: 96px; border-radius: 50%; border: 2px solid var(--lime); background: transparent; color: var(--lime); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.voice-mic.rec { background: var(--lime); color: #0e0e0e; animation: voice-pulse 1.6s ease-out infinite; }
+.voice-mic:disabled { opacity: .5; cursor: default; }
+.voice-panel [role=status]:first-of-type { margin-top: 14px !important; }
+.voice-wave { width: 100%; max-width: 420px; height: 56px; }
+.voice-card { width: 100%; min-height: 96px; max-height: 40vh; overflow-y: auto; padding: 14px 16px; border: 1px solid var(--border); background: transparent; color: var(--text); font-size: 15px; line-height: 1.8; }
+.voice-btn { min-height: 44px; padding: 0 20px; border: 1px solid var(--lime); background: transparent; color: var(--lime); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .08em; cursor: pointer; }
+@keyframes voice-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--lime) 45%, transparent); } 100% { box-shadow: 0 0 0 28px transparent; } }
+@media (prefers-reduced-motion: reduce) { .voice-mic.rec { animation: none; } }
+@media (max-width: 800px) { .interview-mode-btn { min-height: 44px; min-width: 64px; } .voice-mic { width: 88px; height: 88px; } }
+
 /* Shared sidebar: fixed column on wide screens, top bar plus drawer under 900px. */
 .app-sidebar { width: 220px; flex-shrink: 0; border-right: 1px solid var(--border); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; background: var(--bg); }
 .app-topbar { display: none; }

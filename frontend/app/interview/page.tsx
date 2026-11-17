@@ -10,9 +10,8 @@ import PageShell from '@/components/PageShell'
 import { optionStyle, cardBase } from '@/lib/ui'
 import PageHeader from '@/components/PageHeader'
 import { PageSkeleton } from '@/components/Skeleton'
-import MicHelp from '@/components/MicHelp'
-import { describeMicError, NO_SPEECH_MESSAGE } from '@/lib/voiceErrors'
-import { canRecord, startRecording, transcribeRecording, transcribeFailureMessage, type Recording } from '@/lib/voiceAnswer'
+import VoiceAnswerPanel from '@/components/interview/VoiceAnswerPanel'
+import type { VoicePhase } from '@/lib/liveVoice'
 import { useToast } from '@/components/Toast'
 import ScoreRing from '@/components/ScoreRing'
 import ClaimsList, { type Claim } from '@/components/ClaimsList'
@@ -122,11 +121,7 @@ export default function InterviewPage() {
   const [now, setNow] = useState(0)
   const [takenSeconds, setTakenSeconds] = useState<number | null>(null)
   const [voiceMode, setVoiceMode] = useState(false)
-  const [listening, setListening] = useState(false)
-  const [transcribing, setTranscribing] = useState(false)
-  const [voiceNote, setVoiceNote] = useState('')
-  // True only for a real permission error, so the "blocked" help opens only then.
-  const [micBlocked, setMicBlocked] = useState(false)
+  const [voicePhase, setVoicePhase] = useState<VoicePhase>('idle')
   const [startingSession, setStartingSession] = useState(false)
 
   const [debrief, setDebrief] = useState<Debrief | null>(null)
@@ -148,9 +143,6 @@ export default function InterviewPage() {
 const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const questionStartRef = useRef(0)
   const scoreRef = useRef<HTMLDivElement | null>(null)
-  const recorderRef = useRef<Recording | null>(null)
-  const voiceTokenRef = useRef(0)
-  const voiceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   // The text typed before voice input started; recognised speech is added after it.
   // The saved session row, so a retry after a failed answers save does not create a second session.
   const savedIdRef = useRef<string | null>(null)
@@ -220,6 +212,7 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [phase])
 
+  const listening = voicePhase === 'listening'
   const elapsed = takenSeconds ?? Math.max(0, Math.round((now - questionStartRef.current) / 1000))
   const ariaState: 'idle' | 'listening' | 'thinking' | 'evaluated' = submitting ? 'thinking' : result ? 'evaluated' : listening ? 'listening' : 'idle'
   // Average score per topic for the chart, weakest first so the problem areas are at the top.
@@ -270,23 +263,11 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     } catch { toast('Could not copy. Select the text and copy it by hand.', 'error') }
   }
 
-  // Throw away any recording or pending transcription, so a late result can never write into the next question.
+  // Leaving voice mode unmounts the voice panel, which throws away any recording or pending result.
   function stopRecognition() {
-    voiceTokenRef.current++
-    if (voiceTimerRef.current) { clearTimeout(voiceTimerRef.current); voiceTimerRef.current = null }
-    recorderRef.current?.cancel()
-    recorderRef.current = null
     setVoiceMode(false)
-    setListening(false)
-    setTranscribing(false)
+    setVoicePhase('idle')
   }
-
-  // Release the microphone when leaving the page.
-  useEffect(() => () => {
-    voiceTokenRef.current++
-    if (voiceTimerRef.current) clearTimeout(voiceTimerRef.current)
-    recorderRef.current?.cancel()
-  }, [])
 
   function exitSession() {
     if (sessionQuestions.length > 0 && !window.confirm('Leave now? Answers so far will not be saved. Use END SESSION to save them.')) return
@@ -588,51 +569,6 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
     }
   }
 
-  // Stop recording and turn it into text on the server, then add it after what is already in the answer.
-  async function finishVoice() {
-    const rec = recorderRef.current
-    if (!rec) return
-    recorderRef.current = null
-    if (voiceTimerRef.current) { clearTimeout(voiceTimerRef.current); voiceTimerRef.current = null }
-    setListening(false)
-    setTranscribing(true)
-    const token = ++voiceTokenRef.current
-    try {
-      const text = await transcribeRecording(await rec.stop())
-      if (token !== voiceTokenRef.current) return
-      if (!text) setVoiceNote(NO_SPEECH_MESSAGE)
-      else setAnswer(prev => (prev.trim() ? prev.trimEnd() + ' ' : '') + text)
-    } catch (err) {
-      if (token === voiceTokenRef.current) setVoiceNote(transcribeFailureMessage(err))
-    } finally {
-      if (token === voiceTokenRef.current) { setTranscribing(false); setVoiceMode(false) }
-    }
-  }
-
-  async function toggleVoice() {
-    if (transcribing) return
-    if (recorderRef.current) { await finishVoice(); return }
-    setVoiceNote('')
-    setMicBlocked(false)
-    if (!canRecord()) { setVoiceNote(describeMicError('unsupported').message); return }
-    const token = ++voiceTokenRef.current
-    try {
-      const rec = await startRecording()
-      if (token !== voiceTokenRef.current) { rec.cancel(); return }
-      recorderRef.current = rec
-      setVoiceMode(true)
-      setListening(true)
-      // Keep one recording well under the server's size limit.
-      voiceTimerRef.current = setTimeout(() => { void finishVoice() }, 180_000)
-    } catch (err) {
-      const name = err instanceof Error ? err.name : ''
-      console.warn('Microphone error:', name)
-      const issue = describeMicError(name)
-      setVoiceNote(issue.message)
-      setMicBlocked(issue.blocked)
-    }
-  }
-
   if (loadingProfile) {
     return <PageShell><PageSkeleton rows={3} /></PageShell>
   }
@@ -854,23 +790,16 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
             <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
               <span style={{ ...mono, fontSize: '12px', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--text-2)' }}>[YOUR ANSWER]</span>
               <div style={{ display: 'flex', gap: '8px' }}>
-                <button onClick={stopRecognition}
+                <button onClick={stopRecognition} className="interview-mode-btn"
                   style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 12px', border: '1px solid var(--border)', background: !voiceMode ? 'var(--lime)' : 'transparent', color: !voiceMode ? '#0e0e0e' : 'var(--text-3)', cursor: 'pointer' }}>
                   TEXT
                 </button>
-                <button onClick={toggleVoice} disabled={transcribing}
+                <button onClick={() => setVoiceMode(true)} disabled={submitting || !!result} className="interview-mode-btn" aria-pressed={voiceMode}
                   style={{ ...mono, fontSize: '12px', letterSpacing: '.06em', textTransform: 'uppercase', padding: '5px 12px', border: '1px solid var(--border)', background: voiceMode ? 'var(--lime)' : 'transparent', color: voiceMode ? '#0e0e0e' : 'var(--text-3)', cursor: 'pointer' }}>
-                  {transcribing ? 'TRANSCRIBING…' : <>VOICE {listening ? '●' : '○'}</>}
+                  VOICE {listening ? '●' : '○'}
                 </button>
               </div>
             </div>
-
-            {(voiceMode || voiceNote) && (
-              <div style={{ padding: '8px 24px 0', borderBottom: '1px solid var(--border)', flexShrink: 0 }}>
-                {voiceNote && <p role="alert" style={{ fontSize: '14px', color: '#f59e0b', marginBottom: '4px' }}>{voiceNote}</p>}
-                <MicHelp blocked={micBlocked} />
-              </div>
-            )}
 
             <div className="interview-scroll" style={{ padding: '24px' }}>
               {result ? (
@@ -881,6 +810,9 @@ const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
                     <p style={{ fontSize: '14px', color: 'var(--text-2)', lineHeight: 1.8 }}>{result.ideal_answer}</p>
                   </div>
                 </div>
+              ) : voiceMode ? (
+                <VoiceAnswerPanel answer={answer} disabled={submitting} elapsed={elapsed} targetSeconds={SOFT_TARGET_SECONDS}
+                  onAnswer={text => { setAnswer(text); setConfirmShort(false) }} onPhase={setVoicePhase} />
               ) : (
                 <textarea value={answer} onChange={e => { setAnswer(e.target.value); setConfirmShort(false) }}
                   onKeyDown={e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); trySubmit() } }}
