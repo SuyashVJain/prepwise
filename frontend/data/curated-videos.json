@@ -1,168 +1,103 @@
 {
-  "_readme": "Hand-picked videos. Replace each TODO entry: 'id' is the YouTube video id (the part after watch?v=), plus the real title and channel. Entries whose id starts with TODO are hidden from students. 'default' is shown for any topic of the subject; 'topics' overrides it for one topic (use the exact topic name).",
+  "_readme": "Hand-picked videos. 'id' is the YouTube video id (the part after watch?v=), plus the real title and channel. 'default' is shown for any topic of the subject; 'topics' overrides it for one topic (use the exact topic name).",
   "python": {
     "default": [
       {
-        "id": "TODO_1",
-        "title": "TODO: best beginner overview of Python",
-        "channel": "TODO"
-      },
-      {
-        "id": "TODO_2",
-        "title": "TODO: Python for placements, one-shot revision",
-        "channel": "TODO"
-      },
-      {
-        "id": "TODO_3",
-        "title": "TODO: common Python interview questions",
-        "channel": "TODO"
+        "id": "UrsmFxEIp5k",
+        "title": "Python Tutorial for Beginners in Hindi, Complete Course",
+        "channel": "CodeWithHarry"
       }
-    ],
-    "topics": {
-      "Variables and types": [
-        {
-          "id": "TODO_1",
-          "title": "TODO: clear explanation of Variables and types",
-          "channel": "TODO"
-        },
-        {
-          "id": "TODO_2",
-          "title": "TODO: worked examples for Variables and types",
-          "channel": "TODO"
-        }
-      ]
-    }
+    ]
   },
   "dsa": {
-    "default": [
-      {
-        "id": "TODO_1",
-        "title": "TODO: best beginner overview of DSA",
-        "channel": "TODO"
-      },
-      {
-        "id": "TODO_2",
-        "title": "TODO: DSA for placements, one-shot revision",
-        "channel": "TODO"
-      },
-      {
-        "id": "TODO_3",
-        "title": "TODO: common DSA interview questions",
-        "channel": "TODO"
-      }
-    ],
-    "topics": {
-      "Big-O notation": [
-        {
-          "id": "TODO_1",
-          "title": "TODO: clear explanation of Big-O notation",
-          "channel": "TODO"
-        },
-        {
-          "id": "TODO_2",
-          "title": "TODO: worked examples for Big-O notation",
-          "channel": "TODO"
-        }
-      ]
-    }
+    "default": []
   },
   "dbms": {
     "default": [
       {
-        "id": "TODO_1",
-        "title": "TODO: best beginner overview of DBMS",
-        "channel": "TODO"
+        "id": "5GDTIUVlHB8",
+        "title": "Introduction to Normalization (Insertion, Deletion & Updation Anomaly)",
+        "channel": "Gate Smashers"
       },
       {
-        "id": "TODO_2",
-        "title": "TODO: DBMS for placements, one-shot revision",
-        "channel": "TODO"
-      },
-      {
-        "id": "TODO_3",
-        "title": "TODO: common DBMS interview questions",
-        "channel": "TODO"
+        "id": "HXV3zeQKqGY",
+        "title": "SQL Tutorial, Full Database Course for Beginners",
+        "channel": "freeCodeCamp.org"
       }
-    ],
-    "topics": {
-      "Relational model": [
-        {
-          "id": "TODO_1",
-          "title": "TODO: clear explanation of Relational model",
-          "channel": "TODO"
-        },
-        {
-          "id": "TODO_2",
-          "title": "TODO: worked examples for Relational model",
-          "channel": "TODO"
-        }
-      ]
-    }
+    ]
   },
   "os": {
     "default": [
       {
-        "id": "TODO_1",
-        "title": "TODO: best beginner overview of OS",
-        "channel": "TODO"
-      },
-      {
-        "id": "TODO_2",
-        "title": "TODO: OS for placements, one-shot revision",
-        "channel": "TODO"
-      },
-      {
-        "id": "TODO_3",
-        "title": "TODO: common OS interview questions",
-        "channel": "TODO"
+        "id": "xw_OuOhjauw",
+        "title": "Complete Operating System in one shot",
+        "channel": "KnowledgeGATE by Sanchit Sir"
       }
-    ],
-    "topics": {
-      "Processes and threads": [
-        {
-          "id": "TODO_1",
-          "title": "TODO: clear explanation of Processes and threads",
-          "channel": "TODO"
-        },
-        {
-          "id": "TODO_2",
-          "title": "TODO: worked examples for Processes and threads",
-          "channel": "TODO"
-        }
-      ]
-    }
+    ]
   },
   "cn": {
     "default": [
       {
-        "id": "TODO_1",
-        "title": "TODO: best beginner overview of Computer Networks",
-        "channel": "TODO"
-      },
-      {
-        "id": "TODO_2",
-        "title": "TODO: Computer Networks for placements, one-shot revision",
-        "channel": "TODO"
-      },
-      {
-        "id": "TODO_3",
-        "title": "TODO: common Computer Networks interview questions",
-        "channel": "TODO"
+        "id": "IPvYjXCsTg8",
+        "title": "Computer Networking Full Course, OSI Model Deep Dive",
+        "channel": "Kunal Kushwaha"
       }
-    ],
-    "topics": {
-      "OSI and TCP/IP layers": [
-        {
-          "id": "TODO_1",
-          "title": "TODO: clear explanation of OSI and TCP/IP layers",
-          "channel": "TODO"
-        },
-        {
-          "id": "TODO_2",
-          "title": "TODO: worked examples for OSI and TCP/IP layers",
-          "channel": "TODO"
-        }
-      ]
-    }
+    ]
+  },
+  "oop": {
+    "default": [
+      {
+        "id": "pTB0EiLXUC8",
+        "title": "Object-Oriented Programming, Simplified",
+        "channel": "Programming with Mosh"
+      },
+      {
+        "id": "Ej_02ICOIgs",
+        "title": "Object Oriented Programming with Python, Full Course",
+        "channel": "freeCodeCamp.org"
+      }
+    ]
+  },
+  "toc": {
+    "default": [
+      {
+        "id": "9kuynHcM3UA",
+        "title": "Complete TOC Theory of Computation in one shot",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      }
+    ]
+  },
+  "compilers": {
+    "default": [
+      {
+        "id": "4nx8LEGy9kI",
+        "title": "Introduction to Lexical Analyzer",
+        "channel": "Neso Academy"
+      }
+    ]
+  },
+  "coa": {
+    "default": []
+  },
+  "digital": {
+    "default": []
+  },
+  "discrete": {
+    "default": []
+  },
+  "system-design": {
+    "default": []
+  },
+  "se": {
+    "default": []
+  },
+  "web": {
+    "default": []
+  },
+  "ml": {
+    "default": []
+  },
+  "ai": {
+    "default": []
   }
 }

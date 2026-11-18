@@ -6,7 +6,7 @@ import { label, mono, panel } from './ui'
 import curated from '@/data/curated-videos.json'
 
 type Video = { id: string; title: string; channel: string }
-type SubjectVideos = { default: Video[]; topics: Record<string, Video[]> }
+type SubjectVideos = { default: Video[]; topics?: Record<string, Video[]> }
 
 const curatedBySubject = curated as unknown as Record<string, SubjectVideos | string>
 
@@ -15,8 +15,8 @@ export function curatedFor(subjectId: string, topic: string): Video[] {
   const subject = curatedBySubject[subjectId]
   if (!subject || typeof subject === 'string') return []
   const wanted = topic.trim().toLowerCase()
-  const topicKey = Object.keys(subject.topics).find(key => key.toLowerCase() === wanted)
-  const picks = topicKey ? subject.topics[topicKey] : subject.default
+  const topicKey = Object.keys(subject.topics ?? {}).find(key => key.toLowerCase() === wanted)
+  const picks = topicKey && subject.topics ? subject.topics[topicKey] : subject.default
   return picks.filter(video => !video.id.startsWith('TODO')).slice(0, 3)
 }
 
