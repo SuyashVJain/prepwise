@@ -56,15 +56,17 @@ The screenshots use made-up demo data. See [`scripts/screenshots`](scripts/scree
 **Feedback**
 - Claim-by-claim check with confidence and critical errors, shown as a collapsible list
 - Score with fixed bands (8 to 9 for correct and complete, under 4 for a wrong core idea) and caps in code
+- Very short answers (under 15 words) and answers that mostly restate the question are capped at 1 out of 10 without a model call; under 15 characters scores 0
 - Debrief with score ring, strengths and fix-next cards, a topic chart, practice links and PDF export
 
 **Study**
 - Upload several documents and chat across them with source citations
 - Generate multiple-choice quizzes from your material
+- Videos tab: hand-picked free lessons for each subject, linked out to YouTube and credited in [CREDITS.md](CREDITS.md)
 
 **Voice tutor**
 - Speech to text runs in the cloud (Groq Whisper). The spoken reply uses the Groq voice for English and falls back to your browser's own voice, which also reads Hinglish, with a "Tap to enable voice" button when the browser blocks autoplay. An optional local Kokoro voice exists for machines with spare memory and is off by default
-- Mock interview answers can be typed or spoken. Spoken answers are recorded in the browser and transcribed on the server (`POST /interview/transcribe`), so they work in any browser that can record audio
+- Mock interview answers can be typed or spoken. Spoken answers are recorded in the browser and transcribed live on the server (`POST /interview/transcribe`), so they work in any browser that can record audio
 - Doubt mode, Hinglish mode, session notes and flashcards, subject roadmaps, visual walkthroughs, video suggestions and a Python code-along
 - Hand-off from the tutor to a mock interview on the same topic
 
@@ -183,11 +185,11 @@ Backend (`backend/.env`):
 | `FRONTEND_URL` | Allowed browser origins, comma separated | No (defaults to localhost) |
 | `LLM_MODEL`, `LLM_REASONING_EFFORT` | Model and reasoning effort | No |
 | `RATE_LIMIT_LLM`, `RATE_LIMIT_UPLOAD`, `RATE_LIMIT_DEFAULT`, `RATE_LIMIT_TUTOR` | Per-user limits such as `30/minute` | No |
-| `VOICE_STT_PROVIDER` | `cloud` (default) uses Groq Whisper; `local` is optional | No |
-| `VOICE_WARMUP` | `0` (default) loads nothing at start; `1` preloads local speech models | No |
-| `VOICE_TTS_ORDER` | Server voice order. Production: `groq` (the browser voice follows automatically). The optional local `kokoro` voice is off unless listed | No |
+| `VOICE_STT_PROVIDER` | Speech to text. Default `cloud` (Groq Whisper); `local` is optional | No (default `cloud`) |
+| `VOICE_WARMUP` | Default `0` loads nothing at start; `1` preloads local speech models | No (default `0`) |
+| `VOICE_TTS_ORDER` | Server voice order, for example `groq`. Default: `groq` alone (the browser voice follows automatically and covers Hinglish). The optional local `kokoro` voice is off unless listed | No (default `groq`) |
 | `VOICE_STT_CLOUD_MODEL`, `VOICE_TTS_CLOUD_MODEL`, `VOICE_TTS_CLOUD_VOICE`, `VOICE_TTS_EDGE_VOICE` | Cloud speech model and voice names (Groq, then Edge). See [docs/VOICE_TUTOR.md](docs/VOICE_TUTOR.md) | No |
-| `YOUTUBE_API_KEY` | Enables video suggestions in the tutor | No |
+| `YOUTUBE_API_KEY` | Adds more video suggestions to the tutor; without it only the hand-picked videos show | No |
 
 Frontend (`frontend/.env.local`):
 
@@ -201,7 +203,7 @@ Frontend (`frontend/.env.local`):
 
 ### Run the tests
 
-The backend tests need no keys or network (151 tests). The frontend has 55 unit tests (`npm test`). With the backend virtual environment active:
+The backend tests need no keys or network (171 tests). The frontend has 74 unit tests (`npm test`). With the backend virtual environment active:
 
 ```bash
 cd backend
@@ -214,7 +216,7 @@ npm test
 npm run build
 ```
 
-From the repository root, `npm test`, `npm run lint`, `npm run typecheck` and `npm run build` run the same checks.
+From the repository root, `npm test` runs the backend tests and the offline scoring comparison, and `npm run lint`, `npm run typecheck` and `npm run build` run the frontend checks. The frontend unit tests run with `npm test` inside `frontend`.
 
 ### Optional: local voice models
 
