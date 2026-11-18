@@ -9,6 +9,13 @@ test('every subject has an entry', () => {
   for (const id of SUBJECTS) assert.ok(Array.isArray(data[id]?.default), `missing subject ${id}`)
 })
 
+test('every subject has 5 to 10 videos', () => {
+  for (const id of SUBJECTS) {
+    const n = data[id].default.length
+    assert.ok(n >= 5 && n <= 10, `${id}: ${n} videos, expected 5 to 10`)
+  }
+})
+
 test('every video is complete, real and unique', () => {
   for (const id of SUBJECTS) {
     const lists = [data[id].default, ...Object.values(data[id].topics ?? {})]

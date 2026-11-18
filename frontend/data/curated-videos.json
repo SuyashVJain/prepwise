@@ -3,26 +3,127 @@
   "python": {
     "default": [
       {
+        "id": "_uQrJ0TkZlc",
+        "title": "Python Full Course for Beginners",
+        "channel": "Programming with Mosh"
+      },
+      {
+        "id": "rfscVS0vtbw",
+        "title": "Learn Python, Full Course for Beginners",
+        "channel": "freeCodeCamp.org"
+      },
+      {
         "id": "UrsmFxEIp5k",
         "title": "Python Tutorial for Beginners in Hindi, Complete Course",
         "channel": "CodeWithHarry"
+      },
+      {
+        "id": "kqtD5dpn9C8",
+        "title": "Python for Beginners, Learn Coding with Python in 1 Hour",
+        "channel": "Programming with Mosh"
+      },
+      {
+        "id": "vLqTf2b6GZw",
+        "title": "Python Tutorial for Beginners, Learn Python in 1.5 Hours",
+        "channel": "Apna College"
+      },
+      {
+        "id": "XKHEtdqhLK8",
+        "title": "Python Full Course for Free",
+        "channel": "Bro Code"
+      },
+      {
+        "id": "ERCMXc8x7mc",
+        "title": "Python Tutorial for Beginners, Full Course with Notes",
+        "channel": "Apna College"
       }
     ]
   },
   "dsa": {
-    "default": []
+    "default": [
+      {
+        "id": "8hly31xKli0",
+        "title": "Algorithms and Data Structures Tutorial, Full Course for Beginners",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "RBSGKlAvoiM",
+        "title": "Data Structures Easy to Advanced, Full Tutorial from a Google Engineer",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "5_5oE5lgrhw",
+        "title": "Introduction to Data Structures and Algorithms",
+        "channel": "CodeWithHarry"
+      },
+      {
+        "id": "CBYHwZcbD-s",
+        "title": "Data Structures and Algorithms Full Course",
+        "channel": "Bro Code"
+      },
+      {
+        "id": "pkYVOmU3MgA",
+        "title": "Data Structures and Algorithms in Python, Full Course for Beginners",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "B31LgI4Y4DQ",
+        "title": "Data Structures, Full Course Using C and C++",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "pcKY4hjDrxk",
+        "title": "Graph Traversals: BFS and DFS",
+        "channel": "Abdul Bari"
+      },
+      {
+        "id": "7dz8Iaf_weM",
+        "title": "Asymptotic Notations: Big O, Big Omega, Theta",
+        "channel": "Gate Smashers"
+      }
+    ]
   },
   "dbms": {
     "default": [
+      {
+        "id": "HXV3zeQKqGY",
+        "title": "SQL Tutorial, Full Database Course for Beginners",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "7S_tz1z_5bA",
+        "title": "SQL Course for Beginners, Full Course",
+        "channel": "Programming with Mosh"
+      },
+      {
+        "id": "hlGoQC332VM",
+        "title": "SQL Complete Course in 3 Hours, SQL One Shot using MySQL",
+        "channel": "Apna College"
+      },
       {
         "id": "5GDTIUVlHB8",
         "title": "Introduction to Normalization (Insertion, Deletion & Updation Anomaly)",
         "channel": "Gate Smashers"
       },
       {
-        "id": "HXV3zeQKqGY",
-        "title": "SQL Tutorial, Full Database Course for Beginners",
-        "channel": "freeCodeCamp.org"
+        "id": "gbVev8RuZLg",
+        "title": "Introduction to the ER Model",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "EGEwkad_llA",
+        "title": "All Normal Forms with Real Life Examples (1NF to 5NF)",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "T7AxM7Vqvaw",
+        "title": "Introduction to DBMS",
+        "channel": "Jenny's Lectures CS IT"
+      },
+      {
+        "id": "h0nxCDiD-zg",
+        "title": "SQL Tutorial for Beginners",
+        "channel": "Kevin Stratvert"
       }
     ]
   },
@@ -32,6 +133,41 @@
         "id": "xw_OuOhjauw",
         "title": "Complete Operating System in one shot",
         "channel": "KnowledgeGATE by Sanchit Sir"
+      },
+      {
+        "id": "3obEP8eLsCw",
+        "title": "Complete Operating Systems in 1 Shot, with Notes",
+        "channel": "CodeHelp - by Babbar"
+      },
+      {
+        "id": "yK1uBHPdp30",
+        "title": "Operating Systems Course for Beginners",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "TxjIlNYRZ5M",
+        "title": "Round Robin (RR) CPU Scheduling Algorithm with Example",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "MZdVAVMgNpA",
+        "title": "First Come First Serve (FCFS) CPU Scheduling with Example",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "VCIVXPoiLpU",
+        "title": "Shortest Job First (SJF) Scheduling Algorithm with Example",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "6c-mOFZwP_8",
+        "title": "What is Paging? Memory Management",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "8rcUs5RutX0",
+        "title": "Page Replacement Introduction, FIFO Page Replacement",
+        "channel": "Gate Smashers"
       }
     ]
   },
@@ -41,6 +177,41 @@
         "id": "IPvYjXCsTg8",
         "title": "Computer Networking Full Course, OSI Model Deep Dive",
         "channel": "Kunal Kushwaha"
+      },
+      {
+        "id": "q3Z3Qa1UNBA",
+        "title": "Complete Computer Networks in One Shot (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      },
+      {
+        "id": "qiQR5rTSshw",
+        "title": "Computer Networking Course, Network Engineering (CompTIA Network+ Prep)",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "4D55Cmj2t-A",
+        "title": "Introduction to Computer Networks and the OSI Model (Hindi)",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "1msEo8PIcbw",
+        "title": "What is the OSI Model? Full Explanation",
+        "channel": "Learn Coding"
+      },
+      {
+        "id": "CRdL1PcherM",
+        "title": "What is TCP/IP and OSI? Free CCNA, Episode 3",
+        "channel": "NetworkChuck"
+      },
+      {
+        "id": "s_Ntt6eTn94",
+        "title": "Subnet Mask - Explained",
+        "channel": "PowerCert Animated Videos"
+      },
+      {
+        "id": "5WfiTHiU4x8",
+        "title": "What is an IP Address? Free CCNA, Episode 1",
+        "channel": "NetworkChuck"
       }
     ]
   },
@@ -55,6 +226,31 @@
         "id": "Ej_02ICOIgs",
         "title": "Object Oriented Programming with Python, Full Course",
         "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "JeznW_7DlB0",
+        "title": "Python Object Oriented Programming (OOP) for Beginners",
+        "channel": "Tech With Tim"
+      },
+      {
+        "id": "-HafzawNlUo",
+        "title": "OOPS Concepts in Java Explained with Examples",
+        "channel": "Sundeep Saradhi Kanthety"
+      },
+      {
+        "id": "nGJTWaaFdjc",
+        "title": "Object Oriented Programming in C++, C++ Tutorials for Beginners",
+        "channel": "CodeWithHarry"
+      },
+      {
+        "id": "eIrMbAQSU34",
+        "title": "Java Full Course for Beginners",
+        "channel": "Programming with Mosh"
+      },
+      {
+        "id": "-TkoO8Z07hI",
+        "title": "C++ Full Course for Free",
+        "channel": "Bro Code"
       }
     ]
   },
@@ -64,40 +260,398 @@
         "id": "9kuynHcM3UA",
         "title": "Complete TOC Theory of Computation in one shot",
         "channel": "KnowledgeGATE by Sanchit Sir"
+      },
+      {
+        "id": "CiXJnosT0UE",
+        "title": "What is DFA in TOC, with Examples (Hindi)",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "LEigAZN6RdY",
+        "title": "Convert NFA to DFA with Example (Hindi)",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "Dli3czfNvlo",
+        "title": "What is NFA in TOC? Non-Deterministic Finite Automata (Hindi)",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "nykOeWgQcHM",
+        "title": "What is Computation?",
+        "channel": "MIT OpenCourseWare"
+      },
+      {
+        "id": "acCztqcZi_Q",
+        "title": "Complete TOC Theory of Computation in One Shot, 6 Hours (Hindi)",
+        "channel": "5 Minutes Engineering"
+      },
+      {
+        "id": "gK_V_lzNQg8",
+        "title": "Theory of Computation, TOC in One Shot, Complete GATE Course (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
       }
     ]
   },
   "compilers": {
     "default": [
       {
+        "id": "OQCjakjCJu4",
+        "title": "Complete Compiler Design in One Shot (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      },
+      {
         "id": "4nx8LEGy9kI",
         "title": "Introduction to Lexical Analyzer",
+        "channel": "Neso Academy"
+      },
+      {
+        "id": "PT9iWM80PDU",
+        "title": "Phases of a Compiler with Examples",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "BgNdtk9h8Ok",
+        "title": "Lexical Analysis in Compiler Design with Examples",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "hGuXUIefVkc",
+        "title": "What is Parsing? Types of Parsers and Syntax Analysis",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "TApMNhQPaCM",
+        "title": "Different Phases of Compiler",
+        "channel": "Neso Academy"
+      },
+      {
+        "id": "OIKL6wFjFOo",
+        "title": "Introduction to Parsers",
         "channel": "Neso Academy"
       }
     ]
   },
   "coa": {
-    "default": []
+    "default": [
+      {
+        "id": "DsK35f8wyUw",
+        "title": "Complete COA Computer Organization and Architecture in One Shot (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      },
+      {
+        "id": "srlgaJgaxRE",
+        "title": "What is a Hazard in Pipelining? Types of Hazards",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "eObN3u3eAnU",
+        "title": "Direct Mapping with Example, Cache Mapping (Hindi)",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "1rUevQ3bSEY",
+        "title": "Complete COA in One Shot, 6 Hours (Hindi)",
+        "channel": "5 Minutes Engineering"
+      },
+      {
+        "id": "9nuAjYRbITQ",
+        "title": "Computer Architecture Complete Course, Part 1",
+        "channel": "Nerd's lesson"
+      },
+      {
+        "id": "nezosHntjPg",
+        "title": "Computer Organization and Architecture, COA in One Shot, Complete GATE Course (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      }
+    ]
   },
   "digital": {
-    "default": []
+    "default": [
+      {
+        "id": "pHNbm-4reIc",
+        "title": "Complete Digital Electronics in One Shot (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      },
+      {
+        "id": "3oNzkS1WYas",
+        "title": "What is a Logic Gate? AND, OR, NOT, NAND, NOR, XOR and XNOR",
+        "channel": "Learn Coding"
+      },
+      {
+        "id": "JQBRzsPhw2w",
+        "title": "Logic Gates, Truth Tables, Boolean Algebra",
+        "channel": "The Organic Chemistry Tutor"
+      },
+      {
+        "id": "EW_2MhFu7tE",
+        "title": "Logic Gates and Boolean Algebra: Types of Logic Gates",
+        "channel": "Najam Academy"
+      },
+      {
+        "id": "PWB3dn0azg8",
+        "title": "SR Flip-Flop using NAND Gate",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "zVjxEIy33Fs",
+        "title": "SR Latch using NAND Gate",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "9Tn9M98yER8",
+        "title": "Complete Digital Electronics in One Shot, 6 Hours (Hindi)",
+        "channel": "5 Minutes Engineering"
+      },
+      {
+        "id": "lH0sYax5Yg0",
+        "title": "Digital Logic in One Shot, Complete GATE Course (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      }
+    ]
   },
   "discrete": {
-    "default": []
+    "default": [
+      {
+        "id": "3zOtLEeHygg",
+        "title": "Complete Discrete Maths in One Shot (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      },
+      {
+        "id": "2SpuBqvNjHI",
+        "title": "Maths for Programmers: Full Course on Sets and Logic",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "wGLTV8MgLlA",
+        "title": "Discrete Mathematics: Set Theory Explained from Scratch",
+        "channel": "Dr.Gajendra Purohit"
+      },
+      {
+        "id": "7S6jHzi8vkk",
+        "title": "Propositional Logic: Conjunction, Disjunction and Negation",
+        "channel": "Dr.Gajendra Purohit"
+      },
+      {
+        "id": "HipVU5vz3Q8",
+        "title": "Graph Theory: Overview and Basic Terminology",
+        "channel": "Dr.Gajendra Purohit"
+      },
+      {
+        "id": "5hPfm_uqXmw",
+        "title": "Graph Representation: Adjacency Matrix and Adjacency List",
+        "channel": "Jenny's Lectures CS IT"
+      },
+      {
+        "id": "papVRQqtrgc",
+        "title": "Complete Discrete Maths in One Shot, 4 Hours (Hindi)",
+        "channel": "5 Minutes Engineering"
+      },
+      {
+        "id": "pcKY4hjDrxk",
+        "title": "Graph Traversals: BFS and DFS",
+        "channel": "Abdul Bari"
+      }
+    ]
   },
   "system-design": {
-    "default": []
+    "default": [
+      {
+        "id": "F2FmTdLtb_4",
+        "title": "System Design Concepts Course and Interview Prep",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "m8Icp_Cid5o",
+        "title": "System Design for Beginners Course",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "lFeYU31TnQ8",
+        "title": "System Design for Beginners",
+        "channel": "Piyush Garg"
+      },
+      {
+        "id": "C842vFY5kRo",
+        "title": "System Design Course: APIs, Databases, Caching, CDNs, Load Balancing",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "5faMjKuB9bc",
+        "title": "What is Database Sharding?",
+        "channel": "Gaurav Sen"
+      },
+      {
+        "id": "xo5V9g9joFs",
+        "title": "Proxy vs Reverse Proxy vs Load Balancer, Simply Explained",
+        "channel": "TechWorld with Nana"
+      },
+      {
+        "id": "Vnm-ycSfJx4",
+        "title": "System Design One Shot Full Course",
+        "channel": "Telusko"
+      },
+      {
+        "id": "MbjObHmDbZo",
+        "title": "System Design Course for Beginners",
+        "channel": "Geek's Lesson"
+      }
+    ]
   },
   "se": {
-    "default": []
+    "default": [
+      {
+        "id": "NlLM3sVF8wY",
+        "title": "Complete Software Engineering in One Shot (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      },
+      {
+        "id": "Xs6E-MAJbfE",
+        "title": "Agile in Software Engineering",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "T0TynxN77oY",
+        "title": "Types and Levels of Testing in Software Engineering",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "oTZd2vo3FQU",
+        "title": "What is Scrum? Agile",
+        "channel": "Telusko"
+      },
+      {
+        "id": "sO8eGL6SFsA",
+        "title": "Software Testing Full Course in 10 Hours",
+        "channel": "edureka!"
+      },
+      {
+        "id": "sbW4RThXNL8",
+        "title": "What is Testing? Full Explanation, Software Engineering",
+        "channel": "Learn Coding"
+      }
+    ]
   },
   "web": {
-    "default": []
+    "default": [
+      {
+        "id": "HcOc7P5BMi4",
+        "title": "HTML Tutorial for Beginners, Complete HTML with Notes and Code",
+        "channel": "Apna College"
+      },
+      {
+        "id": "-G7bJVAIiEI",
+        "title": "Learn HTML and CSS in 60 Minutes, Full Beginners Course",
+        "channel": "Technology Gyan"
+      },
+      {
+        "id": "PkZNo7MFNFg",
+        "title": "Learn JavaScript, Full Course for Beginners",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "qz0aGYrrlhU",
+        "title": "HTML Tutorial for Beginners: HTML Crash Course",
+        "channel": "Programming with Mosh"
+      },
+      {
+        "id": "ESnrn1kAD4E",
+        "title": "CSS Tutorial for Beginners, Complete CSS with Project and Notes",
+        "channel": "Apna College"
+      },
+      {
+        "id": "HGTJBPNC-Gw",
+        "title": "HTML and CSS Full Course for Free",
+        "channel": "Bro Code"
+      },
+      {
+        "id": "SqcY0GlETPk",
+        "title": "React Tutorial for Beginners",
+        "channel": "Programming with Mosh"
+      }
+    ]
   },
   "ml": {
-    "default": []
+    "default": [
+      {
+        "id": "i_LwzRVP7bg",
+        "title": "Machine Learning for Everybody, Full Course",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "D1eL1EnxXXQ",
+        "title": "AI Complete One Shot Course for Beginners, AI and ML Fundamentals",
+        "channel": "Apna College"
+      },
+      {
+        "id": "GwIo3gDZCVQ",
+        "title": "Machine Learning Full Course, 10 Hours",
+        "channel": "edureka!"
+      },
+      {
+        "id": "NWONeJKn6kc",
+        "title": "Machine Learning Course for Beginners",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "yIYKR4sgzI8",
+        "title": "StatQuest: Logistic Regression",
+        "channel": "StatQuest with Josh Starmer"
+      },
+      {
+        "id": "CqOfi41LfDw",
+        "title": "The Essential Main Ideas of Neural Networks",
+        "channel": "StatQuest with Josh Starmer"
+      },
+      {
+        "id": "lzGKRSvs5HM",
+        "title": "Linear Regression Explained in Hindi, Machine Learning Course",
+        "channel": "5 Minutes Engineering"
+      },
+      {
+        "id": "qYNweeDHiyU",
+        "title": "AI, Machine Learning, Deep Learning and Generative AI Explained",
+        "channel": "IBM Technology"
+      }
+    ]
   },
   "ai": {
-    "default": []
+    "default": [
+      {
+        "id": "5NgNicANyqM",
+        "title": "Harvard CS50 Artificial Intelligence with Python, Full University Course",
+        "channel": "freeCodeCamp.org"
+      },
+      {
+        "id": "D1eL1EnxXXQ",
+        "title": "AI Complete One Shot Course for Beginners, AI and ML Fundamentals",
+        "channel": "Apna College"
+      },
+      {
+        "id": "tvAh0JZF2YE",
+        "title": "A* Algorithm in AI with Example (Hindi)",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "qul0f79gxGs",
+        "title": "Breadth First Search (BFS) with Example, Uninformed Search",
+        "channel": "Gate Smashers"
+      },
+      {
+        "id": "l-hh51ncgDI",
+        "title": "Algorithms Explained: Minimax and Alpha-Beta Pruning",
+        "channel": "Sebastian Lague"
+      },
+      {
+        "id": "FwOTs4UxQS4",
+        "title": "AI Agents, Clearly Explained",
+        "channel": "Jeff Su"
+      },
+      {
+        "id": "yiXAmkimZRQ",
+        "title": "Complete AI Artificial Intelligence in One Shot (Hindi)",
+        "channel": "KnowledgeGATE by Sanchit Sir"
+      }
+    ]
   }
 }

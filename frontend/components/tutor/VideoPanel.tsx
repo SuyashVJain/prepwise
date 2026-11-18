@@ -10,14 +10,20 @@ type SubjectVideos = { default: Video[]; topics?: Record<string, Video[]> }
 
 const curatedBySubject = curated as unknown as Record<string, SubjectVideos | string>
 
-// Hand-picked videos for a subject and topic. Placeholder entries (id starting with TODO) are left out.
+// Hand-picked videos for a subject and topic: the topic's own picks first, then the rest of the subject's list.
+// Placeholder entries (id starting with TODO) are left out and an id never appears twice.
 export function curatedFor(subjectId: string, topic: string): Video[] {
   const subject = curatedBySubject[subjectId]
   if (!subject || typeof subject === 'string') return []
   const wanted = topic.trim().toLowerCase()
   const topicKey = Object.keys(subject.topics ?? {}).find(key => key.toLowerCase() === wanted)
-  const picks = topicKey && subject.topics ? subject.topics[topicKey] : subject.default
-  return picks.filter(video => !video.id.startsWith('TODO')).slice(0, 3)
+  const own = topicKey && subject.topics ? subject.topics[topicKey] : []
+  const seen = new Set<string>()
+  return [...own, ...subject.default].filter(video => {
+    if (video.id.startsWith('TODO') || seen.has(video.id)) return false
+    seen.add(video.id)
+    return true
+  })
 }
 
 function VideoCard({ video }: { video: Video }) {
@@ -70,10 +76,14 @@ export default function VideoPanel({ subjectId, subjectName, topic }: { subjectI
       <div style={label}>START HERE</div>
       {picks.length === 0
         ? <p style={note}>No hand-picked videos for this topic yet.</p>
-        : picks.map(video => <VideoCard key={video.id} video={video} />)}
+        : (
+          <div style={{ maxHeight: 'min(46vh, 380px)', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+            {picks.map(video => <VideoCard key={video.id} video={video} />)}
+          </div>
+        )}
 
       <div style={{ ...label, marginTop: '12px' }}>MORE VIDEOS</div>
-      <div style={{ maxHeight: '52vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+      <div style={{ maxHeight: 'min(46vh, 380px)', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
         {status === 'loading' && <p style={note}>SEARCHING...</p>}
         {status === 'curated_only' && <p style={note}>More videos are not available right now.</p>}
         {status === 'done' && more.length === 0 && <p style={note}>No more videos found.</p>}
